@@ -3,19 +3,19 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import frc.robot.Constants;
-import edu.wpi.first.wpilibj.GenericHID;
+// import frc.robot.Constants;
+// import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 // import edu.wpi.first.wpilibj.drive.MecanumDrive; 
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.FlyWheelMove;
+
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
+// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+// import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 
 import frc.robot.commands.FlyWheelMove;
 import frc.robot.subsystems.FlyWheel;
@@ -36,10 +36,10 @@ public class RobotContainer {
 
   //Note to self: Create mappings here. Declare the motor controllers (but do not assign values). Same with buttons
 
-  public static VictorSP frontLeft;
-  public static VictorSP rearLeft;
-  public static VictorSP frontRight;
-  public static VictorSP rearRight;
+  // public static VictorSP frontLeft;
+  // public static VictorSP rearLeft;
+  // public static VictorSP frontRight;
+  // public static VictorSP rearRight;
 
   // public static CANSparkMax flyWheelMotor;
   public static PWM flyWheelMotorBB; //Fly wheel for buddy bot
@@ -59,18 +59,18 @@ public class RobotContainer {
 
     m_stick = new Joystick(Constants.kJoystickChannel);
 
-    frontLeft = new VictorSP(Constants.kFrontLeftChannel);
-    rearLeft = new VictorSP(Constants.kRearLeftChannel);
+    // frontLeft = new VictorSP(Constants.kFrontLeftChannel);
+    // rearLeft = new VictorSP(Constants.kRearLeftChannel);
 
-    frontRight = new VictorSP(Constants.kFrontRightChannel);
-    frontRight.setInverted(true);
-    rearRight = new VictorSP(Constants.kRearLeftChannel);
-    rearRight.setInverted(true);
+    // frontRight = new VictorSP(Constants.kFrontRightChannel);
+    // frontRight.setInverted(true);
+    // rearRight = new VictorSP(Constants.kRearLeftChannel);
+    // rearRight.setInverted(true);
 
-    // flyWheelMotor = new CANSparkMax(1, MotorType.kBrushless);
+    // flyWheelMotor = new CANSparkMax(Constants.kFlyWheelChannel, MotorType.kBrushless);
     // flyWheelMotor.setInverted(true);
 
-    flyWheelMotorBB = new PWM(1);
+    flyWheelMotorBB = new PWM(Constants.kFlyWheelChannel);
 
     flyWheel = new FlyWheel();
     

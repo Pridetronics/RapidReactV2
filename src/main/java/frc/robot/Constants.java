@@ -14,12 +14,13 @@ package frc.robot;
  */
 public final class Constants //Note for self: Define integers here. Button numbers and the addresses of the motors. 
 {
-    public static final int kFrontLeftChannel = 0;
-    public static final int kRearLeftChannel = 2;
-    public static final int kFrontRightChannel = 1;
-    public static final int kRearRightChannel = 3;
+    // public static final int kFrontLeftChannel = 0;
+    // public static final int kRearLeftChannel = 2;
+    // public static final int kFrontRightChannel = 1;
+    // public static final int kRearRightChannel = 3;
     public static final int kJoystickChannel = 0;
-
+    
+    public static final int kFlyWheelChannel = 1;
     public static final int flyWheelButtonNumber = 4;
 }
 
