@@ -12,12 +12,12 @@ import edu.wpi.first.wpilibj.PWM;
 
 
 public class FlyWheel extends SubsystemBase {
-  // private CANSparkMax m_flyWheel;
-  private PWM m_flyWheelBB;
+  private CANSparkMax m_flyWheel;
+  //private PWM m_flyWheelBB;
 
   public FlyWheel() {
-    m_flyWheelBB = RobotContainer.flyWheelMotorBB;
-    //m_flyWheel = RobotContainer.flyWheelMotor;
+    //m_flyWheelBB = RobotContainer.flyWheelMotorBB;
+    m_flyWheel = RobotContainer.flyWheelMotor;
   }
 
   @Override
@@ -25,11 +25,11 @@ public class FlyWheel extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   public void flyWheelRun(){
-    // m_flyWheel.set(1);
-    m_flyWheelBB.setSpeed(1); //Full Speed for PWM motor
+    m_flyWheel.set(1);
+    //m_flyWheelBB.setSpeed(1); //Full Speed for PWM motor
   }
   public void flyWheelStop(){
-    // m_flyWheel.set(0);
-    m_flyWheelBB.setSpeed(0);
+    m_flyWheel.set(0);
+    //m_flyWheelBB.setSpeed(0);
   }
 }

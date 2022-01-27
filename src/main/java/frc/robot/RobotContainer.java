@@ -14,13 +14,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import com.revrobotics.CANSparkMax;
-// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 // import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 
 import frc.robot.commands.FlyWheelMove;
 import frc.robot.subsystems.FlyWheel;
 
-import edu.wpi.first.wpilibj.PWM; //FOR BUDDY BOT
+//import edu.wpi.first.wpilibj.PWM; //FOR BUDDY BOT
 
 
 /**
@@ -41,8 +41,8 @@ public class RobotContainer {
   // public static VictorSP frontRight;
   // public static VictorSP rearRight;
 
-  // public static CANSparkMax flyWheelMotor;
-  public static PWM flyWheelMotorBB; //Fly wheel for buddy bot
+  public static CANSparkMax flyWheelMotor;
+  //public static PWM flyWheelMotorBB; //Fly wheel for buddy bot
 
   public JoystickButton flyWheelButton;
   public Joystick m_stick;
@@ -64,10 +64,10 @@ public class RobotContainer {
     // rearRight = new VictorSP(Constants.kRearLeftChannel);
     // rearRight.setInverted(true);
 
-    // flyWheelMotor = new CANSparkMax(Constants.kFlyWheelChannel, MotorType.kBrushless); //Currently unused. This is code for the real testing, as opposed to just the prototype
-    // flyWheelMotor.setInverted(true);
+    flyWheelMotor = new CANSparkMax(Constants.kFlyWheelChannel, MotorType.kBrushless); //Currently unused. This is code for the real testing, as opposed to just the prototype
+    flyWheelMotor.setInverted(true);
 
-    flyWheelMotorBB = new PWM(Constants.kFlyWheelChannel);
+    //flyWheelMotorBB = new PWM(Constants.kFlyWheelChannel);
 
     flyWheel = new FlyWheel();
     
