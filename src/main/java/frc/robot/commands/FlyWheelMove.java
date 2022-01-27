@@ -33,7 +33,7 @@ public class FlyWheelMove extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-  
+    m_flyWheel.flyWheelStop();
   }
 
   // Returns true when the command should end.

@@ -26,6 +26,10 @@ public class FlyWheel extends SubsystemBase {
   }
   public void flyWheelRun(){
     // m_flyWheel.set(1);
-    m_flyWheelBB.setSpeed(1);
+    m_flyWheelBB.setSpeed(1); //Full Speed for PWM motor
+  }
+  public void flyWheelStop(){
+    // m_flyWheel.set(0);
+    m_flyWheelBB.setSpeed(0);
   }
 }

@@ -48,10 +48,7 @@ public class RobotContainer {
   public Joystick m_stick;
   public static FlyWheel flyWheel;
 
-  // public MecanumDrive m_robotDrive; Figure out drive object later. I may need to create a separate subsytem that will be "created" and referenced here
 
-
-  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     //Assign values for the motors, and for the joysticks. Do not do button bindings, this is below. 
@@ -59,7 +56,7 @@ public class RobotContainer {
 
     m_stick = new Joystick(Constants.kJoystickChannel);
 
-    // frontLeft = new VictorSP(Constants.kFrontLeftChannel);
+    // frontLeft = new VictorSP(Constants.kFrontLeftChannel); //Mecanum stuff is currently commented out. Conflicts with the PWM mc for BuddyBot
     // rearLeft = new VictorSP(Constants.kRearLeftChannel);
 
     // frontRight = new VictorSP(Constants.kFrontRightChannel);
@@ -67,7 +64,7 @@ public class RobotContainer {
     // rearRight = new VictorSP(Constants.kRearLeftChannel);
     // rearRight.setInverted(true);
 
-    // flyWheelMotor = new CANSparkMax(Constants.kFlyWheelChannel, MotorType.kBrushless);
+    // flyWheelMotor = new CANSparkMax(Constants.kFlyWheelChannel, MotorType.kBrushless); //Currently unused. This is code for the real testing, as opposed to just the prototype
     // flyWheelMotor.setInverted(true);
 
     flyWheelMotorBB = new PWM(Constants.kFlyWheelChannel);
@@ -80,7 +77,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     flyWheelButton = new JoystickButton(m_stick, Constants.flyWheelButtonNumber); 
-    flyWheelButton.whenPressed(new FlyWheelMove(flyWheel));
+    flyWheelButton.whileHeld(new FlyWheelMove(flyWheel));
 
   }
 

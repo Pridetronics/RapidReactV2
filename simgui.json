@@ -6,5 +6,10 @@
       "/LiveWindow/FlyWheel": "Subsystem",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler"
     }
+  },
+  "NetworkTables": {
+    "LiveWindow": {
+      "open": true
+    }
   }
 }
