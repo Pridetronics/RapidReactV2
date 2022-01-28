@@ -36,17 +36,17 @@ public class RobotContainer {
 
   //Note to self: Create mappings here. Declare the motor controllers (but do not assign values). Same with buttons
 
-  // public static VictorSP frontLeft;
+  // public static VictorSP frontLeft; //Mecanum motors (or intended to be)
   // public static VictorSP rearLeft;
   // public static VictorSP frontRight;
   // public static VictorSP rearRight;
 
   public static CANSparkMax flyWheelMotor;
-  //public static PWM flyWheelMotorBB; //Fly wheel for buddy bot
+  //public static PWM flyWheelMotorBB; //Fly wheel for use on BuddyBot
 
-  public JoystickButton flyWheelButton;
-  public Joystick m_stick;
-  public static FlyWheel flyWheel;
+  public JoystickButton flyWheelButton; //Button to run shooter, button 4).
+  public Joystick m_stick; //Controller 1
+  public static FlyWheel flyWheel; //Creates the subsytem for FlyWheel
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -69,7 +69,7 @@ public class RobotContainer {
 
     //flyWheelMotorBB = new PWM(Constants.kFlyWheelChannel);
 
-    flyWheel = new FlyWheel();
+    flyWheel = new FlyWheel(); //Defines the subsystem
     
     configureButtonBindings();
   }
@@ -77,7 +77,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     flyWheelButton = new JoystickButton(m_stick, Constants.flyWheelButtonNumber); 
-    flyWheelButton.whileHeld(new FlyWheelMove(flyWheel));
+    flyWheelButton.whileHeld(new FlyWheelMove(flyWheel)); //References the command and inside the needed subsytem
 
   }
 

@@ -25,7 +25,7 @@ public class FlyWheel extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   public void flyWheelRun(){
-    m_flyWheel.set(1);
+    m_flyWheel.set(0.9);
     //m_flyWheelBB.setSpeed(1); //Full Speed for PWM motor
   }
   public void flyWheelStop(){
