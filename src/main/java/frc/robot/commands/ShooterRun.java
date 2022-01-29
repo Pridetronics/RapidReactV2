@@ -5,19 +5,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.FlyWheel;
+import frc.robot.subsystems.Shooter;
 import frc.robot.RobotContainer;
 import frc.robot.Constants;
 
 
-public class FlyWheelMove extends CommandBase {
+public class ShooterRun extends CommandBase {
   
-  private FlyWheel m_flyWheel;
+  private Shooter m_shooter;
 
-  public FlyWheelMove(FlyWheel flyWheel) {
-    m_flyWheel = flyWheel; 
+  public ShooterRun(Shooter Shooter) {
+    m_shooter = Shooter; 
     
-    addRequirements(m_flyWheel);
+    addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -28,12 +28,12 @@ public class FlyWheelMove extends CommandBase {
 
   @Override
   public void execute() {
-    m_flyWheel.flyWheelRun();
+    m_shooter.ShooterRun();
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_flyWheel.flyWheelStop();
+    m_shooter.ShooterStop();
   }
 
   // Returns true when the command should end.

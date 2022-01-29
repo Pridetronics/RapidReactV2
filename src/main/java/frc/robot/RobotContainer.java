@@ -17,11 +17,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 // import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 
-import frc.robot.commands.FlyWheelMove;
-import frc.robot.subsystems.FlyWheel;
-
-//import edu.wpi.first.wpilibj.PWM; //FOR BUDDY BOT
-
+import frc.robot.commands.ShooterRun;
+import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,48 +33,30 @@ public class RobotContainer {
 
   //Note to self: Create mappings here. Declare the motor controllers (but do not assign values). Same with buttons
 
-  // public static VictorSP frontLeft; //Mecanum motors (or intended to be)
-  // public static VictorSP rearLeft;
-  // public static VictorSP frontRight;
-  // public static VictorSP rearRight;
+  public static CANSparkMax shooterMotor;
+  public JoystickButton shooterButton;
+  public static Shooter shooter; //Creates the subsytem for FlyWheel
 
-  public static CANSparkMax flyWheelMotor;
-  //public static PWM flyWheelMotorBB; //Fly wheel for use on BuddyBot
-
-  public JoystickButton flyWheelButton; //Button to run shooter, button 4).
   public Joystick m_stick; //Controller 1
-  public static FlyWheel flyWheel; //Creates the subsytem for FlyWheel
-
-
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     //Assign values for the motors, and for the joysticks. Do not do button bindings, this is below. 
-    
-
     m_stick = new Joystick(Constants.kJoystickChannel);
 
-    // frontLeft = new VictorSP(Constants.kFrontLeftChannel); //Mecanum stuff is currently commented out. Conflicts with the PWM mc for BuddyBot
-    // rearLeft = new VictorSP(Constants.kRearLeftChannel);
-
-    // frontRight = new VictorSP(Constants.kFrontRightChannel);
-    // frontRight.setInverted(true);
-    // rearRight = new VictorSP(Constants.kRearLeftChannel);
-    // rearRight.setInverted(true);
-
-    flyWheelMotor = new CANSparkMax(Constants.kFlyWheelChannel, MotorType.kBrushless); //Currently unused. This is code for the real testing, as opposed to just the prototype
-    flyWheelMotor.setInverted(true);
-
-    //flyWheelMotorBB = new PWM(Constants.kFlyWheelChannel);
-
-    flyWheel = new FlyWheel(); //Defines the subsystem
+ //Shooter Relevant---
+    shooterMotor = new CANSparkMax(Constants.kFlyWheelChannel, MotorType.kBrushless); 
+    shooterMotor.setInverted(true);
+    shooter = new Shooter(); //Defines the subsystem
     
     configureButtonBindings();
   }
 
   private void configureButtonBindings() {
 
-    flyWheelButton = new JoystickButton(m_stick, Constants.flyWheelButtonNumber); 
-    flyWheelButton.whileHeld(new FlyWheelMove(flyWheel)); //References the command and inside the needed subsytem
+    //Shooter Button Configured and Command Assigned to Button
+    shooterButton = new JoystickButton(m_stick, Constants.flyWheelButtonNumber); 
+    shooterButton.whileHeld(new ShooterRun(shooter)); //References the command and inside the needed subsytem
 
   }
 
