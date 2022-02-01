@@ -1,14 +1,34 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "Compressor[0]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [1]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/ExampleSubsystem": "Subsystem",
       "/LiveWindow/FlyWheel": "Subsystem",
-      "/LiveWindow/Ungrouped/Scheduler": "Scheduler"
+      "/LiveWindow/Shooter": "Subsystem",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/SmartDashboard/Release Gate": "Command",
+      "/SmartDashboard/Shooter Run": "Command"
     }
   },
   "NetworkTables": {
     "LiveWindow": {
+      "open": true
+    },
+    "SmartDashboard": {
       "open": true
     }
   }

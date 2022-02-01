@@ -19,10 +19,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 // import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 // import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 // import edu.wpi.first.wpilibj.drive.MecanumDrive;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.PowerDistribution;
-
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to

@@ -7,29 +7,39 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import com.revrobotics.CANSparkMax;
-import edu.wpi.first.wpilibj.PWM;
 
+import com.revrobotics.CANSparkMax;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+//import edu.wpi.first.wpilibj.PWM;
 
 public class Shooter extends SubsystemBase {
-  private CANSparkMax m_shooterMotor;
-  //private PWM m_flyWheelBB;
+  //Motor and solenoid are created privately for use in this class
+  private CANSparkMax m_shooterMotor; 
+  private DoubleSolenoid m_shooterBallRelease;
 
   public Shooter() {
-    //m_flyWheelBB = RobotContainer.flyWheelMotorBB;
-    m_shooterMotor = RobotContainer.shooterMotor;
+    m_shooterMotor = RobotContainer.shooterMotor; //Motor and solenoid information referenced from RobotContainer
+    m_shooterBallRelease = RobotContainer.shooterBallRelease;
   }
 
   @Override
-  public void periodic() {
+  public void periodic() 
+  {
     // This method will be called once per scheduler run
   }
-  public void ShooterRun(){
+  public void ShooterRun(){ //Function created to run the motor-- referenced later in ShooterRun.java
     m_shooterMotor.set(0.9);
-    //m_flyWheelBB.setSpeed(1); //Full Speed for PWM motor
+    //m_shooterMotorBB.setSpeed(1);
   }
   public void ShooterStop(){
     m_shooterMotor.set(0);
-    //m_flyWheelBB.setSpeed(0);
+    //m_shooterMotorBB.setSpeed(0);
+  }
+
+  public void ReleaseGate(){
+    m_shooterBallRelease.set(DoubleSolenoid.Value.kForward);
+  }
+  public void RetractGate(){
+    m_shooterBallRelease.set(DoubleSolenoid.Value.kReverse);
   }
 }
