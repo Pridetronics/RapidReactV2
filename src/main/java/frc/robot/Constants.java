@@ -14,10 +14,17 @@ package frc.robot;
  */
 public final class Constants //Note for self: Define integers here. Button numbers and the addresses of the motors. 
 {
+    public static final int kJoystickDriverChannel = 0; //For Joystick 0
     public static final int kJoystickShooterChannel = 1; //For Joystick 1 
     public static final int kShooterChannel = 1; //For the Shooter Motor
     public static final int shooterButtonNumber = 4; // For Shooter Button on the Gamepad
     public static final int kShooterGateForwardChannel = 4; //For use in pneumatics system (same with the one below)
     public static final int kShooterGateReleaseChannel = 5;
+
+    public static final int kFrontLeftChannel = 0; //For all of the drive motors
+    public static final int kRearLeftChannel = 2;
+    public static final int kFrontRightChannel = 1;
+    public static final int kRearRightChannel = 3;
+
 }
 
