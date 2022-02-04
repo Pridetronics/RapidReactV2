@@ -19,5 +19,6 @@ public final class Constants //Note for self: Define integers here. Button numbe
     public static final int shooterButtonNumber = 4; // For Shooter Button on the Gamepad
     public static final int kShooterGateForwardChannel = 4; //For use in pneumatics system (same with the one below)
     public static final int kShooterGateReleaseChannel = 5;
+    public static final int kJoystickDriveChannel = 0; // For Joystick 0
 }
 
