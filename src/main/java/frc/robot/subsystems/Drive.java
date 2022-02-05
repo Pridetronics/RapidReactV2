@@ -15,7 +15,6 @@ public class Drive extends SubsystemBase {
   private VictorSP m_rearLeftMotor;
   private VictorSP m_frontRightMotor;
   private VictorSP m_rearRightMotor;
-  private Joystick driverJoystick;
   private MecanumDrive m_robotDrive;
 
   public Drive() {
@@ -23,7 +22,6 @@ public class Drive extends SubsystemBase {
     m_rearLeftMotor = RobotContainer.rearLeft;
     m_frontRightMotor = RobotContainer.frontRight;
     m_rearRightMotor = RobotContainer.rearRight;
-    driverJoystick = RobotContainer.joystickDriver;
 
     m_robotDrive = new MecanumDrive(m_frontLeftMotor, m_rearLeftMotor, m_frontRightMotor, m_rearRightMotor);
   }
@@ -32,10 +30,7 @@ public class Drive extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
-  public void driveStick(){
-    m_robotDrive.driveCartesian(driverJoystick.getX() * 0.1, driverJoystick.getY() * 0.1, driverJoystick.getZ() * 0.1, 0.0);
 
-  }
   public void autoDriveBack(){
     m_frontLeftMotor.set(-0.5);
     m_rearLeftMotor.set(-0.5);
