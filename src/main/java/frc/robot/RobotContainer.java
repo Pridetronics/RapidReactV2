@@ -161,8 +161,9 @@ public class RobotContainer
   
           double steer = Constants.kRearLeftChannel; 
           double drive = Constants.kRearRightChannel;
-          boolean auto = JoystickButton.
-  
+          boolean auto = 
+
+
           steer *= 0.70;
           drive *= 0.70;
   
@@ -227,6 +228,7 @@ public class RobotContainer
             drive_cmd = MAX_DRIVE;
           }
           m_LimelightDriveCommand = drive_cmd;
+
     }
   }
   public Command getAutonomousCommand() 
