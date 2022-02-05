@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Autonomous;
-import frc.robot.commands.ExampleCommand;
 
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
@@ -42,9 +41,7 @@ import frc.robot.subsystems.Intake;
  */
 public class RobotContainer 
 {
-  // The robot's subsystems and commands are defined here... Examples below
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  // The robot's subsystems and commands are defined here...
 
   public static VictorSP frontLeft;
   public static VictorSP rearLeft;
@@ -61,6 +58,7 @@ public class RobotContainer
   public static Intake intake;
   public static Shooter shooter; //Creates the subsytem  for shooter
   public static Drive drive;
+  public static Autonomous m_auto; 
 
   public JoystickButton shooterButton; //Button for the shooter
   public JoystickButton intakeButton;
@@ -120,7 +118,6 @@ public class RobotContainer
 
   public Command getAutonomousCommand() 
   {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return m_auto;
   }
 }
