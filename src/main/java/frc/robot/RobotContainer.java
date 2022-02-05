@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+
 // import frc.robot.Constants;
 // import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -33,92 +34,98 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer 
-{
+public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  public static VictorSP frontLeft;
-  public static VictorSP rearLeft;
-  public static VictorSP frontRight;
-  public static VictorSP rearRight;
+  public static CANSparkMax frontLeft;
+  public static CANSparkMax rearLeft;
+  public static CANSparkMax frontRight;
+  public static CANSparkMax rearRight;
 
-  public static CANSparkMax shooterMotor; //Creates Motor for the shooter
-  public static DoubleSolenoid shooterBallRelease; //Creates Double Solenoid for the shooter (relates to pistons)
+  public static CANSparkMax shooterMotor; // Creates Motor for the shooter
+  public static DoubleSolenoid shooterBallRelease; // Creates Double Solenoid for the shooter (relates to pistons)
 
   public static Compressor intakeCompressor;
   public static Solenoid intakePiston;
   public static VictorSP intakeMotor;
-  
+
   public static Intake intake;
-  public static Shooter shooter; //Creates the subsytem  for shooter
+  public static Shooter shooter; // Creates the subsytem for shooter
   public static Drive m_drive;
-  public static Autonomous m_auto; 
+  public static Autonomous m_auto;
 
-  public JoystickButton shooterButton; //Button for the shooter
+  public JoystickButton shooterButton; // Button for the shooter
   public JoystickButton intakeButton;
-  public Joystick joystickDriver; //Controller 0
-  public Joystick joystickShooter; //Controller 1
-  
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() 
-  {
-    //Assign values for the motors, and for the joysticks. Do not do button bindings, this is below.
-    joystickDriver = new Joystick(Constants.kJoystickDriverChannel); 
-    joystickShooter = new Joystick(Constants.kJoystickShooterChannel); //Sets shooter joystick to port 1
+  public Joystick joystickDriver; // Controller 0
+  public Joystick joystickShooter; // Controller 1
 
-    //Drive Relevant---
-    frontLeft = new VictorSP(Constants.kFrontLeftChannel);
-    rearLeft = new VictorSP(Constants.kRearLeftChannel);
-    frontRight = new VictorSP(Constants.kFrontRightChannel);
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
+  public RobotContainer() {
+    // Assign values for the motors, and for the joysticks. Do not do button
+    // bindings, this is below.
+    joystickDriver = new Joystick(Constants.kJoystickDriverChannel);
+    joystickShooter = new Joystick(Constants.kJoystickShooterChannel); // Sets shooter joystick to port 1
+
+    // Drive Relevant---
+    frontLeft = new CANSparkMax(Constants.kFrontLeftChannel, MotorType.kBrushless);
+    rearLeft = new CANSparkMax(Constants.kRearLeftChannel, MotorType.kBrushless);
+    frontRight = new CANSparkMax(Constants.kFrontRightChannel, MotorType.kBrushless);
     frontRight.setInverted(true);
-    rearRight = new VictorSP(Constants.kRearRightChannel);
+    rearRight = new CANSparkMax(Constants.kRearRightChannel, MotorType.kBrushless);
     rearRight.setInverted(true);
     m_drive = new Drive(joystickDriver);
 
-    //Shooter Relevant---
-    shooterMotor = new CANSparkMax(Constants.kShooterChannel, MotorType.kBrushless); 
+    // Shooter Relevant---
+    shooterMotor = new CANSparkMax(Constants.kShooterChannel, MotorType.kBrushless);
     shooterMotor.setInverted(true);
-    shooter = new Shooter(); //Defines the subsystem
-    shooterBallRelease = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kShooterGateForwardChannel, Constants.kShooterGateReleaseChannel);
+    shooter = new Shooter(); // Defines the subsystem
+    shooterBallRelease = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kShooterGateForwardChannel,
+        Constants.kShooterGateReleaseChannel);
 
     intakeCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
     intakePiston = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0);
     intakeMotor = new VictorSP(Constants.kIntakeChannel);
     intake = new Intake();
-    
-    SmartDashboard.putData("Shooter Run", new ShooterRun(shooter)); //Puts data on Shuffleboard to use the command. Displays
-    SmartDashboard.putData("Release Gate", new ReleaseGate(shooter)); //on the screen and can be run by pushing the square. Pretty neat
+
+    SmartDashboard.putData("Shooter Run", new ShooterRun(shooter)); // Puts data on Shuffleboard to use the command.
+                                                                    // Displays
+    SmartDashboard.putData("Release Gate", new ReleaseGate(shooter)); // on the screen and can be run by pushing the
+                                                                      // square. Pretty neat
     SmartDashboard.putData("Autonomous", new Autonomous(m_drive));
     SmartDashboard.putData("Intake Run", new IntakeRun(intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(intake));
 
     configureButtonBindings();
 
-    m_drive.setDefaultCommand(new DriveJoystick( m_drive ) );
+    m_drive.setDefaultCommand(new DriveJoystick(m_drive));
   }
 
-  private void configureButtonBindings() 
-  {
-    //Shooter Button Configured and Command Assigned to Button
-    shooterButton = new JoystickButton(joystickShooter, Constants.shooterButtonNumber); 
-    shooterButton.whileHeld(new ParallelCommandGroup( //This is meant to run both the shooter and the release gate commands
-      new ReleaseGate(shooter),
-      new ShooterRun(shooter))); //References the command and inside the needed subsytem
+  private void configureButtonBindings() {
+    // Shooter Button Configured and Command Assigned to Button
+    shooterButton = new JoystickButton(joystickShooter, Constants.shooterButtonNumber);
+    shooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate
+                                                      // commands
+        new ReleaseGate(shooter),
+        new ShooterRun(shooter))); // References the command and inside the needed subsytem
 
     intakeButton = new JoystickButton(joystickShooter, Constants.intakeButtonNumber);
     intakeButton.whileHeld(new SequentialCommandGroup(
-      new ExtendRetractIntake(intake),
-      new WaitCommand(3),
-      new IntakeRun(intake)));
+        new ExtendRetractIntake(intake),
+        new WaitCommand(3),
+        new IntakeRun(intake)));
   }
 
-  public Command getAutonomousCommand() 
-  {
+  public Command getAutonomousCommand() {
     return m_auto;
   }
 }
