@@ -53,6 +53,8 @@ public class RobotContainer
 
   public JoystickButton shooterButton; //Button for the shooter
   public Joystick joystickShooter; //Controller 1
+
+  public JoystickButton limelightTrackingButton; // Button to activate limelight thingy
   public Joystick joystickDrive; // Controller 0
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -60,7 +62,7 @@ public class RobotContainer
   {
     //Assign values for the motors, and for the joysticks. Do not do button bindings, this is below. 
     joystickShooter = new Joystick(Constants.kJoystickShooterChannel); //Sets shooter joystick to port 1
-    joystickDrive = new Joystick(Constants.kJoystickDriveChannel) // sets drive joystick to port 0
+    joystickDrive = new Joystick(Constants.kJoystickDriveChannel); // sets drive joystick to port 0
  //Shooter Relevant---
     shooterMotor = new CANSparkMax(Constants.kShooterChannel, MotorType.kBrushless); 
     shooterMotor.setInverted(true);
@@ -82,6 +84,9 @@ public class RobotContainer
       new ShooterRun(shooter),
       new ReleaseGate(shooter))); //References the command and inside the needed subsytem
     
+
+      //Limelight Button Configured and Command Assigned to Button
+      limelightTrackingButton = new JoystickButton(joystickDrive, Constants.kJoystickDriveButtonNumber);
 
   }
   public class Robot extends TimedRobot {
@@ -154,9 +159,9 @@ public class RobotContainer
   
           Update_Limelight_Tracking();
   
-          double steer = Joystick.// getX(Hand.kRight);
-          double drive = Joystick.// getY(//Hand.kLeft);
-          boolean auto = JoystickButton.// getAButton();
+          double steer = Constants.kRearLeftChannel; 
+          double drive = Constants.kRearRightChannel;
+          boolean auto = JoystickButton.
   
           steer *= 0.70;
           drive *= 0.70;
