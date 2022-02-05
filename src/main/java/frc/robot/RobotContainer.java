@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Autonomous;
-
+import frc.robot.commands.DriveJoystick;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import com.revrobotics.CANSparkMax;
@@ -57,7 +57,7 @@ public class RobotContainer
   
   public static Intake intake;
   public static Shooter shooter; //Creates the subsytem  for shooter
-  public static Drive drive;
+  public static Drive m_drive;
   public static Autonomous m_auto; 
 
   public JoystickButton shooterButton; //Button for the shooter
@@ -79,7 +79,7 @@ public class RobotContainer
     frontRight.setInverted(true);
     rearRight = new VictorSP(Constants.kRearRightChannel);
     rearRight.setInverted(true);
-    drive = new Drive();
+    m_drive = new Drive(joystickDriver);
 
     //Shooter Relevant---
     shooterMotor = new CANSparkMax(Constants.kShooterChannel, MotorType.kBrushless); 
@@ -94,11 +94,13 @@ public class RobotContainer
     
     SmartDashboard.putData("Shooter Run", new ShooterRun(shooter)); //Puts data on Shuffleboard to use the command. Displays
     SmartDashboard.putData("Release Gate", new ReleaseGate(shooter)); //on the screen and can be run by pushing the square. Pretty neat
-    SmartDashboard.putData("Autonomous", new Autonomous(drive));
+    SmartDashboard.putData("Autonomous", new Autonomous(m_drive));
     SmartDashboard.putData("Intake Run", new IntakeRun(intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(intake));
 
     configureButtonBindings();
+
+    m_drive.setDefaultCommand(new DriveJoystick( m_drive ) );
   }
 
   private void configureButtonBindings() 
