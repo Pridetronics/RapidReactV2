@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-// import frc.robot.Constants;
+//import frc.robot.Constants;
 // import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -73,28 +73,28 @@ public class RobotContainer {
   public RobotContainer() {
     // Assign values for the motors, and for the joysticks. Do not do button
     // bindings, this is below.
-    joystickDriver = new Joystick(Constants.kJoystickDriverChannel);
-    joystickShooter = new Joystick(Constants.kJoystickShooterChannel); // Sets shooter joystick to port 1
+    joystickDriver = new Joystick(Constants.kJoystickDriverID);
+    joystickShooter = new Joystick(Constants.kJoystickShooterID); // Sets shooter joystick to port 1
 
     // Drive Relevant---
-    frontLeft = new CANSparkMax(Constants.kFrontLeftChannel, MotorType.kBrushless);
-    rearLeft = new CANSparkMax(Constants.kRearLeftChannel, MotorType.kBrushless);
-    frontRight = new CANSparkMax(Constants.kFrontRightChannel, MotorType.kBrushless);
+    frontLeft = new CANSparkMax(Constants.kFrontLeftID, MotorType.kBrushless);
+    rearLeft = new CANSparkMax(Constants.kRearLeftID, MotorType.kBrushless);
+    frontRight = new CANSparkMax(Constants.kFrontRightID, MotorType.kBrushless);
     frontRight.setInverted(true);
-    rearRight = new CANSparkMax(Constants.kRearRightChannel, MotorType.kBrushless);
+    rearRight = new CANSparkMax(Constants.kRearRightID, MotorType.kBrushless);
     rearRight.setInverted(true);
     m_drive = new Drive(joystickDriver);
 
     // Shooter Relevant---
-    shooterMotor = new CANSparkMax(Constants.kShooterChannel, MotorType.kBrushless);
+    shooterMotor = new CANSparkMax(Constants.kShooterID, MotorType.kBrushless);
     shooterMotor.setInverted(true);
     shooter = new Shooter(); // Defines the subsystem
-    shooterBallRelease = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kShooterGateForwardChannel,
-        Constants.kShooterGateReleaseChannel);
+    shooterBallRelease = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kShooterGateForwardID,
+        Constants.kShooterGateReleaseID);
 
     intakeCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
     intakePiston = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0);
-    intakeMotor = new VictorSP(Constants.kIntakeChannel);
+    intakeMotor = new VictorSP(Constants.kIntakeID);
     intake = new Intake();
 
     SmartDashboard.putData("Shooter Run", new ShooterRun(shooter)); // Puts data on Shuffleboard to use the command.
@@ -119,7 +119,7 @@ public class RobotContainer {
         new ShooterRun(shooter))); // References the command and inside the needed subsytem
 
     intakeButton = new JoystickButton(joystickShooter, Constants.intakeButtonNumber);
-    intakeButton.whileHeld(new SequentialCommandGroup(
+    intakeButton.whileHeld(new ParallelCommandGroup(
         new ExtendRetractIntake(intake),
         new WaitCommand(3),
         new IntakeRun(intake)));

@@ -30,7 +30,7 @@ public class DriveJoystick extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double yValue = m_joystickDriver.getY();
+        double yValue = m_joystickDriver.getY(); //Gets values of the joysticks to use with drive
         double xValue = m_joystickDriver.getX();
         double zValue = m_joystickDriver.getZ();
         m_drive.cartesianDrive(yValue, xValue, zValue);
