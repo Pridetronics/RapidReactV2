@@ -161,7 +161,7 @@ public class RobotContainer
   
           double steer = Constants.kRearLeftChannel; 
           double drive = Constants.kRearRightChannel;
-          boolean auto = 
+          boolean auto = JoystickButton.
 
 
           steer *= 0.70;
@@ -230,10 +230,32 @@ public class RobotContainer
           m_LimelightDriveCommand = drive_cmd;
 
     }
+
+
+    public class limelightTracking {
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+NetworkTableEntry tx = table.getEntry("tx");
+NetworkTableEntry ty = table.getEntry("ty");
+NetworkTableEntry ta = table.getEntry("ta");
+
+//read values periodically
+double x = tx.getDouble(0.0);
+double y = ty.getDouble(0.0);
+double area = ta.getDouble(0.0);
+
+//post to smart dashboard periodically
+SmartDashboard.putNumber("LimelightX". x);
+SmartDashboard.putNumber("LimelightY". y);
+SmartDashboard.putNumber("LimelightArea". area);
+    }
+
   }
   public Command getAutonomousCommand() 
   {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }
-}
+
+  
+  }
+
