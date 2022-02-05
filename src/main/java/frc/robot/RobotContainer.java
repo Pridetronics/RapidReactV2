@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.DriveJoystick;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
