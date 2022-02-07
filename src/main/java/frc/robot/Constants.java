@@ -16,8 +16,7 @@ package frc.robot;
  * wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants // Note for self: Define integers here. Button numbers and the addresses of the
-                             // motors.
+public final class Constants // Note for self: Define integers here. Button numbers and the addresses of the motors.
 {
     public static final int kJoystickDriverID = 0; // For Joystick 0
     public static final int kJoystickShooterID = 1; // For Joystick 1
@@ -33,5 +32,8 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final int kRearRightID = 3;
 
     public static final int kIntakeID = 1;
+
+    public static final double kWheelDiameter = 6;
+    public static final double kEncoderPositionConversionFactor = kWheelDiameter * Math.PI;
 
 }
