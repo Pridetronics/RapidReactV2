@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
@@ -39,7 +38,7 @@ public class Drive extends SubsystemBase {
 
     mecanumDrive = new MecanumDrive(m_frontLeftMotor, m_rearLeftMotor,
         m_frontRightMotor, m_rearRightMotor);
-    mecanumDrive.setSafetyEnabled(true);
+    mecanumDrive.setSafetyEnabled(true); // Safety settings-- Boring
     mecanumDrive.setExpiration(0.1);
     mecanumDrive.setMaxOutput(1.0);
 
