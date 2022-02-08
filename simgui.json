@@ -6,7 +6,22 @@
           "open": true
         }
       },
+      "SPARK MAX [0]": {
+        "header": {
+          "open": true
+        }
+      },
       "SPARK MAX [1]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [3]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [4]": {
         "header": {
           "open": true
         }
@@ -23,6 +38,7 @@
       "/LiveWindow/Shooter": "Subsystem",
       "/LiveWindow/Ungrouped/MecanumDrive[1]": "MecanumDrive",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/VictorSP[1]": "Motor Controller",
       "/SmartDashboard/Autonomous": "Command",
       "/SmartDashboard/Extend/Retract Intake": "Command",
       "/SmartDashboard/Intake Run": "Command",
@@ -32,12 +48,21 @@
   },
   "NetworkTables": {
     "LiveWindow": {
+      ".status": {
+        "open": true
+      },
+      "Drive": {
+        "open": true
+      },
       "Intake": {
         "open": true
       },
       "open": true
     },
     "SmartDashboard": {
+      "Intake Run": {
+        "open": true
+      },
       "open": true
     }
   }

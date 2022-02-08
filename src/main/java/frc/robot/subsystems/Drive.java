@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 
 public class Drive extends SubsystemBase {
 
@@ -28,6 +29,13 @@ public class Drive extends SubsystemBase {
   private RelativeEncoder m_rearLeftEncoder;
   private RelativeEncoder m_rearRightEncoder;
 
+  private SparkMaxPIDController frontLeftPID;
+  private SparkMaxPIDController frontRightPID;
+  private SparkMaxPIDController rearLeftPID;
+  private SparkMaxPIDController rearRightPID;
+  private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
+  private double rotations = 6;
+
   private MecanumDrive mecanumDrive;
 
   public Joystick m_joystickDriver;
@@ -37,19 +45,23 @@ public class Drive extends SubsystemBase {
 
     m_frontLeftMotor = RobotContainer.frontLeft;
     m_frontLeftMotor.setInverted(false);
-    m_frontLeftEncoder = m_frontLeftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, m_frontLeftEncoder.getCountsPerRevolution());
+    m_frontLeftEncoder = m_frontLeftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    frontLeftPID = m_frontLeftMotor.getPIDController();
 
     m_frontRightMotor = RobotContainer.frontRight;
     m_frontRightMotor.setInverted(false);
-    m_frontRightEncoder = m_frontRightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, m_frontRightEncoder.getCountsPerRevolution());
+    m_frontRightEncoder = m_frontRightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    frontRightPID = m_frontRightMotor.getPIDController();
 
     m_rearLeftMotor = RobotContainer.rearLeft;
     m_rearLeftMotor.setInverted(false);
-    m_rearLeftEncoder = m_rearLeftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, m_rearLeftEncoder.getCountsPerRevolution());
+    m_rearLeftEncoder = m_rearLeftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    rearLeftPID = m_rearLeftMotor.getPIDController();
 
     m_rearRightMotor = RobotContainer.rearRight;
     m_rearRightMotor.setInverted(false);
-    m_rearRightEncoder = m_rearRightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, m_rearRightEncoder.getCountsPerRevolution());
+    m_rearRightEncoder = m_rearRightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    rearRightPID = m_rearRightMotor.getPIDController();
 
     m_frontLeftEncoder.setPositionConversionFactor(Constants.kEncoderPositionConversionFactor);
     m_frontRightEncoder.setPositionConversionFactor(Constants.kEncoderPositionConversionFactor);
@@ -62,12 +74,48 @@ public class Drive extends SubsystemBase {
     mecanumDrive.setExpiration(0.1);
     mecanumDrive.setMaxOutput(1.0);
 
+    kP = 0.1; //Defines values for the PID Controllers
+    kI = 1e-4;
+    kD = 1; 
+    kIz = 0; 
+    kFF = 0; 
+    kMaxOutput = 1; 
+    kMinOutput = -1;
+
+    frontLeftPID.setP(kP); //Assigns values for each PID Controller
+    frontLeftPID.setI(kI);
+    frontLeftPID.setD(kD);
+    frontLeftPID.setIZone(kIz);
+    frontLeftPID.setFF(kFF);
+    frontLeftPID.setOutputRange(kMinOutput, kMaxOutput);
+
+    frontRightPID.setP(kP);
+    frontRightPID.setI(kI);
+    frontRightPID.setD(kD);
+    frontRightPID.setIZone(kIz);
+    frontRightPID.setFF(kFF);
+    frontRightPID.setOutputRange(kMinOutput, kMaxOutput);
+
+    rearLeftPID.setP(kP);
+    rearLeftPID.setI(kI);
+    rearLeftPID.setD(kD);
+    rearLeftPID.setIZone(kIz);
+    rearLeftPID.setFF(kFF);
+    rearLeftPID.setOutputRange(kMinOutput, kMaxOutput);
+
+    rearRightPID.setP(kP);
+    rearRightPID.setI(kI);
+    rearRightPID.setD(kD);
+    rearRightPID.setIZone(kIz);
+    rearRightPID.setFF(kFF);
+    rearRightPID.setOutputRange(kMinOutput, kMaxOutput);
+
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Front Left Encoder", m_frontLeftEncoder.getPosition());
+    SmartDashboard.putNumber("Front Left Encoder", m_frontLeftEncoder.getPosition()); 
     SmartDashboard.putNumber("Front Right Encoder", m_frontRightEncoder.getPosition());
     SmartDashboard.putNumber("Rear Left Encoder", m_rearLeftEncoder.getPosition());
     SmartDashboard.putNumber("Rear Right Encoder", m_rearRightEncoder.getPosition());
@@ -90,10 +138,10 @@ public class Drive extends SubsystemBase {
   }
 
   public void autoDriveBack() {
-    m_frontLeftMotor.set(-0.5);
-    m_rearLeftMotor.set(-0.5);
-    m_frontRightMotor.set(-0.5);
-    m_rearRightMotor.set(-0.5);
+    frontLeftPID.setReference(rotations, CANSparkMax.ControlType.kPosition); 
+    frontRightPID.setReference(rotations, CANSparkMax.ControlType.kPosition);
+    rearLeftPID.setReference(rotations, CANSparkMax.ControlType.kPosition);
+    rearRightPID.setReference(rotations, CANSparkMax.ControlType.kPosition);
   }
 
   public void driveStop() {

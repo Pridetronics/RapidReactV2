@@ -97,9 +97,7 @@ public class RobotContainer {
     intake = new Intake();
 
     SmartDashboard.putData("Shooter Run", new ShooterRun(shooter)); // Puts data on Shuffleboard to use the command.
-                                                                    // Displays
-    SmartDashboard.putData("Release Gate", new ReleaseGate(shooter)); // on the screen and can be run by pushing the
-                                                                      // square. Pretty neat
+    SmartDashboard.putData("Release Gate", new ReleaseGate(shooter)); // Displays on the screen and can be run by pushing the square. Pretty neat
     SmartDashboard.putData("Autonomous", new Autonomous(m_drive));
     SmartDashboard.putData("Intake Run", new IntakeRun(intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(intake));
@@ -112,8 +110,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Shooter Button Configured and Command Assigned to Button
     shooterButton = new JoystickButton(joystickShooter, Constants.shooterButtonNumber);
-    shooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate
-                                                      // commands
+    shooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate commands
         new ReleaseGate(shooter),
         new ShooterRun(shooter))); // References the command and inside the needed subsytem
 
