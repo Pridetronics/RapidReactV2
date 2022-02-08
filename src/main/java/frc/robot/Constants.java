@@ -33,7 +33,7 @@ public final class Constants // Note for self: Define integers here. Button numb
 
     public static final int kIntakeID = 1;
 
-    public static final double kWheelDiameter = 6;
-    public static final double kEncoderPositionConversionFactor = kWheelDiameter * Math.PI;
+    // public static final double kWheelDiameter = 6;
+    // public static final double kEncoderPositionConversionFactor = kWheelDiameter * Math.PI;
 
 }

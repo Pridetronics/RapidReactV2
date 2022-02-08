@@ -60,6 +60,9 @@
       "open": true
     },
     "SmartDashboard": {
+      "Autonomous": {
+        "open": true
+      },
       "Intake Run": {
         "open": true
       },
