@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.ExampleCommand;
@@ -43,6 +45,7 @@ import frc.robot.subsystems.Intake;
 public class RobotContainer 
 {
   // The robot's subsystems and commands are defined here... Examples below
+  private final Subsystem watch = new Camera();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
