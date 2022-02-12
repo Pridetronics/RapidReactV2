@@ -6,9 +6,10 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
-
+import edu.wpi.first.wpilibj.smartdashboard.*;
 import com.revrobotics.CANSparkMax;
-
+import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
@@ -20,7 +21,8 @@ public class Drive extends SubsystemBase {
   private CANSparkMax m_frontRightMotor;
   private CANSparkMax m_rearRightMotor;
   private MecanumDrive m_robotDrive;
-
+  public static RelativeEncoder m_FrontLeftEncoder; 
+  public  static RelativeEncoder m_FrontRightEncoder;
   public Drive() {
     m_frontLeftMotor = RobotContainer.frontLeft;
     m_rearLeftMotor = RobotContainer.rearLeft;
@@ -29,12 +31,30 @@ public class Drive extends SubsystemBase {
 
     m_robotDrive = new MecanumDrive(m_frontLeftMotor, m_rearLeftMotor, m_frontRightMotor, m_rearRightMotor);
   }
+  public void stop() {
+    m_frontLeftMotor.set(0);
+    m_frontRightMotor.set(0);
+  }
+  public void zeroEncoders() {
+    m_FrontLeftEncoder.setPosition(0);
+    m_FrontRightEncoder.setPosition(0);
 
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Right Encoder", m_FrontRightEncoder.getPosition());
+    SmartDashboard.putNumber("Left Encoder", m_FrontLeftEncoder.getPosition());
+    SmartDashboard.putNumber("Average Encoder", getAverageEncoderDistance());
+    SmartDashboard.putNumber("ticks per rev", m_FrontLeftEncoder.getCountsPerRevolution());
+    m_FrontLeftEncoder.getPosition();
+    m_FrontRightEncoder.getPosition();
+    m_FrontLeftEncoder.getCountsPerRevolution();  
+ 
   }
-
+  public double getAverageEncoderDistance() {
+    return (m_FrontLeftEncoder.getPosition() + m_FrontRightEncoder.getPosition()) / 2;
+  }
   public void autoDriveBack(){
     m_frontLeftMotor.set(-0.5);
     m_rearLeftMotor.set(-0.5);
