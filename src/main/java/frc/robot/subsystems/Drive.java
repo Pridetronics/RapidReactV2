@@ -6,15 +6,19 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
+
+import com.revrobotics.CANSparkMax;
+
+import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 
 public class Drive extends SubsystemBase {
-  private VictorSP m_frontLeftMotor;
-  private VictorSP m_rearLeftMotor;
-  private VictorSP m_frontRightMotor;
-  private VictorSP m_rearRightMotor;
+  private CANSparkMax m_frontLeftMotor;
+  private CANSparkMax m_rearLeftMotor;
+  private CANSparkMax m_frontRightMotor;
+  private CANSparkMax m_rearRightMotor;
   private MecanumDrive m_robotDrive;
 
   public Drive() {

@@ -46,13 +46,13 @@ public class RobotContainer
 {
   // The robot's subsystems and commands are defined here... Examples below
   private final Subsystem watch = new Camera();
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final Subsystem driver = new Drive();
+  private final Command m_autoCommand = new Autonomous(drive);
 
-  public static VictorSP frontLeft;
-  public static VictorSP rearLeft;
-  public static VictorSP frontRight;
-  public static VictorSP rearRight;
+  public static  CANSparkMax  frontLeft;
+  public static CANSparkMax rearLeft;
+  public static CANSparkMax frontRight;
+  public static CANSparkMax rearRight;
 
   public static CANSparkMax shooterMotor; //Creates Motor for the shooter
   public static DoubleSolenoid shooterBallRelease; //Creates Double Solenoid for the shooter (relates to pistons)
@@ -78,11 +78,11 @@ public class RobotContainer
     joystickShooter = new Joystick(Constants.kJoystickShooterChannel); //Sets shooter joystick to port 1
 
     //Drive Relevant---
-    frontLeft = new VictorSP(Constants.kFrontLeftChannel);
-    rearLeft = new VictorSP(Constants.kRearLeftChannel);
-    frontRight = new VictorSP(Constants.kFrontRightChannel);
+    frontLeft = new CANSparkMax(Constants.kFrontLeftChannel,MotorType.kBrushed);
+    rearLeft = new CANSparkMax(Constants.kRearLeftChannel,MotorType.kBrushed);
+    frontRight = new CANSparkMax(Constants.kFrontRightChannel,MotorType.kBrushed);
     frontRight.setInverted(true);
-    rearRight = new VictorSP(Constants.kRearRightChannel);
+    rearRight = new CANSparkMax(Constants.kRearRightChannel,MotorType.kBrushed);
     rearRight.setInverted(true);
     drive = new Drive();
 

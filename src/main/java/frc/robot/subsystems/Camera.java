@@ -13,8 +13,10 @@ public class Camera extends SubsystemBase {
   public UsbCamera cam_0;
 public CameraServer server1;
   boolean camera = true;
+  CameraServer cameraServer;
 
   public Camera() {
+   
     CameraServer.startAutomaticCapture();
 
 

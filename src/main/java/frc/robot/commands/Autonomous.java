@@ -29,7 +29,15 @@ public class Autonomous extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drive.driveStop();
+    long beginning = System.currentTimeMillis();
+    long end = beginning + 5*1000;
+    while (end > System.currentTimeMillis()){
+      m_drive.autoDriveBack();
+    }
+  if(end == System.currentTimeMillis()){
+  this.cancel();
+  
+  }
   }
 
   // Returns true when the command should end.
