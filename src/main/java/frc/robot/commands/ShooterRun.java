@@ -31,6 +31,7 @@ public class ShooterRun extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_shooter.ShooterStop();
+    m_shooter.RetractGate();
   }
 
   // Returns true when the command should end.

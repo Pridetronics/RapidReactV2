@@ -4,16 +4,22 @@
 
 package frc.robot.commands;
 
+import com.revrobotics.RelativeEncoder;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
+import frc.robot.RobotContainer;
 
 public class ReleaseGate extends CommandBase {
 
   private Shooter m_shooter;
+  private RelativeEncoder m_shooterEncoder;
 
   public ReleaseGate(Shooter shooter) {
     m_shooter = new Shooter();
     addRequirements(m_shooter);
+    m_shooterEncoder = RobotContainer.shooterEncoder;
   }
 
   // Called when the command is initially scheduled.
@@ -24,18 +30,17 @@ public class ReleaseGate extends CommandBase {
   @Override
   public void execute() 
   {
-    m_shooter.ReleaseGate();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.RetractGate();
+    m_shooter.ReleaseGate();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (m_shooterEncoder.getVelocity() >= Constants.shooterSpeed);
   }
 }
