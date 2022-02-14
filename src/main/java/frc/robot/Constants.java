@@ -30,7 +30,7 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final int kRearRightID = 3;
 
     public static final int kShooterID = 1; // For the Shooter Motor
-    public static final int shooterSpeed = 3300;
+    public static final int shooterDefaultSpeed = 3000;
     public static final double SHOOTER_kP = 0.0002;
     // public static final double SHOOTER_kI = 0.000001;
     // public static final double SHOOTER_kD = 0.0004;
@@ -52,8 +52,5 @@ public final class Constants // Note for self: Define integers here. Button numb
 
     public static final int kIntakeID = 1;
     //Create constants for intake pistons later
-
-    // public static final double kWheelDiameter = 6;
-    // public static final double kEncoderPositionConversionFactor = kWheelDiameter * Math.PI;
 
 }

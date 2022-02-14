@@ -16,7 +16,7 @@ import frc.robot.commands.ReleaseGate;
 import frc.robot.commands.ShooterRun;
 import frc.robot.commands.ExtendRetractIntake;
 import frc.robot.commands.IntakeRun;
-
+import frc.robot.commands.LimelightDistanceFinder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
@@ -86,29 +86,29 @@ public class RobotContainer {
     joystickDriver = new Joystick(Constants.kJoystickDriverID);
     joystickShooter = new Joystick(Constants.kJoystickShooterID); // Sets shooter joystick to port 1
 
-    //DISTANCE CODE-- TESTING ONLY DO NOT PUT THIS IN PRODUCTION
-    NetworkTableInstance inst = NetworkTableInstance.getDefault(); //get a reference to the subtable called "datatable"
-    NetworkTable table = inst.getTable("limelight");
-    inst.startClientTeam(3853); // Make sure you set this to your team number
-    inst.startDSClient(); // recommended if running on DS computer; this gets the robot IP from the DS
-    NetworkTableEntry yEntry = table.getEntry("ty");
-    NetworkTableEntry xEntry = table.getEntry("tx");
-    NetworkTableEntry aEntry = table.getEntry("ta");
-    NetworkTableEntry vEntry = table.getEntry("tv");
+    // //DISTANCE CODE-- TESTING ONLY DO NOT PUT THIS IN PRODUCTION
+    // NetworkTableInstance inst = NetworkTableInstance.getDefault(); //get a reference to the subtable called "datatable"
+    // NetworkTable table = inst.getTable("limelight");
+    // inst.startClientTeam(3853); // Make sure you set this to your team number
+    // inst.startDSClient(); // recommended if running on DS computer; this gets the robot IP from the DS
+    // NetworkTableEntry yEntry = table.getEntry("ty");
+    // NetworkTableEntry xEntry = table.getEntry("tx");
+    // NetworkTableEntry aEntry = table.getEntry("ta");
+    // NetworkTableEntry vEntry = table.getEntry("tv");
 
-    double ty = yEntry.getDouble(0.0); // Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees)
-    double ta = aEntry.getDouble(0.0); // Target Area (0% of image to 100% of image)
-    double tx = xEntry.getDouble(0.0); 
-    double tv = vEntry.getDouble(0.0); // Whether the limelight has any valid targets (0 or 1)
+    // ty = yEntry.getDouble(0.0); // Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees)
+    // double ta = aEntry.getDouble(0.0); // Target Area (0% of image to 100% of image)
+    // double tx = xEntry.getDouble(0.0); 
+    // double tv = vEntry.getDouble(0.0); // Whether the limelight has any valid targets (0 or 1)
 
-    SmartDashboard.putNumber("Limelight Area", ta);
-    SmartDashboard.putNumber("Limelight X", tx);
-    SmartDashboard.putNumber("Limelight Y", ty);
-    SmartDashboard.putNumber("Limelight V", tv);
-    atotal = 30 + ty;
-    //distance = (104-15.3)/Math.tan(atotal); (official values, I'm gonna add testing values)
-    distance = (30-14)/Math.tan(0 + ty);
-    SmartDashboard.putNumber("Distance", distance);
+    // SmartDashboard.putNumber("Limelight Area", ta);
+    // SmartDashboard.putNumber("Limelight X", tx);
+    // SmartDashboard.putNumber("Limelight Y", ty);
+    // SmartDashboard.putNumber("Limelight V", tv);
+    // atotal = 30 + ty;
+    // //distance = (104-15.3)/Math.tan(atotal); (official values, I'm gonna add testing values)
+    // distance = (30-14)/Math.tan(0 + ty);
+    // SmartDashboard.putNumber("Distance", distance);
 
     // Drive Relevant---
     frontLeft = new CANSparkMax(Constants.kFrontLeftID, MotorType.kBrushless);
@@ -142,6 +142,7 @@ public class RobotContainer {
     SmartDashboard.putData("Autonomous", new Autonomous(m_drive));
     SmartDashboard.putData("Intake Run", new IntakeRun(m_intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(m_intake));
+    SmartDashboard.putData("Find Distance", new LimelightDistanceFinder(m_shooter));
     SmartDashboard.putNumber("RPM", shooterEncoder.getVelocity());
 
 

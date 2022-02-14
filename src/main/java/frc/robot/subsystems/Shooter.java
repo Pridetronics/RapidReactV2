@@ -22,8 +22,13 @@ public class Shooter extends SubsystemBase {
   //Motor and solenoid are created privately for use in this class
   private SparkMaxPIDController m_shooterPID;
   private DoubleSolenoid m_shooterBallRelease;
+  private double aTotal;
+  private double hTotal;
+  private double aTan;
+  private double initialDistance;
   private double distance;
-  private double atotal;
+  private double distanceInFeet;
+  private double roundedDistance;
   private double ty;
 
   public Shooter() {
@@ -44,7 +49,7 @@ public class Shooter extends SubsystemBase {
     NetworkTableEntry aEntry = table.getEntry("ta");
     NetworkTableEntry vEntry = table.getEntry("tv");
 
-    double ty = yEntry.getDouble(0.0); // Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees)
+    ty = yEntry.getDouble(0.0); // Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees)
     double ta = aEntry.getDouble(0.0); // Target Area (0% of image to 100% of image)
     double tx = xEntry.getDouble(0.0); 
     double tv = vEntry.getDouble(0.0); // Whether the limelight has any valid targets (0 or 1)
@@ -56,7 +61,42 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   public void ShooterRun(){ //Function created to run the motor-- referenced later in ShooterRun.java
-    m_shooterPID.setReference(Constants.shooterSpeed, ControlType.kVelocity);
+    if (roundedDistance == 17)
+    {
+      m_shooterPID.setReference(Constants.shooterRPM17, ControlType.kVelocity);
+    }
+    else if (roundedDistance == 16)
+    {
+      m_shooterPID.setReference(Constants.shooterRPM16, ControlType.kVelocity);
+    }
+    else if (roundedDistance == 15)
+    {
+      m_shooterPID.setReference(Constants.shooterRPM15, ControlType.kVelocity);
+    }
+    else if (roundedDistance == 14)
+    {
+      m_shooterPID.setReference(Constants.shooterRPM14, ControlType.kVelocity);
+    }
+    else if (roundedDistance == 13)
+    {
+      m_shooterPID.setReference(Constants.shooterRPM13, ControlType.kVelocity);
+    }
+    else if (roundedDistance == 12)
+    {
+      m_shooterPID.setReference(Constants.shooterRPM12, ControlType.kVelocity);
+    }
+    else if (roundedDistance == 11)
+    {
+      m_shooterPID.setReference(Constants.shooterRPM11, ControlType.kVelocity);
+    }
+    else if (roundedDistance == 10)
+    {
+      m_shooterPID.setReference(Constants.shooterRPM10, ControlType.kVelocity);
+    }
+    else 
+    {
+      m_shooterPID.setReference(Constants.shooterDefaultSpeed, ControlType.kVelocity); 
+    }
   }
   public void ShooterStop(){
    m_shooterPID.setReference(0.0, ControlType.kVelocity);
@@ -69,9 +109,18 @@ public class Shooter extends SubsystemBase {
     m_shooterBallRelease.set(DoubleSolenoid.Value.kReverse);
   }
   public void findDistance(){
-    atotal = 30 + ty;
-    //distance = (104-15.3)/Math.tan(atotal); (official values, I'm gonna add testing values)
-    distance = (30-14)/Math.tan(0 + ty);
-    SmartDashboard.putNumber("Distance", distance);
+    hTotal = 30.5 - 14; //Measures in meters. Change these to the official values later
+    aTotal = 3.78 + ty; //MEASURES IN RADIANS NOT DEGREES. DO NOT MAKE THE SAME MISTAKES
+    aTan = Math.tan(aTotal);
+
+    initialDistance = hTotal/aTan; //Outputs in meters/radian
+    distance = - initialDistance * 13.6; //Converts distance into inches. 
+    distanceInFeet = distance/12;
+    roundedDistance = Math.round(distanceInFeet);
+    
+    SmartDashboard.putNumber("Initial Distance", initialDistance);
+    SmartDashboard.putNumber("Distance in Inches", distance);
+    SmartDashboard.putNumber("Distance in Feet", distanceInFeet);
+    SmartDashboard.putNumber("Rounded Distance", roundedDistance);
   }
 }

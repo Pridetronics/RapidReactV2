@@ -7,32 +7,27 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
-public class ShooterRun extends CommandBase {
-
+public class LimelightDistanceFinder extends CommandBase {
   private Shooter m_shooter;
-
-  public ShooterRun(Shooter Shooter) {
-    m_shooter = Shooter;
+  public LimelightDistanceFinder(Shooter shooter) {
+    m_shooter = shooter;
 
     addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     m_shooter.findDistance();
-    m_shooter.ShooterRun();
   }
 
+  // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_shooter.ShooterStop();
-    m_shooter.RetractGate();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
