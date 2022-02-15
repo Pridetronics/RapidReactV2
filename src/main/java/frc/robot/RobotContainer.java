@@ -14,6 +14,7 @@ import frc.robot.commands.Autonomous;
 import frc.robot.commands.DriveJoystick;
 import frc.robot.commands.ReleaseGate;
 import frc.robot.commands.ShooterRun;
+import frc.robot.commands.VisionMode;
 import frc.robot.commands.ExtendRetractIntake;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.LimelightDistanceFinder;
@@ -28,9 +29,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
 
 import frc.robot.subsystems.Drive;
@@ -70,12 +68,9 @@ public class RobotContainer {
 
   public JoystickButton shooterButton; // Button for the shooter
   public JoystickButton intakeButton;
+  public JoystickButton visionModeButton;
   public Joystick joystickDriver; // Controller 0
   public Joystick joystickShooter; // Controller 1
-
-  private double distance;
-  private double atotal;
-  private double ty;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -85,30 +80,6 @@ public class RobotContainer {
     // bindings, this is below.
     joystickDriver = new Joystick(Constants.kJoystickDriverID);
     joystickShooter = new Joystick(Constants.kJoystickShooterID); // Sets shooter joystick to port 1
-
-    // //DISTANCE CODE-- TESTING ONLY DO NOT PUT THIS IN PRODUCTION
-    // NetworkTableInstance inst = NetworkTableInstance.getDefault(); //get a reference to the subtable called "datatable"
-    // NetworkTable table = inst.getTable("limelight");
-    // inst.startClientTeam(3853); // Make sure you set this to your team number
-    // inst.startDSClient(); // recommended if running on DS computer; this gets the robot IP from the DS
-    // NetworkTableEntry yEntry = table.getEntry("ty");
-    // NetworkTableEntry xEntry = table.getEntry("tx");
-    // NetworkTableEntry aEntry = table.getEntry("ta");
-    // NetworkTableEntry vEntry = table.getEntry("tv");
-
-    // ty = yEntry.getDouble(0.0); // Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees)
-    // double ta = aEntry.getDouble(0.0); // Target Area (0% of image to 100% of image)
-    // double tx = xEntry.getDouble(0.0); 
-    // double tv = vEntry.getDouble(0.0); // Whether the limelight has any valid targets (0 or 1)
-
-    // SmartDashboard.putNumber("Limelight Area", ta);
-    // SmartDashboard.putNumber("Limelight X", tx);
-    // SmartDashboard.putNumber("Limelight Y", ty);
-    // SmartDashboard.putNumber("Limelight V", tv);
-    // atotal = 30 + ty;
-    // //distance = (104-15.3)/Math.tan(atotal); (official values, I'm gonna add testing values)
-    // distance = (30-14)/Math.tan(0 + ty);
-    // SmartDashboard.putNumber("Distance", distance);
 
     // Drive Relevant---
     frontLeft = new CANSparkMax(Constants.kFrontLeftID, MotorType.kBrushless);
@@ -137,12 +108,14 @@ public class RobotContainer {
     intakeMotor = new VictorSP(Constants.kIntakeID);
     m_intake = new Intake();
 
+    //Test Commands--Comment these out in competition time to avoid this cluttering Shuffleboard. 
     SmartDashboard.putData("Shooter Run", new ShooterRun(m_shooter)); // Puts data on Shuffleboard to use the command.
     SmartDashboard.putData("Release Gate", new ReleaseGate(m_shooter)); // Displays on the screen and can be run by pushing the square. Pretty neat
     SmartDashboard.putData("Autonomous", new Autonomous(m_drive));
     SmartDashboard.putData("Intake Run", new IntakeRun(m_intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(m_intake));
     SmartDashboard.putData("Find Distance", new LimelightDistanceFinder(m_shooter));
+    SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));
     SmartDashboard.putNumber("RPM", shooterEncoder.getVelocity());
 
 
@@ -152,6 +125,9 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
+    visionModeButton = new JoystickButton(joystickShooter, Constants.visionModeButtonNumber);
+    visionModeButton.toggleWhenPressed(new VisionMode(m_shooter));
+    
     // Shooter Button Configured and Command Assigned to Button
     shooterButton = new JoystickButton(joystickShooter, Constants.shooterButtonNumber);
     shooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate commands

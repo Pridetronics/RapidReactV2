@@ -61,6 +61,7 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   public void ShooterRun(){ //Function created to run the motor-- referenced later in ShooterRun.java
+    
     if (roundedDistance == 17)
     {
       m_shooterPID.setReference(Constants.shooterRPM17, ControlType.kVelocity);
@@ -122,5 +123,15 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Distance in Inches", distance);
     SmartDashboard.putNumber("Distance in Feet", distanceInFeet);
     SmartDashboard.putNumber("Rounded Distance", roundedDistance);
+  }
+  public void processingMode() 
+  {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0); //Sets camMode to processing
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0); //Tells LEDs to follow the pipeline settings
+  }
+  public void cameraMode()
+  {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1); //Sets camMode to camera vision  
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1); //Forces LEDs off. 
   }
 }

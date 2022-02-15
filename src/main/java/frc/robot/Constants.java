@@ -23,6 +23,7 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final int kJoystickShooterID = 1; // For Joystick 1
     public static final int shooterButtonNumber = 4; // For Shooter Button on the Gamepad
     public static final int intakeButtonNumber = 2;
+    public static final int visionModeButtonNumber = 3;
    
     public static final int kFrontLeftID = 0; // For all of the drive motors
     public static final int kRearLeftID = 2;
