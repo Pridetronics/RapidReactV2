@@ -8,12 +8,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 
 public class Intake extends SubsystemBase {
   private Compressor m_intakeCompressor;
   private Solenoid m_intakePiston;
-  private VictorSP m_intakeMotor;
+  private Talon m_intakeMotor;
 
   public Intake() {
     m_intakeCompressor = RobotContainer.intakeCompressor;

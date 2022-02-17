@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.DriveJoystick;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -55,7 +56,7 @@ public class RobotContainer {
 
   public static Compressor intakeCompressor;
   public static Solenoid intakePiston;
-  public static VictorSP intakeMotor;
+  public static Talon intakeMotor;
 
   public static Intake intake;
   public static Shooter shooter; // Creates the subsytem for shooter
@@ -73,37 +74,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Assign values for the motors, and for the joysticks. Do not do button
     // bindings, this is below.
-<<<<<<< Updated upstream
     joystickDriver = new Joystick(Constants.kJoystickDriverChannel);
     joystickShooter = new Joystick(Constants.kJoystickShooterChannel); // Sets shooter joystick to port 1
-=======
-    joystickDriver = new Joystick(Constants.kJoystickDriverID);
-    joystickShooter = new Joystick(Constants.kJoystickShooterID); // Sets shooter joystick to port 1
-
-    //DISTANCE CODE-- TESTING ONLY DO NOT PUT THIS IN PRODUCTION
-    NetworkTableInstance inst = NetworkTableInstance.getDefault(); //get a reference to the subtable called "datatable"
-    NetworkTable table = inst.getTable("limelight");
-    inst.startClientTeam(3853); // Make sure you set this to your team number
-    inst.startDSClient(); // recommended if running on DS computer; this gets the robot IP from the DS
-    NetworkTableEntry yEntry = table.getEntry("ty");
-    NetworkTableEntry xEntry = table.getEntry("tx");
-    NetworkTableEntry aEntry = table.getEntry("ta");
-    NetworkTableEntry vEntry = table.getEntry("tv");
-
-     ty = yEntry.getDouble(0.0); // Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees)
-    double ta = aEntry.getDouble(0.0); // Target Area (0% of image to 100% of image)
-    double tx = xEntry.getDouble(0.0); 
-    double tv = vEntry.getDouble(0.0); // Whether the limelight has any valid targets (0 or 1)
-
-    SmartDashboard.putNumber("Limelight Area", ta);
-    SmartDashboard.putNumber("Limelight X", tx);
-    SmartDashboard.putNumber("Limelight Y", ty);
-    SmartDashboard.putNumber("Limelight V", tv);
-    atotal = 30 + ty;
-    //distance = (104-15.3)/Math.tan(atotal); (official values, I'm gonna add testing values)
-    distance = (30-14)/Math.tan(0 + ty);
-    SmartDashboard.putNumber("Distance", distance);
->>>>>>> Stashed changes
 
     // Drive Relevant---
     frontLeft = new CANSparkMax(Constants.kFrontLeftChannel, MotorType.kBrushless);
@@ -123,7 +95,7 @@ public class RobotContainer {
 
     intakeCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
     intakePiston = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0);
-    intakeMotor = new VictorSP(Constants.kIntakeChannel);
+    intakeMotor = new Talon(Constants.kIntakeChannel);
     intake = new Intake();
 
     SmartDashboard.putData("Shooter Run", new ShooterRun(shooter)); // Puts data on Shuffleboard to use the command.
