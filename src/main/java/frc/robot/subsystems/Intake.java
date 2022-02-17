@@ -14,6 +14,7 @@ public class Intake extends SubsystemBase {
   private Compressor m_intakeCompressor;
   private Solenoid m_intakePiston;
   private VictorSP m_intakeMotor;
+
   public Intake() {
     m_intakeCompressor = RobotContainer.intakeCompressor;
     m_intakePiston = RobotContainer.intakePiston;
@@ -24,18 +25,20 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
-  public void runIntakeMotor()
-  {
+
+  public void runIntakeMotor() {
     m_intakeMotor.set(0.6);
   }
-  public void stopIntakeMotor()
-  {
+
+  public void stopIntakeMotor() {
     m_intakeMotor.set(0);
   }
-  public void extendIntake(){
+
+  public void extendIntake() {
     m_intakePiston.set(true);
   }
-  public void retractIntake(){
+
+  public void retractIntake() {
     m_intakePiston.set(false);
   }
 }
