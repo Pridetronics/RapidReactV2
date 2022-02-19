@@ -16,22 +16,27 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Climb": "Subsystem",
       "/LiveWindow/Drive": "Subsystem",
       "/LiveWindow/ExampleSubsystem": "Subsystem",
       "/LiveWindow/FlyWheel": "Subsystem",
       "/LiveWindow/Intake": "Subsystem",
       "/LiveWindow/Shooter": "Subsystem",
+      "/LiveWindow/Ungrouped/DigitalInput[0]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[1]": "Digital Input",
       "/LiveWindow/Ungrouped/MecanumDrive[1]": "MecanumDrive",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/VictorSP[6]": "Motor Controller",
       "/SmartDashboard/Autonomous": "Command",
+      "/SmartDashboard/Climb Run": "Command",
+      "/SmartDashboard/Climb's Sequence": "Command",
+      "/SmartDashboard/Extend/Retract Intake": "Command",
+      "/SmartDashboard/Intake Run": "Command",
       "/SmartDashboard/Release Gate": "Command",
       "/SmartDashboard/Shooter Run": "Command"
     }
   },
   "NetworkTables": {
-    "LiveWindow": {
-      "open": true
-    },
     "SmartDashboard": {
       "open": true
     }

@@ -16,14 +16,14 @@ import frc.robot.subsystems.Climb;
 
 public class ClimbButtonSequence extends CommandBase {
   /** Creates a new ClimbButtonSequence. */
-  Climb m_climb;
-  private static DescendPivotArms DescendPivotArms;
+  private Climb m_climb;
+  private static DescendPivotArms m_descendPivotArms;
   private int m_climbValue;
 
   
-  public ClimbButtonSequence(Climb climb) {
+  public ClimbButtonSequence(Climb Climb) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_climb = climb;
+    m_climb = Climb;
     addRequirements(m_climb);
     m_climbValue = RobotContainer.climbValue;
   }
@@ -32,20 +32,20 @@ public class ClimbButtonSequence extends CommandBase {
   @Override
   public void initialize() {}
   
-  public void sequence1(Climb climb){new SequentialCommandGroup(
-    new RaisePivotArms(climb), //Arms are fully extended until upper limit switch is hit
-    new ClimbPiston(climb)); //Pistons are extended
+  public void sequence1(){new SequentialCommandGroup(
+    new RaisePivotArms(m_climb), //Arms are fully extended until upper limit switch is hit
+    new ClimbPiston(m_climb)); //Pistons are extended
   }
 
   public void sequence2(){
-    new SequentialCommandGroup(DescendPivotArms); //Arms are fully retracted until lower limit switch is hit
+    new SequentialCommandGroup(m_descendPivotArms); //Arms are fully retracted until lower limit switch is hit
   }
 
-  public void sequence3(Climb climb){new SequentialCommandGroup(
-    new RaisePivotArmsNineInches(climb, climb), //Arms are extended 9 inches
-    new ClimbPiston(climb), //Pistons retracted
-    new RaisePivotArms23Inches(climb, climb), //Arms are extended to Y (23 inches)
-    new ClimbPiston(climb)); //Pistons extended 
+  public void sequence3(){new SequentialCommandGroup(
+    new RaisePivotArmsNineInches(m_climb), //Arms are extended 9 inches
+    new ClimbPiston(m_climb), //Pistons retracted
+    new RaisePivotArms23Inches(m_climb), //Arms are extended to Y (23 inches)
+    new ClimbPiston(m_climb)); //Pistons extended 
   }
 
     //Need to add encoders, when it is at the bottom you have to make sure the encoders is at 0.
@@ -63,7 +63,7 @@ public class ClimbButtonSequence extends CommandBase {
   public void execute() {
     if (m_climbValue == 1){
         //Runs sequence 1
-      sequence1(m_climb);
+      sequence1();
     }
 
     if (m_climbValue == 2){
@@ -73,7 +73,7 @@ public class ClimbButtonSequence extends CommandBase {
 
     if (m_climbValue == 3) {
         //Runs sequence 3
-      sequence3(m_climb);
+      sequence3();
     }
 
     if (m_climbValue == 4) {
@@ -83,7 +83,7 @@ public class ClimbButtonSequence extends CommandBase {
 
     if (m_climbValue == 5) {
       //Runs sequence 3
-      sequence3(m_climb);
+      sequence3();
     }
 
     if (m_climbValue == 6){

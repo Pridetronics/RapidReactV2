@@ -8,19 +8,20 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climb;
 
 public class RaisePivotArms23Inches extends CommandBase {
   /** Creates a new RaisePivotArmsNineInches. */
   private Climb m_climb;
-  private Climb m_climbEncoder;
+  private RelativeEncoder m_climbEncoder;
  
-  public RaisePivotArms23Inches(Climb climb, Climb m_ClimbEncoder) {
+  public RaisePivotArms23Inches(Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
     //References climb object from Climb subsystem. References encoders from climb
     m_climb = climb;
-    m_climbEncoder = m_ClimbEncoder;
-    ((RelativeEncoder) m_climbEncoder).setPositionConversionFactor(Constants.kEncoderPositionConversionFactor);
+    m_climbEncoder = RobotContainer.ClimbEncoder;
+    (m_climbEncoder).setPositionConversionFactor(Constants.kEncoderPositionConversionFactor);
 
   }
 
@@ -28,14 +29,14 @@ public class RaisePivotArms23Inches extends CommandBase {
   @Override
   public void initialize() {
     //Resets the number every time the raise pivot arm command is running
-    ((RelativeEncoder) m_climbEncoder).setPosition(0);
+    (m_climbEncoder).setPosition(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ((RelativeEncoder) m_climbEncoder).getPositionConversionFactor();
-    if (((RelativeEncoder) m_climbEncoder).getPositionConversionFactor() >= 9){
+    (m_climbEncoder).getPositionConversionFactor();
+    if ((m_climbEncoder).getPositionConversionFactor() >= 9){
       m_climb.raisePivotArms(Constants.ClimbMotorSpeed);
     }
     else{
