@@ -89,7 +89,7 @@ public class RobotContainer
   public Joystick joystickDriver; //Controller 0
   public static Joystick joystickShooter; //Controller 1
 
-  public static int climbValue = 0; //For climb's add value
+  public static int climbValue; //For climb's add value
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() 

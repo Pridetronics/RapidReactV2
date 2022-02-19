@@ -26,13 +26,13 @@ public class Climb extends SubsystemBase {
     private DigitalInput m_upperClimbLimitSwitch; //Initalizes upper limit switch
     private DigitalInput m_lowerClimbLimitSwitch; //Initalizes lower limit switch
     public RelativeEncoder m_ClimbEncoder; //Initalizes encoder
-    private int m_climbValue; //Initalizes variable x
+    private int m_climbValue = 0; //Initalizes variable x
 
     public Climb(Climb climb) {
         m_climbMotor = RobotContainer.climbMotor; //References the object from Robot Container so I don't need to recreate the motor
         m_climbPiston = RobotContainer.m_climbPiston; //References the object from Robot Container so I don't need to recreate the pistons
-        m_upperClimbLimitSwitch = RobotContainer.upperClimbLimitSwitch; // limit switch to test if Pivot Arms is extended
-        m_lowerClimbLimitSwitch = RobotContainer.lowerClimbLimitSwitch; // limit switch to test if Pivot Arms has descended
+        m_upperClimbLimitSwitch = RobotContainer.upperClimbLimitSwitch; //Limit switch to test if Pivot Arms is extended
+        m_lowerClimbLimitSwitch = RobotContainer.lowerClimbLimitSwitch; //Limit switch to test if Pivot Arms has descended
         m_ClimbEncoder = m_climbMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, Constants.kEncoderCountsPerRev);
         zeroEncoders();
         m_climbValue = RobotContainer.climbValue;
