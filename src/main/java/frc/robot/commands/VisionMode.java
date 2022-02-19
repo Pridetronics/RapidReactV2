@@ -33,6 +33,7 @@ public class VisionMode extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_shooter.processingMode();
+    m_shooter.findDistance(); //Makes sense to put this here, because if I put it in processing mode, I assume that I will be prepping to shoot
     SmartDashboard.putString("Vision Mode", "Processing");
   }
 

@@ -41,6 +41,6 @@ public class ReleaseGate extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_shooterEncoder.getVelocity() >= Constants.shooterDefaultSpeed);
+    return (m_shooterEncoder.getVelocity() >= Constants.shooterDefaultSpeed); //Checks the speed, and when it meets the requirements it will retract the gate for the shooter to run.
   }
 }

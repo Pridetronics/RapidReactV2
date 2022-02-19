@@ -39,8 +39,11 @@
       "/LiveWindow/Ungrouped/MecanumDrive[1]": "MecanumDrive",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Ungrouped/VictorSP[1]": "Motor Controller",
+      "/LiveWindow/Ungrouped/VictorSP[6]": "Motor Controller",
       "/SmartDashboard/Autonomous": "Command",
+      "/SmartDashboard/Change Vision Modes": "Command",
       "/SmartDashboard/Extend/Retract Intake": "Command",
+      "/SmartDashboard/Find Distance": "Command",
       "/SmartDashboard/Intake Run": "Command",
       "/SmartDashboard/Release Gate": "Command",
       "/SmartDashboard/Shooter Run": "Command"

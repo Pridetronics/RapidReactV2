@@ -24,13 +24,13 @@ public class ShooterRun extends CommandBase {
 
   @Override
   public void execute() {
-    m_shooter.findDistance();
-    m_shooter.ShooterRun();
+    //I moved the find distance command into vision modes, hoping to improve efficiency. 
+    m_shooter.ShooterRun(); //Looks for function within shooter.  
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_shooter.ShooterStop();
+    m_shooter.ShooterStop(); //Zeroes motors. 
     m_shooter.RetractGate();
   }
 

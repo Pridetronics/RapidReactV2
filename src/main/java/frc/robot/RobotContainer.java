@@ -47,7 +47,7 @@ import frc.robot.subsystems.Intake;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  public static CANSparkMax frontLeft;
+  public static CANSparkMax frontLeft; //Creates all four drive motors
   public static CANSparkMax rearLeft;
   public static CANSparkMax frontRight;
   public static CANSparkMax rearRight;
@@ -69,7 +69,7 @@ public class RobotContainer {
   public JoystickButton shooterButton; // Button for the shooter
   public JoystickButton intakeButton;
   public JoystickButton visionModeButton;
-  public Joystick joystickDriver; // Controller 0
+  public Joystick joystickDriver; // Controller 0 --Ensure that all controllers are in proper ports in Driver Station
   public Joystick joystickShooter; // Controller 1
 
   /**
@@ -94,10 +94,11 @@ public class RobotContainer {
     shooterMotor = new CANSparkMax(Constants.kShooterID, MotorType.kBrushless);
     shooterMotor.setInverted(true);
     shooterEncoder = shooterMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+ 
     shooterMotorPID = shooterMotor.getPIDController();
     shooterMotorPID.setP(Constants.SHOOTER_kP);
-    // shooterMotorPID.setI(Constants.SHOOTER_kI);
-    // shooterMotorPID.setD(Constants.SHOOTER_kD);
+    shooterMotorPID.setI(Constants.SHOOTER_kI);
+    shooterMotorPID.setD(Constants.SHOOTER_kD);
     shooterMotorPID.setOutputRange(Constants.SHOOTER_MIN_OUTPUT, Constants.SHOOTER_MAX_OUTPUT);
     shooterBallRelease = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kShooterGateForwardID, Constants.kShooterGateReleaseID);
     m_shooter = new Shooter(); // Defines the subsystem
@@ -111,12 +112,12 @@ public class RobotContainer {
     //Test Commands--Comment these out in competition time to avoid this cluttering Shuffleboard. 
     SmartDashboard.putData("Shooter Run", new ShooterRun(m_shooter)); // Puts data on Shuffleboard to use the command.
     SmartDashboard.putData("Release Gate", new ReleaseGate(m_shooter)); // Displays on the screen and can be run by pushing the square. Pretty neat
-    SmartDashboard.putData("Autonomous", new Autonomous(m_drive));
     SmartDashboard.putData("Intake Run", new IntakeRun(m_intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(m_intake));
     SmartDashboard.putData("Find Distance", new LimelightDistanceFinder(m_shooter));
     SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));
     SmartDashboard.putNumber("RPM", shooterEncoder.getVelocity());
+    
 
 
     configureButtonBindings();
@@ -125,8 +126,8 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    visionModeButton = new JoystickButton(joystickShooter, Constants.visionModeButtonNumber);
-    visionModeButton.toggleWhenPressed(new VisionMode(m_shooter));
+    visionModeButton = new JoystickButton(joystickShooter, Constants.visionModeButtonNumber); 
+    visionModeButton.toggleWhenPressed(new VisionMode(m_shooter)); //Switches between modes. See Shooter subsytem for function. 
     
     // Shooter Button Configured and Command Assigned to Button
     shooterButton = new JoystickButton(joystickShooter, Constants.shooterButtonNumber);
