@@ -39,12 +39,16 @@ public final class Constants //Note for self: Define integers here. Button numbe
      public static final int kPistonSecondClimbChannel = 9; //For piston two
      public static final int kPistonSecondReverseClimbChannel = 10; //For piston two
      public static final int climbButtonNumber = 3; //For climb Button on the Gamepad
+     public static final int cancellationButton1 = 1; //For climb's cancellation button on the Gamepad
+     public static final int cancellationButton2 = 2; //For climb's cancellation button on the Gamepad
+     public static final int addButtonNumber = 4; //For climb's adding one button on the Gamepad
      public static final double ClimbMotorSpeed = 1.0; //Sets speed for climb motor
      public static final double InverseClimbMotorSpeed = -1.0; //Sets speed for climb motor
      public static final int upperClimbLimitSwitchChannel = 1; //Upper Limit Switch Channel
      public static final int lowerClimbLimitSwitchChannel = 0; //Lower Limit Switch Channel
-     public static final int kEncoderCountsPerRev = 1120; 
-     //Ask about the encoder 
+     public static final int kEncoderCountsPerRev = 1120; //Ask about the encoder
+     private static final double kArmDiameter = 2.38; //Arms' diameter in inches
+     public static final double kEncoderPositionConversionFactor = kArmDiameter * Math.PI; //Sets encoder to read position in inches
 
 }
 

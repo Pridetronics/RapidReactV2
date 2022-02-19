@@ -1,5 +1,8 @@
 package frc.robot.commands;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climb;
@@ -10,7 +13,7 @@ public class RaisePivotArms extends CommandBase {
 
   public RaisePivotArms(Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
-    //References climb object from Robot Container
+    //References climb from Climb subsystem
     m_climb = climb;
     addRequirements(m_climb);
   }
@@ -40,6 +43,11 @@ public class RaisePivotArms extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished(){
-    return false;
+    //Ends the command when the limit switch closes
+    boolean control = false;
+    if(m_climb.isClimbAtTop() == true){
+      control = true;
+    }
+    return control; 
   }
 }

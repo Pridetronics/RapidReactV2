@@ -13,7 +13,10 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.AddOne;
 import frc.robot.commands.Autonomous;
+import frc.robot.commands.CancellationButtonsClimb;
+import frc.robot.commands.CancelClimb;
 import frc.robot.commands.ClimbButtonSequence;
 import frc.robot.commands.ClimbPiston;
 import frc.robot.commands.DescendPivotArms;
@@ -67,19 +70,26 @@ public class RobotContainer
   public static DigitalInput lowerClimbLimitSwitch;
 
   public static Command ClimbButtonSequence;
-
+  private static Command CancelClimb;
+  private static Command AddOne;
 
   public static Intake intake;
   public static Shooter shooter; //Creates the subsytem  for shooter
   public static Drive drive;
-  public static Autonomous m_auto; 
+  public static Autonomous m_auto;
   public static Climb climb; //Creates the subsystem for climb
 
   public JoystickButton shooterButton; //Button for the shooter
   public JoystickButton intakeButton;
-  public JoystickButton climbButton;
+  public static JoystickButton climbButton;
+  public JoystickButton addButton;
+  public JoystickButton cancellationButton1;
+  public JoystickButton cancellationButton2;
+
   public Joystick joystickDriver; //Controller 0
-  public Joystick joystickShooter; //Controller 1
+  public static Joystick joystickShooter; //Controller 1
+
+  public static int climbValue = 0; //For climb's add value
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() 
@@ -116,11 +126,12 @@ public class RobotContainer
     lowerClimbLimitSwitch = new DigitalInput(Constants.lowerClimbLimitSwitchChannel);
 
     SmartDashboard.putData("Shooter Run", new ShooterRun(shooter)); //Puts data on Shuffleboard to use the command. Displays
-    SmartDashboard.putData("Release Gate", new ReleaseGate(shooter)); //on the screen and can be run by pushing the square. Pretty neat
+    SmartDashboard.putData("Release Gate", new ReleaseGate(shooter)); //On the screen and can be run by pushing the square. Pretty neat
     SmartDashboard.putData("Autonomous", new Autonomous(drive));
     SmartDashboard.putData("Intake Run", new IntakeRun(intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(intake));        
     SmartDashboard.putData("Climb Run", new Climb(climb)); //Puts data on Shuffleboard to use the command
+    SmartDashboard.putData("Climb's Sequence", new AddOne(climb)); //Puts data on Shuffleboard to see what stage climbValue is at.
 
 
     configureButtonBindings();
@@ -143,54 +154,18 @@ public class RobotContainer
       //Climb Button Configured
     climbButton = new JoystickButton(joystickShooter, Constants.climbButtonNumber);
     climbButton.whenPressed(ClimbButtonSequence);
-    /* climbButton.whenPressed(new SequentialCommandGroup (
-      new RaisePivotArms(climb),
-      new ClimbPiston(climb), //Extended
-      new WaitCommand(0.2),
-      new DescendPivotArms(climb),
-      new WaitCommand(0.2),
-      new RaisePivotArms(climb), //Needs to make this extend 9 inches
-      new ClimbPiston(climb), //Retracted
-      new RaisePivotArms(climb), //Extended to Y (23 inches)
-      new ClimbPiston(climb),
-      new WaitCommand(0.2),
-      new DescendPivotArms(climb),
-      new WaitCommand(0.2), //Step 13 from the climb documentation
-      new DescendPivotArms(climb),
-      new WaitCommand(0.2),
-      new RaisePivotArms(climb), //Needs to make this extend 9 inches
-      new ClimbPiston(climb), //Retracted
-      new RaisePivotArms(climb), //Extended to Y (23 inches)
-      new ClimbPiston(climb),
-      new WaitCommand(0.2),
-      new DescendPivotArms(climb))); //Retracted
-      */ 
+    addButton = new JoystickButton(joystickShooter, Constants.addButtonNumber);
+    addButton.whenPressed(AddOne);
+    cancellationButton1 = new JoystickButton(joystickShooter, Constants.cancellationButton1);
+    cancellationButton2 = new JoystickButton(joystickShooter, Constants.cancellationButton2);
+    CancellationButtonsClimb cancellationButtons = new CancellationButtonsClimb(cancellationButton1, cancellationButton2);
+    cancellationButtons.whenPressed(CancelClimb);
+
+    
         //Need to add encoders, when it is at the bottom you have to make sure the encoders is at 0.
         //There is also no need to do anything for the stationary arm
         //Winches is just the one motor going forward and reverse.
 
-    /* climbButton.whenPressed(new SequetnailCommandGroup (
-      new DescendPivotArms(climb),
-      new Stationary Arm is suppose to lock somewhere? 
-    )) */
-    
-    /*climbButton.whenPressed(new SequentialCommandGroup(
-      new RaisePivotArms(climb), //Needs to extend 9 inches
-      new ClimbPistonAngleOne(climb), //Retracted
-      new RaisePivotArms(climb))); //Needs to extend 23 inches, adjustable
-    */ 
-    
-    /* climbButton.whenPressed(new SequentialCommandGroup(
-      new DescendPivotArms(climb),
-      new Stationary Arm is suppose to lock somewhere. 
-    )) */
-
-    /*climbButton.whenPressed(new SequentialCommandGroup(
-      new RaisePivotArms(climb),
-      new ClimbPistonAngleOne(climb),
-      new DescendPivotArms(climb),
-      new WaitCommand(0.2)));
-    */  
   } 
 
   public Command getAutonomousCommand() 
