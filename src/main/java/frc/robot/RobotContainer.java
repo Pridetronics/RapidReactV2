@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.DriveJoystick;
@@ -62,6 +62,7 @@ public class RobotContainer {
   public static Shooter shooter; // Creates the subsytem for shooter
   public static Drive m_drive;
   public static Autonomous m_auto;
+  public static SendableChooser m_chooser;
 
   public JoystickButton shooterButton; // Button for the shooter
   public JoystickButton intakeButton;
@@ -98,6 +99,17 @@ public class RobotContainer {
     intakeMotor = new Talon(Constants.kIntakeChannel);
     intake = new Intake();
 
+    // Command m_taxi = new Autonomous(m_drive);
+    // Command m_testCommand = new IntakeRun(intake);
+
+    // SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+    // m_chooser.setDefaultOption("Taxi Autonomous", m_taxi);
+    // m_chooser.addOption("Test Command", m_testCommand);
+
+    // // Put the chooser on the dashboard
+    // SmartDashboard.putData(m_chooser);
+
     SmartDashboard.putData("Shooter Run", new ShooterRun(shooter)); // Puts data on Shuffleboard to use the command.
                                                                     // Displays
     SmartDashboard.putData("Release Gate", new ReleaseGate(shooter)); // on the screen and can be run by pushing the
@@ -127,6 +139,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return m_auto;
+    return (Command) m_chooser.getSelected();
   }
 }

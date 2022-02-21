@@ -1,39 +1,46 @@
 {
-  "HALProvider": {
-    "Other Devices": {
-      "Compressor[0]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SPARK MAX [1]": {
-        "header": {
-          "open": true
-        }
-      }
-    }
-  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/Drive": "Subsystem",
-      "/LiveWindow/ExampleSubsystem": "Subsystem",
-      "/LiveWindow/FlyWheel": "Subsystem",
       "/LiveWindow/Intake": "Subsystem",
       "/LiveWindow/Shooter": "Subsystem",
       "/LiveWindow/Ungrouped/MecanumDrive[1]": "MecanumDrive",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/SmartDashboard/Autonomous": "Command",
+      "/SmartDashboard/Extend/Retract Intake": "Command",
+      "/SmartDashboard/Intake Run": "Command",
       "/SmartDashboard/Release Gate": "Command",
-      "/SmartDashboard/Shooter Run": "Command"
+      "/SmartDashboard/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/SendableChooser[1]": "String Chooser",
+      "/SmartDashboard/Shooter Run": "Command",
+      "/SmartDashboard/auto Mode": "String Chooser"
+    },
+    "windows": {
+      "/SmartDashboard/SendableChooser[0]": {
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables": {
     "LiveWindow": {
+      ".status": {
+        "open": true
+      },
+      "Intake": {
+        "open": true
+      },
       "open": true
     },
     "SmartDashboard": {
-      "open": true
+      "Autonomous": {
+        "open": true
+      },
+      "auto Mode": {
+        "open": true
+      }
     }
   }
 }
