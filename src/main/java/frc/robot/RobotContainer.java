@@ -8,6 +8,7 @@ package frc.robot;
 // import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -28,8 +29,11 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.ReleaseGate;
 import frc.robot.commands.ShooterRun;
+import frc.robot.commands.addCommand;
+import frc.robot.commands.testStage;
 import frc.robot.commands.ExtendRetractIntake;
 import frc.robot.commands.IntakeRun;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
@@ -63,11 +67,16 @@ public class RobotContainer {
   public static Drive m_drive;
   public static Autonomous m_auto;
   public static SendableChooser m_chooser;
+  public static Climb climb;
 
   public JoystickButton shooterButton; // Button for the shooter
   public JoystickButton intakeButton;
   public Joystick joystickDriver; // Controller 0
   public Joystick joystickShooter; // Controller 1
+
+  public JoystickButton addButton;
+  public JoystickButton sequenceButton;
+  public int stageLevel;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -121,6 +130,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     m_drive.setDefaultCommand(new DriveJoystick(m_drive));
+
   }
 
   private void configureButtonBindings() {
@@ -136,6 +146,11 @@ public class RobotContainer {
         new ExtendRetractIntake(intake),
         new WaitCommand(3),
         new IntakeRun(intake)));
+
+    addButton = new JoystickButton(joystickShooter, 8);
+    addButton.whileActiveOnce(new addCommand(climb));
+    sequenceButton = new JoystickButton(joystickShooter, 7);
+    sequenceButton.whileActiveOnce(new testStage(climb));
   }
 
   public Command getAutonomousCommand() {

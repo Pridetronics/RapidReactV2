@@ -2,11 +2,13 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Climb": "Subsystem",
       "/LiveWindow/Drive": "Subsystem",
       "/LiveWindow/Intake": "Subsystem",
       "/LiveWindow/Shooter": "Subsystem",
       "/LiveWindow/Ungrouped/MecanumDrive[1]": "MecanumDrive",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/Talon[4]": "Motor Controller",
       "/SmartDashboard/Autonomous": "Command",
       "/SmartDashboard/Extend/Retract Intake": "Command",
       "/SmartDashboard/Intake Run": "Command",
@@ -25,22 +27,11 @@
     }
   },
   "NetworkTables": {
-    "LiveWindow": {
-      ".status": {
-        "open": true
-      },
-      "Intake": {
+    "SmartDashboard": {
+      "auto Mode": {
         "open": true
       },
       "open": true
-    },
-    "SmartDashboard": {
-      "Autonomous": {
-        "open": true
-      },
-      "auto Mode": {
-        "open": true
-      }
     }
   }
 }
