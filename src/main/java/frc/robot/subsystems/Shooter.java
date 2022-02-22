@@ -105,6 +105,8 @@ public class Shooter extends SubsystemBase {
     {
       m_shooterPID.setReference(Constants.shooterDefaultSpeed, ControlType.kVelocity); 
     }
+    SmartDashboard.putNumber("RPM", m_shooterEncoder.getVelocity());
+
   }
   public void ShooterStop(){
    m_shooterPID.setReference(0.0, ControlType.kVelocity);

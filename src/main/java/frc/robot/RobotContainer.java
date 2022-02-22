@@ -115,10 +115,7 @@ public class RobotContainer {
     SmartDashboard.putData("Intake Run", new IntakeRun(m_intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(m_intake));
     SmartDashboard.putData("Find Distance", new LimelightDistanceFinder(m_shooter));
-    SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));
-    SmartDashboard.putNumber("RPM", shooterEncoder.getVelocity());
-    
-
+    SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));    
 
     configureButtonBindings();
 
