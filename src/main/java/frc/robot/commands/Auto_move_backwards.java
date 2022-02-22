@@ -12,10 +12,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
-public class Autonomous extends CommandBase {
+public class Auto_move_backwards extends CommandBase {
   private Drive m_drive;
 static final int ticks = 1120;
-  public Autonomous(Drive drive) {
+  public Auto_move_backwards(Drive drive) {
     m_drive = drive;
   
     addRequirements(m_drive);
@@ -38,7 +38,7 @@ static final int ticks = 1120;
 double encoder = Drive.m_FrontLeftEncoder.getPosition();
 
 double circumference = 3.14*4 ;
-    double rotationsneeded = 4/circumference; // 4 to 1 ft` ratio
+    double rotationsneeded = 4/circumference; // 4 to 1 ft` ratio probably 2 to 1 with 6" wheels
    int doubledtar = (int)(rotationsneeded*39);
    //int drivetarget = doubledtar/4;
     //long target = drivetarget;

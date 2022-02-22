@@ -10,12 +10,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.Autonomous;
+import frc.robot.commands.Auto_drive_shoot;
+import frc.robot.commands.Auto_move_backwards;
 import frc.robot.commands.ExampleCommand;
 
 import frc.robot.subsystems.ExampleSubsystem;
@@ -27,7 +30,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
-import frc.robot.commands.Autonomous;
+import frc.robot.commands.Auto_move_backwards;
 import frc.robot.commands.ReleaseGate;
 import frc.robot.commands.ShooterRun;
 import frc.robot.commands.ExtendRetractIntake;
@@ -44,10 +47,16 @@ import frc.robot.subsystems.Intake;
  */
 public class RobotContainer 
 {
+ 
   // The robot's subsystems and commands are defined here... Examples below
-  private final Subsystem watch = new Camera();
-  private final Subsystem driver = new Drive();
-  private final Command m_autoCommand = new Autonomous(drive);
+ // private final Subsystem watch = new Camera();
+ // private final Subsystem driver = new Drive();
+  Drive drive = new Drive();
+  SendableChooser <Command> m_chooser = new SendableChooser<>();
+ private final Auto_drive_shoot m_auto2 = new Auto_drive_shoot(drive);
+ private final  Auto_move_backwards m_auto1 = new Auto_move_backwards(drive);
+ 
+  // private final Command m_autoCommand = new Auto_move_backwards(drive);
 
   public static  CANSparkMax  frontLeft;
   public static CANSparkMax rearLeft;
@@ -63,7 +72,7 @@ public class RobotContainer
   
   public static Intake intake;
   public static Shooter shooter; //Creates the subsytem  for shooter
-  public static Drive drive;
+  //public static Drive drive;
 
   public JoystickButton shooterButton; //Button for the shooter
   public JoystickButton intakeButton;
@@ -73,6 +82,11 @@ public class RobotContainer
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() 
   {
+
+    //sendable chooser relevant
+  
+    
+
     //Assign values for the motors, and for the joysticks. Do not do button bindings, this is below.
     joystickDriver = new Joystick(Constants.kJoystickDriverChannel); 
     joystickShooter = new Joystick(Constants.kJoystickShooterChannel); //Sets shooter joystick to port 1
@@ -84,7 +98,7 @@ public class RobotContainer
     frontRight.setInverted(true);
     rearRight = new CANSparkMax(Constants.kRearRightChannel,MotorType.kBrushed);
     rearRight.setInverted(true);
-    drive = new Drive();
+   // drive = new Drive();
 
     //Shooter Relevant---
     shooterMotor = new CANSparkMax(Constants.kShooterChannel, MotorType.kBrushless); 
@@ -99,11 +113,15 @@ public class RobotContainer
     
     SmartDashboard.putData("Shooter Run", new ShooterRun(shooter)); //Puts data on Shuffleboard to use the command. Displays
     SmartDashboard.putData("Release Gate", new ReleaseGate(shooter)); //on the screen and can be run by pushing the square. Pretty neat
-    SmartDashboard.putData("Autonomous", new Autonomous(drive));
+    SmartDashboard.putData("Autonomous", new Auto_move_backwards(drive));
     SmartDashboard.putData("Intake Run", new IntakeRun(intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(intake));
 
     configureButtonBindings();
+    m_chooser.setDefaultOption("Auto Move backwards", m_auto1);
+    m_chooser.addOption("Auto Move and Shoot", m_auto2);
+    SmartDashboard.putData("auto chooser", m_chooser);
+
   }
 
   private void configureButtonBindings() 
@@ -119,11 +137,14 @@ public class RobotContainer
       new ExtendRetractIntake(intake),
       new WaitCommand(3),
       new IntakeRun(intake)));
-  }
+      
+      
+      
+    }
 
   public Command getAutonomousCommand() 
   {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+   return (Command) m_chooser.getSelected();
+
   }
 }
