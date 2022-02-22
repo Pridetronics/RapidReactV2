@@ -18,12 +18,15 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final int shooterButtonNumber = 4; // All values will need to be adjusted for true values. 
     public static final int intakeButtonNumber = 2;
     public static final int visionModeButtonNumber = 3;
-   
     public static final int kFrontLeftID = 2; // For all of the drive motors
     public static final int kRearLeftID = 4;
     public static final int kFrontRightID = 5; //Switch with shooter motor after testing
     public static final int kRearRightID = 3;
 
+     public static final int climbButtonNumber = 3; //For climb Button on the Gamepad
+     public static final int cancellationButton1 = 1; //For climb's cancellation button on the Gamepad
+     public static final int cancellationButton2 = 2; //For climb's cancellation button on the Gamepad
+     public static final int addButtonNumber = 5; //For climb's adding one button on the Gamepad
     public static final int kShooterID = 1; // For the Shooter Motor
     public static final int shooterDefaultSpeed = 3000; //This will act as a minimum speed if no target is found. Allows the Gate to release. 
     public static final double SHOOTER_kP = 0.0002;
@@ -34,6 +37,16 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final double SHOOTER_MIN_OUTPUT = -6000.0;
     public static final int kShooterGateForwardID = 4; // For use in pneumatics system (same with the one below)
     public static final int kShooterGateReleaseID = 5;
+     public static final int kClimbChannel = 7; //For Climb Motor
+     public static final int kPistonFirstClimbChannel = 6; //For piston
+     public static final int kPistonFirstReverseClimbChannel = 7; //For piston
+     public static final double ClimbMotorSpeed = 1.0; //Sets speed for climb motor
+     public static final double InverseClimbMotorSpeed = -1.0; //Sets speed for climb motor
+     public static final int upperClimbLimitSwitchChannel = 1; //Upper Limit Switch Channel
+     public static final int lowerClimbLimitSwitchChannel = 0; //Lower Limit Switch Channel
+     public static final int kEncoderCountsPerRev = 42; //Ask about the encoder
+     private static final double kArmDiameter = 2.38; //Arms' diameter in inches
+     public static final double kEncoderPositionConversionFactor = kArmDiameter * Math.PI; //Sets encoder to read position in inches
 
     //Shooter RPM Values-- I'm a terrible person. I will try to make a list later but I'm stupid so bad naming conventions.
     public static final int shooterRPM17 = 5000;
@@ -44,8 +57,5 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final int shooterRPM12 = 3750;
     public static final int shooterRPM11 = 3500;
     public static final int shooterRPM10 = 3250;
-
     public static final int kIntakeID = 6;
-    //Create constants for intake pistons later
-
 }
