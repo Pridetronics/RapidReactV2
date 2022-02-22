@@ -150,7 +150,7 @@ public class RobotContainer {
     intakePiston = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0);
     intakeMotor = new VictorSP(Constants.kIntakeID);
     m_intake = new Intake();
-    SmartDashboard.putData("Autonomous", new Autonomous(drive));
+    SmartDashboard.putData("Autonomous", new Autonomous(m_drive));
     SmartDashboard.putData("Climb Run", new ClimbButtonSequence(climb)); //Puts data on Shuffleboard to use the command
     SmartDashboard.putData("Climb's Sequence", new AddOne(climb)); //Puts data on Shuffleboard to see what stage climbValue is at.
 
@@ -181,7 +181,6 @@ public class RobotContainer {
         new ExtendRetractIntake(m_intake),
         new WaitCommand(3),
         new IntakeRun(m_intake)));
-  }
 
       //Climb Button Configured
     climbButton = new JoystickButton(joystickShooter, Constants.climbButtonNumber);
@@ -195,15 +194,13 @@ public class RobotContainer {
     CancellationButtonsClimb cancellationButtons = new CancellationButtonsClimb(cancellationButton1, cancellationButton2);
     cancelClimb = new CancelClimb(climb);
     cancellationButtons.whenPressed(cancelClimb);
-    
+  }
         //Need to add encoders, when it is at the bottom you have to make sure the encoders is at 0.
         //There is also no need to do anything for the stationary arm
         //Winches is just the one motor going forward and reverse.
-
-  } 
-
   public Command getAutonomousCommand() 
   {
     return m_auto;
   }
 }
+
