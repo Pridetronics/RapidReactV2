@@ -5,34 +5,31 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climb;
 
-public class ShooterRun extends CommandBase {
+public class CancelClimb extends CommandBase {
+  /** Creates a new CancellationClimb. */
+  Climb m_climb;
 
-  private Shooter m_shooter;
-
-  public ShooterRun(Shooter Shooter) {
-    m_shooter = Shooter;
-
-    addRequirements(m_shooter);
+  public CancelClimb(Climb climb) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    m_climb = climb;
+    addRequirements(m_climb);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //I moved the find distance command into vision modes, hoping to improve efficiency. 
-    m_shooter.ShooterRun(); //Looks for function within shooter.  
+    
   }
 
+  // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_shooter.ShooterStop(); //Zeroes motors. 
-    m_shooter.RetractGate();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

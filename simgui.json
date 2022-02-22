@@ -6,7 +6,22 @@
           "open": true
         }
       },
+      "SPARK MAX [0]": {
+        "header": {
+          "open": true
+        }
+      },
       "SPARK MAX [1]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [3]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [4]": {
         "header": {
           "open": true
         }
@@ -16,28 +31,49 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Climb": "Subsystem",
       "/LiveWindow/Drive": "Subsystem",
       "/LiveWindow/ExampleSubsystem": "Subsystem",
       "/LiveWindow/FlyWheel": "Subsystem",
       "/LiveWindow/Intake": "Subsystem",
       "/LiveWindow/Shooter": "Subsystem",
+      "/LiveWindow/Ungrouped/DigitalInput[0]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[1]": "Digital Input",
       "/LiveWindow/Ungrouped/MecanumDrive[1]": "MecanumDrive",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/VictorSP[1]": "Motor Controller",
+      "/LiveWindow/Ungrouped/VictorSP[6]": "Motor Controller",
       "/SmartDashboard/Autonomous": "Command",
+      "/SmartDashboard/Change Vision Modes": "Command",
       "/SmartDashboard/Extend/Retract Intake": "Command",
+      "/SmartDashboard/Find Distance": "Command",
       "/SmartDashboard/Intake Run": "Command",
+      "/SmartDashboard/Climb Run": "Command",
+      "/SmartDashboard/Climb's Sequence": "Command",
       "/SmartDashboard/Release Gate": "Command",
       "/SmartDashboard/Shooter Run": "Command"
     }
   },
   "NetworkTables": {
     "LiveWindow": {
+      ".status": {
+        "open": true
+      },
+      "Drive": {
+        "open": true
+      },
       "Intake": {
         "open": true
       },
       "open": true
     },
     "SmartDashboard": {
+      "Autonomous": {
+        "open": true
+      },
+      "Intake Run": {
+        "open": true
+      },
       "open": true
     }
   }
