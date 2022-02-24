@@ -11,7 +11,8 @@ import frc.robot.RobotContainer;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+// import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Servo;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -23,8 +24,9 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class Shooter extends SubsystemBase {
   //Motor and solenoid are created privately for use in this class
   private SparkMaxPIDController m_shooterPID;
-  private DoubleSolenoid m_shooterBallRelease;
+  // private DoubleSolenoid m_shooterBallRelease;
   private RelativeEncoder m_shooterEncoder;
+  private Servo m_shooterServo;
   //Math values for use in Limelight
   private double aTotal; 
   private double hTotal; 
@@ -38,7 +40,8 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     //PID and solenoid information referenced from RobotContainer
     m_shooterPID = RobotContainer.shooterMotorPID;
-    m_shooterBallRelease = RobotContainer.shooterBallRelease;
+    // m_shooterBallRelease = RobotContainer.shooterBallRelease;
+    m_shooterServo = RobotContainer.shooterServo;
     m_shooterEncoder = RobotContainer.shooterEncoder;
     zeroEncoders();
   }
@@ -117,10 +120,12 @@ public class Shooter extends SubsystemBase {
   }
 
   public void ReleaseGate(){
-    m_shooterBallRelease.set(DoubleSolenoid.Value.kForward);
+    //m_shooterBallRelease.set(DoubleSolenoid.Value.kForward);
+    m_shooterServo.setAngle(90);
   }
   public void RetractGate(){
-    m_shooterBallRelease.set(DoubleSolenoid.Value.kReverse);
+    //m_shooterBallRelease.set(DoubleSolenoid.Value.kReverse);
+    m_shooterServo.setAngle(0);
   }
   public void findDistance(){
     hTotal = 104 - 20; //Measures in meters. Change these to the official field values later-- This is for testing

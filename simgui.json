@@ -45,11 +45,11 @@
       "/LiveWindow/Ungrouped/VictorSP[6]": "Motor Controller",
       "/SmartDashboard/Autonomous": "Command",
       "/SmartDashboard/Change Vision Modes": "Command",
+      "/SmartDashboard/Climb Run": "Command",
+      "/SmartDashboard/Climb's Sequence": "Command",
       "/SmartDashboard/Extend/Retract Intake": "Command",
       "/SmartDashboard/Find Distance": "Command",
       "/SmartDashboard/Intake Run": "Command",
-      "/SmartDashboard/Climb Run": "Command",
-      "/SmartDashboard/Climb's Sequence": "Command",
       "/SmartDashboard/Release Gate": "Command",
       "/SmartDashboard/Shooter Run": "Command"
     }
