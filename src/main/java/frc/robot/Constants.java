@@ -61,7 +61,7 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final double InverseClimbMotorSpeed = -1.0; //Sets speed for climb motor
     public static final int upperClimbLimitSwitchChannel = 1; //Upper Limit Switch Channel
     public static final int lowerClimbLimitSwitchChannel = 0; //Lower Limit Switch Channel
-    public static final int kEncoderCountsPerRev = 42; //Ask about the encoder-- REACH OUT TO HELEN(THIS ISN'T NEEDED BECAUSE IT HAS DEFAULT)
+    public static final int kEncoderCountsPerRev = 42; //Ask about the encoder
     private static final double kArmDiameter = 2.38; //Arms' diameter in inches
     public static final double kEncoderPositionConversionFactor = kArmDiameter * Math.PI; //Sets encoder to read position in inches
 

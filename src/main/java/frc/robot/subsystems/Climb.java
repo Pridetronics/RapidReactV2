@@ -59,8 +59,8 @@ public class Climb extends SubsystemBase {
     }
 
     public int addOne(){
-        m_climbValue++;
-        return m_climbValue;
+        RobotContainer.climbValue++;
+        return RobotContainer.climbValue;
     }
     
     public boolean isClimbAtTop(){
