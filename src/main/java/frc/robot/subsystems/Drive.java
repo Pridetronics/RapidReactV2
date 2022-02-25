@@ -20,7 +20,7 @@ public class Drive extends SubsystemBase {
   private CANSparkMax m_rearLeftMotor;
   private CANSparkMax m_rearRightMotor;
 
-  private RelativeEncoder m_frontLeftEncoder;
+  public static RelativeEncoder m_frontLeftEncoder;
   private RelativeEncoder m_frontRightEncoder;
   private RelativeEncoder m_rearLeftEncoder;
   private RelativeEncoder m_rearRightEncoder;
@@ -55,30 +55,28 @@ public class Drive extends SubsystemBase {
     mecanumDrive.setExpiration(0.1);
     mecanumDrive.setMaxOutput(1.0);
   }
-  public void stop() {
-    m_frontLeftMotor.set(0);
-    m_frontRightMotor.set(0);
-  }
-  public void zeroEncoders() {
-    m_FrontLeftEncoder.setPosition(0);
-    m_FrontRightEncoder.setPosition(0);
 
-  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Right Encoder", m_FrontRightEncoder.getPosition());
-    SmartDashboard.putNumber("Left Encoder", m_FrontLeftEncoder.getPosition());
-    SmartDashboard.putNumber("Average Encoder", getAverageEncoderDistance());
-    SmartDashboard.putNumber("ticks per rev", m_FrontLeftEncoder.getCountsPerRevolution());
-    m_FrontLeftEncoder.getPosition();
-    m_FrontRightEncoder.getPosition();
-    m_FrontLeftEncoder.getCountsPerRevolution();  
+    SmartDashboard.putNumber("Right Encoder", m_frontRightEncoder.getPosition());
+    SmartDashboard.putNumber("Left Encoder", m_frontLeftEncoder.getPosition());
+    SmartDashboard.putNumber("Average Encoder FRONT", getAverageEncoderDistanceFront());
+    SmartDashboard.putNumber("Ticks Per Revolution", m_frontLeftEncoder.getCountsPerRevolution());
+    m_frontLeftEncoder.getPosition();
+    m_frontRightEncoder.getPosition();
+    m_frontLeftEncoder.getCountsPerRevolution();  
  
   }
-  public double getAverageEncoderDistance() {
-    return (m_FrontLeftEncoder.getPosition() + m_FrontRightEncoder.getPosition()) / 2;
+  
+  public double getAverageEncoderDistanceFront() {
+    return (m_frontLeftEncoder.getPosition() + m_frontRightEncoder.getPosition()) / 2;
   }
+
+  public double getAverageEncoderDistanceRear(){
+    return (m_rearLeftEncoder.getPosition() + m_rearRightEncoder.getPosition()) / 2;
+  }
+
   public void autoDriveBack(){
     m_frontLeftMotor.set(-0.5);
     m_rearLeftMotor.set(-0.5);
@@ -94,9 +92,6 @@ public class Drive extends SubsystemBase {
     xValue = m_joystickDriver.getX();
     zValue = m_joystickDriver.getZ();
     mecanumDrive.driveCartesian(yValue, xValue, zValue);
-  }
-
-  public void autoDriveBack() {
   }
 
   public void driveStop() {

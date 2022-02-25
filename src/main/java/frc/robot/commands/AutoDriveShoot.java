@@ -7,13 +7,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 
-public class Auto_drive_shoot extends CommandBase {
+public class AutoDriveShoot extends CommandBase {
   private Drive m_drive;
   /** Creates a new Auto_drive_shoot. */
-  public Auto_drive_shoot(Drive drive) {
+  public AutoDriveShoot(Drive drive) {
     // Use addRequirements() here to declare subsystem dependencies.
- 
- 
  
   }
 

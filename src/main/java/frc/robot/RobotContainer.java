@@ -18,7 +18,6 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 
-import frc.robot.commands.Autonomous;
 import frc.robot.commands.DriveJoystick;
 import frc.robot.commands.ReleaseGate;
 import frc.robot.commands.ShooterRun;
@@ -34,8 +33,8 @@ import frc.robot.commands.ClimbPiston;
 import frc.robot.commands.DescendPivotArms;
 import frc.robot.commands.RaisePivotArms;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.commands.Auto_drive_shoot;
-import frc.robot.commands.Auto_move_backwards;
+import frc.robot.commands.AutoDriveShoot;
+import frc.robot.commands.AutoMoveBackwards;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -52,7 +51,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 
-import frc.robot.commands.Auto_move_backwards;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -69,10 +67,7 @@ public class RobotContainer {
   public static CANSparkMax rearLeft;
   public static CANSparkMax frontRight;
   public static CANSparkMax rearRight;
-  Drive drive = new Drive();
-  SendableChooser <Command> m_chooser = new SendableChooser<>();
- private final Auto_drive_shoot m_auto2 = new Auto_drive_shoot(drive);
- private final  Auto_move_backwards m_auto1 = new Auto_move_backwards(drive);
+
 
   //Shooter--
   public static CANSparkMax shooterMotor; // Creates Motor for the shooter
@@ -119,6 +114,11 @@ public class RobotContainer {
   public Joystick joystickDriver; // Controller 0 --Ensure that all controllers are in proper ports in Driver Station
   public Joystick joystickShooter; // Controller 1
 
+  //Sendable Chooser--
+  SendableChooser <Command> m_chooser = new SendableChooser<>();
+  private final AutoDriveShoot m_auto2 = new AutoDriveShoot(m_drive);
+  private final  AutoMoveBackwards m_auto1 = new AutoMoveBackwards(m_drive);
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -130,11 +130,15 @@ public class RobotContainer {
 
     // Drive Relevant---
     frontLeft = new CANSparkMax(Constants.kFrontLeftCANID, MotorType.kBrushless);
+
     rearLeft = new CANSparkMax(Constants.kRearLeftCANID, MotorType.kBrushless);
+
     frontRight = new CANSparkMax(Constants.kFrontRightCANID, MotorType.kBrushless);
     frontRight.setInverted(true);
+
     rearRight = new CANSparkMax(Constants.kRearRightCANID, MotorType.kBrushless);
     rearRight.setInverted(true);
+
     m_drive = new Drive(joystickDriver);
 
     // Shooter Relevant---
@@ -167,7 +171,6 @@ public class RobotContainer {
     m_climb = new Climb(); //Defines the subsystem
 
     //SmartDashboard Relevant-- Remove these during competition time
-    SmartDashboard.putData("Autonomous", new Autonomous(m_drive));
     SmartDashboard.putData("Climb Run", new ClimbButtonSequence(m_climb)); //Puts data on Shuffleboard to use the command
     SmartDashboard.putData("Climb's Sequence", new AddOne(m_climb)); //Puts data on Shuffleboard to see what stage climbValue is at.
     SmartDashboard.putData("Shooter Run", new ShooterRun(m_shooter)); // Puts data on Shuffleboard to use the command.
@@ -176,11 +179,11 @@ public class RobotContainer {
     SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(m_intake));
     SmartDashboard.putData("Find Distance", new LimelightDistanceFinder(m_shooter));
     SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));   
+    m_chooser.setDefaultOption("Auto Move Backwards", m_auto1);
+    m_chooser.addOption("Auto Move and Shoot", m_auto2);
+    SmartDashboard.putData("Auto Chooser", m_chooser);
 
     configureButtonBindings();
-    m_chooser.setDefaultOption("Auto Move backwards", m_auto1);
-    m_chooser.addOption("Auto Move and Shoot", m_auto2);
-    SmartDashboard.putData("auto chooser", m_chooser);
   }
 
   private void configureButtonBindings() {
