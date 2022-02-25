@@ -9,13 +9,15 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 
-import frc.robot.commands.Autonomous;
 import frc.robot.commands.DriveJoystick;
 import frc.robot.commands.ReleaseGate;
 import frc.robot.commands.ShooterRun;
@@ -30,6 +32,9 @@ import frc.robot.commands.ClimbButtonSequence;
 import frc.robot.commands.ClimbPiston;
 import frc.robot.commands.DescendPivotArms;
 import frc.robot.commands.RaisePivotArms;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.commands.AutoDriveShoot;
+import frc.robot.commands.AutoMoveBackwards;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -62,6 +67,7 @@ public class RobotContainer {
   public static CANSparkMax rearLeft;
   public static CANSparkMax frontRight;
   public static CANSparkMax rearRight;
+
 
   //Shooter--
   public static CANSparkMax shooterMotor; // Creates Motor for the shooter
@@ -97,9 +103,6 @@ public class RobotContainer {
   public static Drive m_drive;
   public static Climb m_climb; //Creates the subsystem for climb
   
-  //Autonomous--
-  public static Autonomous m_auto;
-
   //Buttons and Joysticks--
   public JoystickButton shooterButton; // Button for the shooter
   public JoystickButton intakeButton;
@@ -110,6 +113,11 @@ public class RobotContainer {
   public JoystickButton visionModeButton;
   public Joystick joystickDriver; // Controller 0 --Ensure that all controllers are in proper ports in Driver Station
   public Joystick joystickShooter; // Controller 1
+
+  //Sendable Chooser--
+  SendableChooser <Command> m_chooser = new SendableChooser<>();
+  private final AutoDriveShoot m_auto2 = new AutoDriveShoot(m_drive);
+  private final  AutoMoveBackwards m_auto1 = new AutoMoveBackwards(m_drive);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -122,11 +130,15 @@ public class RobotContainer {
 
     // Drive Relevant---
     frontLeft = new CANSparkMax(Constants.kFrontLeftCANID, MotorType.kBrushless);
+
     rearLeft = new CANSparkMax(Constants.kRearLeftCANID, MotorType.kBrushless);
+
     frontRight = new CANSparkMax(Constants.kFrontRightCANID, MotorType.kBrushless);
     frontRight.setInverted(true);
+
     rearRight = new CANSparkMax(Constants.kRearRightCANID, MotorType.kBrushless);
     rearRight.setInverted(true);
+
     m_drive = new Drive(joystickDriver);
 
     // Shooter Relevant---
@@ -159,7 +171,6 @@ public class RobotContainer {
     m_climb = new Climb(); //Defines the subsystem
 
     //SmartDashboard Relevant-- Remove these during competition time
-    SmartDashboard.putData("Autonomous", new Autonomous(m_drive));
     SmartDashboard.putData("Climb Run", new ClimbButtonSequence(m_climb)); //Puts data on Shuffleboard to use the command
     SmartDashboard.putData("Climb's Sequence", new AddOne(m_climb)); //Puts data on Shuffleboard to see what stage climbValue is at.
     SmartDashboard.putData("Shooter Run", new ShooterRun(m_shooter)); // Puts data on Shuffleboard to use the command.
@@ -167,10 +178,12 @@ public class RobotContainer {
     SmartDashboard.putData("Intake Run", new IntakeRun(m_intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(m_intake));
     SmartDashboard.putData("Find Distance", new LimelightDistanceFinder(m_shooter));
-    SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));    
-    
+    SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));   
+    m_chooser.setDefaultOption("Auto Move Backwards", m_auto1);
+    m_chooser.addOption("Auto Move and Shoot", m_auto2);
+    SmartDashboard.putData("Auto Chooser", m_chooser);
+
     configureButtonBindings();
-    m_drive.setDefaultCommand(new DriveJoystick(m_drive));
   }
 
   private void configureButtonBindings() {
@@ -210,7 +223,8 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() 
   {
-    return m_auto;
+   return (Command) m_chooser.getSelected();
+
   }
 }
 
