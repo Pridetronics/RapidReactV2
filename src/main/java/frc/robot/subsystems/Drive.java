@@ -7,9 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import com.revrobotics.CANSparkMax;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
@@ -57,20 +55,35 @@ public class Drive extends SubsystemBase {
     mecanumDrive.setExpiration(0.1);
     mecanumDrive.setMaxOutput(1.0);
   }
+  public void stop() {
+    m_frontLeftMotor.set(0);
+    m_frontRightMotor.set(0);
+  }
+  public void zeroEncoders() {
+    m_FrontLeftEncoder.setPosition(0);
+    m_FrontRightEncoder.setPosition(0);
 
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Front Left Encoder", m_frontLeftEncoder.getVelocity()); 
-    SmartDashboard.putNumber("Front Right Encoder", m_frontRightEncoder.getVelocity());
-    SmartDashboard.putNumber("Rear Left Encoder", m_rearLeftEncoder.getVelocity());
-    SmartDashboard.putNumber("Rear Right Encoder", m_rearRightEncoder.getVelocity());
+    SmartDashboard.putNumber("Right Encoder", m_FrontRightEncoder.getPosition());
+    SmartDashboard.putNumber("Left Encoder", m_FrontLeftEncoder.getPosition());
+    SmartDashboard.putNumber("Average Encoder", getAverageEncoderDistance());
+    SmartDashboard.putNumber("ticks per rev", m_FrontLeftEncoder.getCountsPerRevolution());
+    m_FrontLeftEncoder.getPosition();
+    m_FrontRightEncoder.getPosition();
+    m_FrontLeftEncoder.getCountsPerRevolution();  
+ 
   }
-
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run when in simulation
-
+  public double getAverageEncoderDistance() {
+    return (m_FrontLeftEncoder.getPosition() + m_FrontRightEncoder.getPosition()) / 2;
+  }
+  public void autoDriveBack(){
+    m_frontLeftMotor.set(-0.5);
+    m_rearLeftMotor.set(-0.5);
+    m_frontRightMotor.set(-0.5);
+    m_rearRightMotor.set(-0.5);
   }
 
   // Put methods for controlling this subsystem

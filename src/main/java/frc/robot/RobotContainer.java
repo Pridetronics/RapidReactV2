@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
@@ -30,6 +33,9 @@ import frc.robot.commands.ClimbButtonSequence;
 import frc.robot.commands.ClimbPiston;
 import frc.robot.commands.DescendPivotArms;
 import frc.robot.commands.RaisePivotArms;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.commands.Auto_drive_shoot;
+import frc.robot.commands.Auto_move_backwards;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -46,6 +52,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 
+import frc.robot.commands.Auto_move_backwards;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -62,6 +69,10 @@ public class RobotContainer {
   public static CANSparkMax rearLeft;
   public static CANSparkMax frontRight;
   public static CANSparkMax rearRight;
+  Drive drive = new Drive();
+  SendableChooser <Command> m_chooser = new SendableChooser<>();
+ private final Auto_drive_shoot m_auto2 = new Auto_drive_shoot(drive);
+ private final  Auto_move_backwards m_auto1 = new Auto_move_backwards(drive);
 
   //Shooter--
   public static CANSparkMax shooterMotor; // Creates Motor for the shooter
@@ -97,9 +108,6 @@ public class RobotContainer {
   public static Drive m_drive;
   public static Climb m_climb; //Creates the subsystem for climb
   
-  //Autonomous--
-  public static Autonomous m_auto;
-
   //Buttons and Joysticks--
   public JoystickButton shooterButton; // Button for the shooter
   public JoystickButton intakeButton;
@@ -167,10 +175,12 @@ public class RobotContainer {
     SmartDashboard.putData("Intake Run", new IntakeRun(m_intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(m_intake));
     SmartDashboard.putData("Find Distance", new LimelightDistanceFinder(m_shooter));
-    SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));    
-    
+    SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));   
+
     configureButtonBindings();
-    m_drive.setDefaultCommand(new DriveJoystick(m_drive));
+    m_chooser.setDefaultOption("Auto Move backwards", m_auto1);
+    m_chooser.addOption("Auto Move and Shoot", m_auto2);
+    SmartDashboard.putData("auto chooser", m_chooser);
   }
 
   private void configureButtonBindings() {
@@ -210,7 +220,8 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() 
   {
-    return m_auto;
+   return (Command) m_chooser.getSelected();
+
   }
 }
 

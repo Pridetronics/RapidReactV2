@@ -7,13 +7,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 
-public class Autonomous extends CommandBase {
+public class Auto_drive_shoot extends CommandBase {
   private Drive m_drive;
-
-  public Autonomous(Drive drive) {
-    m_drive = drive;
-
-    addRequirements(m_drive);
+  /** Creates a new Auto_drive_shoot. */
+  public Auto_drive_shoot(Drive drive) {
+    // Use addRequirements() here to declare subsystem dependencies.
+ 
+ 
+ 
   }
 
   // Called when the command is initially scheduled.
@@ -22,15 +23,11 @@ public class Autonomous extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    m_drive.autoDriveBack();
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_drive.driveStop();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
