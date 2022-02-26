@@ -4,50 +4,37 @@
 
 package frc.robot.commands;
 
-import com.revrobotics.RelativeEncoder;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climb;
 
-public class RaisePivotArms23Inches extends CommandBase {
-  /** Creates a new RaisePivotArmsNineInches. */
+public class IncreaseStage extends CommandBase {
+  /** Creates a new AddOne. */
   private Climb m_climb;
-  private RelativeEncoder m_climbEncoder;
- 
-  public RaisePivotArms23Inches(Climb climb) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    //References climb object from Climb subsystem. References encoders from climb
-    m_climb = climb;
-    m_climbEncoder = RobotContainer.ClimbEncoder;
-    (m_climbEncoder).setPositionConversionFactor(Constants.kEncoderPositionConversionFactor);
 
+  public IncreaseStage(Climb climb) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    m_climb = climb;
+    addRequirements(m_climb);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //Resets the number every time the raise pivot arm command is running
-    (m_climbEncoder).setPosition(0);
+    m_climb.increaseStage();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    (m_climbEncoder).getPositionConversionFactor();
-    if ((m_climbEncoder).getPositionConversionFactor() >= 9){
-      m_climb.raisePivotArms(Constants.ClimbMotorSpeed);
-    }
-    else{
-      m_climb.raisePivotArms(0.0);
-    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_climb.raisePivotArms(0.0);
+    SmartDashboard.putNumber("Stage Level", Climb.m_climbValue);
   }
 
   // Returns true when the command should end.

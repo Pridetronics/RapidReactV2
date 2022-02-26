@@ -13,14 +13,11 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.AddOne;
+import frc.robot.commands.IncreaseStage;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.CancellationButtonsClimb;
 import frc.robot.commands.CancelClimb;
 import frc.robot.commands.ClimbButtonSequence;
-import frc.robot.commands.ClimbPiston;
-import frc.robot.commands.DescendPivotArms;
-import frc.robot.commands.RaisePivotArms;
 
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
@@ -31,6 +28,7 @@ import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -67,11 +65,12 @@ public class RobotContainer
   public static VictorSP intakeMotor;
 
   public static CANSparkMax climbMotor; //Climb Motor
-  public static DoubleSolenoid m_climbPiston; //Climb Piston
-  public static RelativeEncoder ClimbEncoder;
+  public static DoubleSolenoid climbPiston; //Climb Piston
+  public static RelativeEncoder climbEncoder;
   public static DigitalInput upperClimbLimitSwitch;
   public static DigitalInput lowerClimbLimitSwitch;
   public static int climbValue; //For climb's add value
+  public static SparkMaxPIDController climbMotorPID;
 
   public static Command ClimbButtonSequence;
   public Command climbSequence;
@@ -126,11 +125,17 @@ public class RobotContainer
     
     //Climb Releveant---
     climb = new Climb(); //Defines the subsystem
-    m_climbPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kPistonFirstClimbChannel, Constants.kPistonFirstReverseClimbChannel);
+    climbPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kPistonClimbChannel, Constants.kPistonReverseClimbChannel);
     climbMotor = new CANSparkMax(Constants.kClimbChannel, MotorType.kBrushless);
     upperClimbLimitSwitch = new DigitalInput(Constants.upperClimbLimitSwitchChannel);
     lowerClimbLimitSwitch = new DigitalInput(Constants.lowerClimbLimitSwitchChannel);
-    ClimbEncoder = climbMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.kEncoderCountsPerRev);
+    climbEncoder = climbMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.kEncoderCountsPerRev);
+
+    climbMotorPID = climbMotor.getPIDController();
+    climbMotorPID.setP(Constants.CLIMB_kP);
+    climbMotorPID.setI(Constants.CLIMB_kI);
+    climbMotorPID.setD(Constants.CLIMB_kD);
+    climbMotorPID.setOutputRange(Constants.CLIMB_MIN_OUTPUT, Constants.CLIMB_MAX_OUTPUT);
 
 
     SmartDashboard.putData("Shooter Run", new ShooterRun(shooter)); //Puts data on Shuffleboard to use the command. Displays
@@ -139,7 +144,7 @@ public class RobotContainer
     SmartDashboard.putData("Intake Run", new IntakeRun(intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(intake));        
     SmartDashboard.putData("Climb Run", new ClimbButtonSequence(climb)); //Puts data on Shuffleboard to use the command
-    SmartDashboard.putData("Climb's Sequence", new AddOne(climb)); //Puts data on Shuffleboard to see what stage climbValue is at.
+    SmartDashboard.putNumber("Climb's Sequence", climbValue); //Puts data on Shuffleboard to see what stage climbValue is at.
 
 
     configureButtonBindings();
@@ -161,11 +166,15 @@ public class RobotContainer
 
       //Climb Button Configured
     climbButton = new JoystickButton(joystickShooter, Constants.climbButtonNumber);
-    climbSequence = new ClimbButtonSequence(climb);
-    climbButton.whenPressed(climbSequence);
+    // climbSequence = new ClimbButtonSequence(climb);
+    // climbButton.whileActiveOnce(climbSequence);
+    climbButton.whileActiveOnce(new ClimbButtonSequence(climb));
+
+
     addButton = new JoystickButton(joystickShooter, Constants.addButtonNumber);
-    addOne = new AddOne(climb);
-    addButton.whenPressed(addOne);
+    addOne = new IncreaseStage(climb);
+    addButton.whileActiveOnce(addOne);
+
     cancellationButton1 = new JoystickButton(joystickShooter, Constants.cancellationButton1);
     cancellationButton2 = new JoystickButton(joystickShooter, Constants.cancellationButton2);
     CancellationButtonsClimb cancellationButtons = new CancellationButtonsClimb(cancellationButton1, cancellationButton2);

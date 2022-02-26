@@ -1,11 +1,6 @@
 {
   "HALProvider": {
     "Other Devices": {
-      "Compressor[0]": {
-        "header": {
-          "open": true
-        }
-      },
       "SPARK MAX [1]": {
         "header": {
           "open": true
@@ -37,7 +32,15 @@
     }
   },
   "NetworkTables": {
+    "LiveWindow": {
+      "Climb": {
+        "open": true
+      }
+    },
     "SmartDashboard": {
+      "Climb's Sequence": {
+        "open": true
+      },
       "open": true
     }
   }
