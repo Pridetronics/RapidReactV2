@@ -20,10 +20,13 @@ import frc.robot.subsystems.Intake;
 
 import frc.robot.commands.DriveJoystick;
 import frc.robot.commands.ReleaseGate;
+import frc.robot.commands.ShooterAdjust;
 import frc.robot.commands.ShooterRun;
+import frc.robot.commands.SimpleShooterRun;
 import frc.robot.commands.VisionMode;
 import frc.robot.commands.LimelightDistanceFinder;
 import frc.robot.commands.ExtendRetractIntake;
+import frc.robot.commands.FindTarget;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.AddOne;
 import frc.robot.commands.CancellationButtonsClimb;
@@ -111,13 +114,14 @@ public class RobotContainer {
   public JoystickButton cancellationButton1;
   public JoystickButton cancellationButton2;
   public JoystickButton visionModeButton;
+  public JoystickButton findTargetButton;
   public Joystick joystickDriver; // Controller 0 --Ensure that all controllers are in proper ports in Driver Station
   public Joystick joystickShooter; // Controller 1
 
   //Sendable Chooser--
-  SendableChooser <Command> m_chooser = new SendableChooser<>();
-  private final AutoDriveShoot m_auto2 = new AutoDriveShoot(m_drive);
-  private final  AutoMoveBackwards m_auto1 = new AutoMoveBackwards(m_drive);
+  SendableChooser <Command> m_chooser; 
+  private final AutoDriveShoot m_auto2; 
+  private final  AutoMoveBackwards m_auto1; 
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -140,6 +144,11 @@ public class RobotContainer {
     rearRight.setInverted(true);
 
     m_drive = new Drive(joystickDriver);
+    m_chooser = new SendableChooser<>();
+    m_auto2 = new AutoDriveShoot(m_drive);
+    m_auto1 = new AutoMoveBackwards(m_drive);
+
+
 
     // Shooter Relevant---
     shooterMotor = new CANSparkMax(Constants.kShooterCANID, MotorType.kBrushless);
@@ -173,15 +182,17 @@ public class RobotContainer {
     //SmartDashboard Relevant-- Remove these during competition time
     SmartDashboard.putData("Climb Run", new ClimbButtonSequence(m_climb)); //Puts data on Shuffleboard to use the command
     SmartDashboard.putData("Climb's Sequence", new AddOne(m_climb)); //Puts data on Shuffleboard to see what stage climbValue is at.
-    SmartDashboard.putData("Shooter Run", new ShooterRun(m_shooter)); // Puts data on Shuffleboard to use the command.
+    SmartDashboard.putData("Shooter Run", new ShooterRun(m_shooter, m_drive)); // Puts data on Shuffleboard to use the command.
+    SmartDashboard.putData("Shooter Adjust", new ShooterAdjust(m_drive));
     SmartDashboard.putData("Release Gate", new ReleaseGate(m_shooter)); // Displays on the screen and can be run by pushing the square. Pretty neat
     SmartDashboard.putData("Intake Run", new IntakeRun(m_intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(m_intake));
     SmartDashboard.putData("Find Distance", new LimelightDistanceFinder(m_shooter));
     SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));   
-    m_chooser.setDefaultOption("Auto Move Backwards", m_auto1);
-    m_chooser.addOption("Auto Move and Shoot", m_auto2);
-    SmartDashboard.putData("Auto Chooser", m_chooser);
+    SmartDashboard.putData("Find Target", new FindTarget(m_drive));
+    // m_chooser.setDefaultOption("Auto Move Backwards", m_auto1);
+    // m_chooser.addOption("Auto Move and Shoot", m_auto2);
+    // SmartDashboard.putData("Auto Chooser", m_chooser);
 
     configureButtonBindings();
   }
@@ -189,13 +200,21 @@ public class RobotContainer {
   private void configureButtonBindings() {
     visionModeButton = new JoystickButton(joystickShooter, Constants.visionModeButtonNumber); 
     visionModeButton.toggleWhenPressed(new VisionMode(m_shooter)); //Switches between modes. See Shooter subsytem for function. 
+
+    findTargetButton = new JoystickButton(joystickShooter, Constants.findTargetButtonNumber); //Change this to left trigger
+    findTargetButton.whenPressed(new FindTarget(m_drive));
     
     // Shooter Button Configured and Command Assigned to Button
-    shooterButton = new JoystickButton(joystickShooter, Constants.shooterButtonNumber);
+    shooterButton = new JoystickButton(joystickShooter, Constants.shooterButtonNumber); //Eventually change to right trigger
     shooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate commands
-      new ShooterRun(m_shooter),
+      new ShooterRun(m_shooter, m_drive),
       new WaitCommand(0.2),
       new ReleaseGate(m_shooter))); // References the command and inside the needed subsytem
+    //Simple Shooter----
+    // shooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate commands
+    //   new SimpleShooterRun(m_shooter),
+    //   new WaitCommand(0.2),
+    //   new ReleaseGate(m_shooter))); // References the command and inside the needed subsytem
 
     intakeButton = new JoystickButton(joystickShooter, Constants.intakeButtonNumber);
     intakeButton.whileHeld(new ParallelCommandGroup(
@@ -220,11 +239,11 @@ public class RobotContainer {
     //There is also no need to do anything for the stationary arm
     //Winches is just the one motor going forward and reverse.
   }
+//Uncommented this-- maybe it will work next time I run it
+  // public Command getAutonomousCommand() 
+  // {
+  //  return (Command) m_chooser.getSelected();
 
-  public Command getAutonomousCommand() 
-  {
-   return (Command) m_chooser.getSelected();
-
-  }
+  // }
 }
 

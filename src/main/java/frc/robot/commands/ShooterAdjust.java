@@ -6,36 +6,30 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.Shooter;
 
-public class ShooterRun extends CommandBase {
-
-  private Shooter m_shooter;
+public class ShooterAdjust extends CommandBase {
   private Drive m_drive;
 
-  public ShooterRun(Shooter Shooter, Drive Drive) {
-    m_shooter = Shooter;
-    m_drive = Drive;
+  public ShooterAdjust(Drive drive) {
+    m_drive = drive;
 
-    addRequirements(m_shooter);
     addRequirements(m_drive);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     m_drive.shooterAdjust();
-    m_shooter.ShooterRun(); //Looks for function within shooter.  
   }
 
+  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.ShooterStop(); //Zeroes motors. 
-    m_shooter.RetractGate();
+    m_drive.driveStop();
   }
 
   // Returns true when the command should end.
