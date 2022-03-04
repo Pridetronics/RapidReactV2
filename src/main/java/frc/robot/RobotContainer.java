@@ -7,13 +7,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
-import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
@@ -29,20 +28,19 @@ import frc.robot.commands.LimelightDistanceFinder;
 import frc.robot.commands.ExtendRetractIntake;
 import frc.robot.commands.FindTarget;
 import frc.robot.commands.IntakeRun;
-import frc.robot.commands.AddOne;
 import frc.robot.commands.CancellationButtonsClimb;
-import frc.robot.commands.CancelClimb;
-import frc.robot.commands.ClimbButtonSequence;
-import frc.robot.commands.ClimbPiston;
-import frc.robot.commands.DescendPivotArms;
-import frc.robot.commands.RaisePivotArms;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.commands.AutoDriveShoot;
 import frc.robot.commands.AutoMoveBackwards;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import frc.robot.commands.DriveJoystick;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxRelativeEncoder;
@@ -54,6 +52,16 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+
+import frc.robot.commands.ReleaseGate;
+import frc.robot.commands.ShooterRun;
+import frc.robot.commands.ExtendIntake;
+import frc.robot.commands.IntakeRun;
+import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -82,36 +90,18 @@ public class RobotContainer {
 
   //Intake--
   public static Compressor intakeCompressor;
-  public static Solenoid intakePiston;
-  public static VictorSP intakeMotor;
+  public static DoubleSolenoid intakePiston;
+  public static Talon intakeMotor;
 
-  //Climb--
-  public static CANSparkMax climbMotor; //Climb Motor
-  public static DoubleSolenoid m_climbPiston; //Climb Piston
-  public static RelativeEncoder ClimbEncoder;
-  public static DigitalInput upperClimbLimitSwitch;
-  public static DigitalInput lowerClimbLimitSwitch;
-  public static int climbValue; //For climb's add value
-
-  //Climb Commands--
-  public static Command ClimbButtonSequence;
-  public Command climbSequence;
-  public static Command CancelClimb;
-  public Command cancelClimb;
-  public static Command AddOne;
-  public Command addOne;
 
   //Subsystems--
   public static Intake m_intake;
   public static Shooter m_shooter; // Creates the subsytem for shooter
   public static Drive m_drive;
-  public static Climb m_climb; //Creates the subsystem for climb
-  
-  //Buttons and Joysticks--
+
   public JoystickButton shooterButton; // Button for the shooter
   public JoystickButton intakeButton;
   public static JoystickButton climbButton;
-  public JoystickButton addButton;
   public JoystickButton cancellationButton1;
   public JoystickButton cancellationButton2;
   public JoystickButton visionModeButton;
@@ -120,8 +110,18 @@ public class RobotContainer {
   public Joystick joystickDriver; // Controller 0 --Ensure that all controllers are in proper ports in Driver Station
   public Joystick joystickShooter; // Controller 1
 
+  // Climb--
+  public static CANSparkMax climbMotor; // Climb Motor
+  public static DoubleSolenoid m_climbPiston; // Climb Piston
+  public static RelativeEncoder ClimbEncoder;
+  public static DigitalInput upperClimbLimitSwitch;
+  public static DigitalInput lowerClimbLimitSwitch;
+  public static SparkMaxPIDController climbMotorPID;
+  public JoystickButton sequenceButton;
+  public int stageLevel;
+
   //Sendable Chooser--
-  SendableChooser <Command> m_chooser; 
+  static SendableChooser <Command> m_chooser; 
   private final AutoDriveShoot m_auto2; 
   private final  AutoMoveBackwards m_auto1; 
 
@@ -169,21 +169,13 @@ public class RobotContainer {
     
     // Intake Relevant---
     intakeCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-    intakePiston = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0);
-    intakeMotor = new VictorSP(Constants.kIntakeCANID);
+    intakePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kIntakePistonForwardChannel,
+        Constants.kIntakePistonForwardChannel);
+    intakeMotor = new Talon(Constants.kIntakeCANID);
     m_intake = new Intake();
 
-    // Climb Relevant--
-    m_climbPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kPistonFirstClimbChannel, Constants.kPistonFirstReverseClimbChannel);
-    climbMotor = new CANSparkMax(Constants.kClimbCANID, MotorType.kBrushless);
-    upperClimbLimitSwitch = new DigitalInput(Constants.upperClimbLimitSwitchChannel);
-    lowerClimbLimitSwitch = new DigitalInput(Constants.lowerClimbLimitSwitchChannel);
-    ClimbEncoder = climbMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.kEncoderCountsPerRev);
-    m_climb = new Climb(); //Defines the subsystem
-
     //SmartDashboard Relevant-- Remove these during competition time
-    SmartDashboard.putData("Climb Run", new ClimbButtonSequence(m_climb)); //Puts data on Shuffleboard to use the command
-    SmartDashboard.putData("Climb's Sequence", new AddOne(m_climb)); //Puts data on Shuffleboard to see what stage climbValue is at.
+
     SmartDashboard.putData("Shooter Run", new ShooterRun(m_shooter, m_drive)); // Puts data on Shuffleboard to use the command.
     SmartDashboard.putData("Shooter Adjust", new ShooterAdjust(m_drive));
     SmartDashboard.putData("Release Gate", new ReleaseGate(m_shooter)); // Displays on the screen and can be run by pushing the square. Pretty neat
@@ -197,6 +189,7 @@ public class RobotContainer {
     // SmartDashboard.putData("Auto Chooser", m_chooser);
 
     configureButtonBindings();
+    m_drive.setDefaultCommand(new DriveJoystick(joystickDriver, m_drive));
   }
 
   private void configureButtonBindings() {
@@ -222,33 +215,17 @@ public class RobotContainer {
     //   new ReleaseGate(m_shooter))); // References the command and inside the needed subsytem
 
     intakeButton = new JoystickButton(joystickShooter, Constants.intakeButtonNumber);
-    intakeButton.whileHeld(new ParallelCommandGroup(
-        new ExtendRetractIntake(m_intake),
-        new WaitCommand(3),
+    intakeButton.whileHeld(new SequentialCommandGroup(
+        new ExtendIntake(m_intake),
         new IntakeRun(m_intake)));
-
-    //Climb Button Configured
-    climbButton = new JoystickButton(joystickShooter, Constants.climbButtonNumber);
-    climbSequence = new ClimbButtonSequence(m_climb);
-    climbButton.whenPressed(climbSequence);
-    addButton = new JoystickButton(joystickShooter, Constants.addButtonNumber);
-    addOne = new AddOne(m_climb);
-    addButton.whenPressed(addOne);
-    cancellationButton1 = new JoystickButton(joystickShooter, Constants.cancellationButton1);
-    cancellationButton2 = new JoystickButton(joystickShooter, Constants.cancellationButton2);
-    CancellationButtonsClimb cancellationButtons = new CancellationButtonsClimb(cancellationButton1, cancellationButton2);
-    cancelClimb = new CancelClimb(m_climb);
-    cancellationButtons.whenPressed(cancelClimb);
-
-    //Need to add encoders, when it is at the bottom you have to make sure the encoders is at 0.
-    //There is also no need to do anything for the stationary arm
-    //Winches is just the one motor going forward and reverse.
   }
 //Uncommented this-- maybe it will work next time I run it
   // public Command getAutonomousCommand() 
   // {
   //  return (Command) m_chooser.getSelected();
 
-  // }
+  public Command getAutonomousCommand() {
+    return (Command) m_chooser.getSelected();
+  }
 }
 
