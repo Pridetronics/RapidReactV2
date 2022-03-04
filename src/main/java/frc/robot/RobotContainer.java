@@ -23,6 +23,7 @@ import frc.robot.commands.ReleaseGate;
 import frc.robot.commands.ShooterAdjust;
 import frc.robot.commands.ShooterRun;
 import frc.robot.commands.SimpleShooterRun;
+import frc.robot.commands.ShooterMode;
 import frc.robot.commands.VisionMode;
 import frc.robot.commands.LimelightDistanceFinder;
 import frc.robot.commands.ExtendRetractIntake;
@@ -114,6 +115,7 @@ public class RobotContainer {
   public JoystickButton cancellationButton1;
   public JoystickButton cancellationButton2;
   public JoystickButton visionModeButton;
+  public JoystickButton shooterModeButton;
   public JoystickButton findTargetButton;
   public Joystick joystickDriver; // Controller 0 --Ensure that all controllers are in proper ports in Driver Station
   public Joystick joystickShooter; // Controller 1
@@ -200,6 +202,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     visionModeButton = new JoystickButton(joystickShooter, Constants.visionModeButtonNumber); 
     visionModeButton.toggleWhenPressed(new VisionMode(m_shooter)); //Switches between modes. See Shooter subsytem for function. 
+
+    shooterModeButton = new JoystickButton(joystickShooter, Constants.shooterModeButtonNumber);
+    shooterModeButton.toggleWhenPressed(new ShooterMode(m_shooter));
 
     findTargetButton = new JoystickButton(joystickShooter, Constants.findTargetButtonNumber); //Change this to left trigger
     findTargetButton.whenPressed(new FindTarget(m_drive));

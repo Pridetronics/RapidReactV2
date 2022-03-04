@@ -20,6 +20,7 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final int shooterButtonNumber = 4; // All values will need to be adjusted for true values. SOLVE CONFLICTS
     public static final int intakeButtonNumber = 2;
     public static final int visionModeButtonNumber = 3;
+    public static final int shooterModeButtonNumber = 7;
     public static final int findTargetButtonNumber = 6;
     public static final int climbButtonNumber = 3; //For climb Button on the Gamepad
     public static final int cancellationButton1 = 1; //For climb's cancellation button on the Gamepad

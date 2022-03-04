@@ -76,11 +76,11 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Limelight V", tv);
     // This method will be called once per scheduler run
   }
-  public void SimpleShooterRun(){
+  public void SimpleShooterMode(){
     m_shooterMotor.set(.95);
   }
-  
-  public void ShooterRun(){ //Function created to run the motor-- referenced later in ShooterRun.java
+
+  public void AutoShooterMode(){ //Function created to run the motor-- referenced later in ShooterRun.java
     if (tv == 1){
       if (roundedDistance == 17) //This if statement checks for the distance (see find distance) and picks RPM based on this
       {

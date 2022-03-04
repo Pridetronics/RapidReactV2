@@ -4,16 +4,20 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
-public class SimpleShooterRun extends CommandBase {
+public class ShooterMode extends CommandBase {
+  /** Creates a new ShooterMode. */
   private Shooter m_shooter;
+  public static Boolean autoShooter;
 
-  public SimpleShooterRun(Shooter shooter) {
+  public ShooterMode(Shooter shooter) {
     m_shooter = shooter;
-    
+
     addRequirements(m_shooter);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -24,13 +28,16 @@ public class SimpleShooterRun extends CommandBase {
   @Override
   public void execute() {
     m_shooter.SimpleShooterMode();
+    autoShooter = false;
+    SmartDashboard.putString("Shooting Mode", "Manual Shooter");
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.ShooterStop(); //Zeroes motors. 
-    m_shooter.RetractGate();
+    m_shooter.AutoShooterMode();
+    autoShooter = true;
+    SmartDashboard.putString("Shooting Mode", "Automatic Shooter");
   }
 
   // Returns true when the command should end.

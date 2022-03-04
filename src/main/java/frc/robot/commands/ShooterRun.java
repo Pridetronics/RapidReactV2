@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Shooter;
+import frc.robot.commands.ShooterMode;
 
 public class ShooterRun extends CommandBase {
 
@@ -29,7 +30,13 @@ public class ShooterRun extends CommandBase {
   @Override
   public void execute() {
     m_drive.shooterAdjust();
-    m_shooter.ShooterRun(); //Looks for function within shooter.  
+    if (ShooterMode.autoShooter == true)
+    {
+      m_shooter.AutoShooterMode();
+    }
+    else{
+      m_shooter.SimpleShooterMode();
+    }
   }
 
   @Override
