@@ -6,10 +6,13 @@
       "/LiveWindow/Drive": "Subsystem",
       "/LiveWindow/Intake": "Subsystem",
       "/LiveWindow/Shooter": "Subsystem",
+      "/LiveWindow/Ungrouped/DigitalInput[0]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[1]": "Digital Input",
       "/LiveWindow/Ungrouped/MecanumDrive[1]": "MecanumDrive",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Ungrouped/Talon[4]": "Motor Controller",
       "/SmartDashboard/Autonomous": "Command",
+      "/SmartDashboard/Extend Intake": "Command",
       "/SmartDashboard/Extend/Retract Intake": "Command",
       "/SmartDashboard/Intake Run": "Command",
       "/SmartDashboard/Release Gate": "Command",
@@ -27,6 +30,12 @@
     }
   },
   "NetworkTables": {
+    "LiveWindow": {
+      "Drive": {
+        "open": true
+      },
+      "open": true
+    },
     "SmartDashboard": {
       "auto Mode": {
         "open": true

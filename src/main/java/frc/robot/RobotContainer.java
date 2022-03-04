@@ -20,10 +20,14 @@ import frc.robot.commands.DriveJoystick;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import frc.robot.commands.Autonomous;
@@ -31,7 +35,7 @@ import frc.robot.commands.ReleaseGate;
 import frc.robot.commands.ShooterRun;
 import frc.robot.commands.addCommand;
 import frc.robot.commands.testStage;
-import frc.robot.commands.ExtendRetractIntake;
+import frc.robot.commands.ExtendIntake;
 import frc.robot.commands.IntakeRun;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
@@ -59,7 +63,7 @@ public class RobotContainer {
   public static DoubleSolenoid shooterBallRelease; // Creates Double Solenoid for the shooter (relates to pistons)
 
   public static Compressor intakeCompressor;
-  public static Solenoid intakePiston;
+  public static DoubleSolenoid intakePiston;
   public static Talon intakeMotor;
 
   public static Intake intake;
@@ -67,13 +71,20 @@ public class RobotContainer {
   public static Drive m_drive;
   public static Autonomous m_auto;
   public static SendableChooser m_chooser;
-  public static Climb climb;
+  public static Climb m_climb;
 
   public JoystickButton shooterButton; // Button for the shooter
   public JoystickButton intakeButton;
   public Joystick joystickDriver; // Controller 0
   public Joystick joystickShooter; // Controller 1
 
+  // Climb--
+  public static CANSparkMax climbMotor; // Climb Motor
+  public static DoubleSolenoid m_climbPiston; // Climb Piston
+  public static RelativeEncoder ClimbEncoder;
+  public static DigitalInput upperClimbLimitSwitch;
+  public static DigitalInput lowerClimbLimitSwitch;
+  public static SparkMaxPIDController climbMotorPID;
   public JoystickButton addButton;
   public JoystickButton sequenceButton;
   public int stageLevel;
@@ -104,9 +115,24 @@ public class RobotContainer {
         Constants.kShooterGateReleaseChannel);
 
     intakeCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-    intakePiston = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0);
+    intakePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kIntakePistonForwardChannel,
+        Constants.kIntakePistonForwardChannel);
     intakeMotor = new Talon(Constants.kIntakeChannel);
     intake = new Intake();
+
+    // Climb Relevant--
+    m_climbPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kPistonFirstClimbChannel,
+        Constants.kPistonFirstReverseClimbChannel);
+    climbMotor = new CANSparkMax(Constants.kClimbCANID, MotorType.kBrushless);
+    upperClimbLimitSwitch = new DigitalInput(Constants.upperClimbLimitSwitchChannel);
+    lowerClimbLimitSwitch = new DigitalInput(Constants.lowerClimbLimitSwitchChannel);
+    ClimbEncoder = climbMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.kEncoderCountsPerRev);
+    climbMotorPID = climbMotor.getPIDController();
+    climbMotorPID.setP(Constants.CLIMB_kP);
+    climbMotorPID.setI(Constants.CLIMB_kI);
+    climbMotorPID.setD(Constants.CLIMB_kD);
+
+    m_climb = new Climb(); // Defines the subsystem
 
     // Command m_taxi = new Autonomous(m_drive);
     // Command m_testCommand = new IntakeRun(intake);
@@ -125,11 +151,11 @@ public class RobotContainer {
                                                                       // square. Pretty neat
     SmartDashboard.putData("Autonomous", new Autonomous(m_drive));
     SmartDashboard.putData("Intake Run", new IntakeRun(intake));
-    SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(intake));
+    SmartDashboard.putData("Extend Intake", new ExtendIntake(intake));
 
     configureButtonBindings();
 
-    m_drive.setDefaultCommand(new DriveJoystick(m_drive));
+    m_drive.setDefaultCommand(new DriveJoystick(joystickDriver, m_drive));
 
   }
 
@@ -143,14 +169,13 @@ public class RobotContainer {
 
     intakeButton = new JoystickButton(joystickShooter, Constants.intakeButtonNumber);
     intakeButton.whileHeld(new SequentialCommandGroup(
-        new ExtendRetractIntake(intake),
-        new WaitCommand(3),
+        new ExtendIntake(intake),
         new IntakeRun(intake)));
 
     addButton = new JoystickButton(joystickShooter, 8);
-    addButton.whileActiveOnce(new addCommand(climb));
+    addButton.whileActiveOnce(new addCommand(m_climb));
     sequenceButton = new JoystickButton(joystickShooter, 7);
-    sequenceButton.whileActiveOnce(new testStage(climb));
+    sequenceButton.whileActiveOnce(new testStage(m_climb));
   }
 
   public Command getAutonomousCommand() {

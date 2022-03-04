@@ -21,7 +21,7 @@ public final class Constants // Note for self: Define integers here. Button numb
 {
     public static final int kJoystickDriverChannel = 0; // For Joystick 0
     public static final int kJoystickShooterChannel = 1; // For Joystick 1
-    public static final int kShooterChannel = 7; // For the Shooter Motor
+    public static final int kShooterChannel = 9; // For the Shooter Motor
     public static final int shooterButtonNumber = 4; // For Shooter Button on the Gamepad
     public static final int intakeButtonNumber = 2;
     public static final int kShooterGateForwardChannel = 4; // For use in pneumatics system (same with the one below)
@@ -33,5 +33,8 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final int kRearRightChannel = 3;
 
     public static final int kIntakeChannel = 4;
+    public static final double kIntakeMotorSpeed = 0.6;
+    public static final int kIntakePistonForwardChannel = 2;
+    public static final int kIntakePistonReverseChannel = 3;
 
 }

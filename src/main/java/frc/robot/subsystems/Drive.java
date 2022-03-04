@@ -5,6 +5,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 import com.revrobotics.CANSparkMax;
@@ -29,10 +30,9 @@ public class Drive extends SubsystemBase {
   private CANSparkMax m_rearRightMotor;
   private MecanumDrive mecanumDrive;
 
-  public Joystick m_joystickDriver;
+  // public Joystick m_joystickDriver;
 
-  public Drive(Joystick joystickDriver) {
-    m_joystickDriver = joystickDriver;
+  public Drive(Joystick m_joystickDriver) {
 
     m_frontLeftMotor = RobotContainer.frontLeft;
     m_frontLeftMotor.setInverted(false);
@@ -69,7 +69,7 @@ public class Drive extends SubsystemBase {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public void cartesianDrive(double yValue, double xValue, double zValue) {
+  public void cartesianDrive(Joystick m_joystickDriver, double yValue, double xValue, double zValue) {
     yValue = m_joystickDriver.getY();
     xValue = m_joystickDriver.getX();
     zValue = m_joystickDriver.getZ();
@@ -90,8 +90,8 @@ public class Drive extends SubsystemBase {
     m_rearRightMotor.set(0);
   }
 
-  public void getGyroHeading() {
+  // public void getGyroHeading() {
 
-  }
+  // }
 
 }
