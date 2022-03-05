@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Autonomous;
 import frc.robot.commands.IntakeRun;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -55,23 +54,8 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-<<<<<<< HEAD
     SmartDashboard.putString("Program:", "Katie's Broken Code");
-     
-=======
 
-    chooser = new SendableChooser<Command>();
-
-    Command m_taxi = new Autonomous(RobotContainer.m_drive);
-    Command m_testCommand = new IntakeRun(RobotContainer.intake);
-
-    chooser.setDefaultOption("Taxi Autonomous", m_taxi);
-    chooser.addOption("Test Command", m_testCommand);
-
-    SmartDashboard.putString("Program:", "Shooter/Pneumatics Code (Katie)");
-    SmartDashboard.putData(chooser);
-
->>>>>>> Isaiah
   }
 
   /**
@@ -112,17 +96,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-<<<<<<< HEAD
-    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-=======
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    m_autonomousCommand = (Command) chooser.getSelected();
->>>>>>> Isaiah
 
-
-
-
-    
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -132,12 +107,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-<<<<<<< HEAD
 
-
-
-=======
->>>>>>> Isaiah
   }
 
   @Override
