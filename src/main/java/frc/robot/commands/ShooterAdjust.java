@@ -1,17 +1,19 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Drive;
 
-public class ClimbPiston extends CommandBase {
-  /** Creates a new ClimbPistonAngleOne. */
-  Climb m_climb; 
+public class ShooterAdjust extends CommandBase {
+  private Drive m_drive;
 
-  public ClimbPiston(Climb climb) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_climb = climb;
+  public ShooterAdjust(Drive drive) {
+    m_drive = drive;
 
-    addRequirements(m_climb);
+    addRequirements(m_drive);
   }
 
   // Called when the command is initially scheduled.
@@ -21,13 +23,13 @@ public class ClimbPiston extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      m_climb.pistonRelease();
+    m_drive.shooterAdjust();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      m_climb.pistonRetract();
+    m_drive.driveStop();
   }
 
   // Returns true when the command should end.

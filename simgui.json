@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "HALProvider": {
     "Other Devices": {
       "Compressor[0]": {
@@ -28,19 +29,20 @@
       }
     }
   },
+=======
+>>>>>>> Isaiah
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/Climb": "Subsystem",
       "/LiveWindow/Drive": "Subsystem",
-      "/LiveWindow/ExampleSubsystem": "Subsystem",
-      "/LiveWindow/FlyWheel": "Subsystem",
       "/LiveWindow/Intake": "Subsystem",
       "/LiveWindow/Shooter": "Subsystem",
       "/LiveWindow/Ungrouped/DigitalInput[0]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[1]": "Digital Input",
       "/LiveWindow/Ungrouped/MecanumDrive[1]": "MecanumDrive",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+<<<<<<< HEAD
       "/LiveWindow/Ungrouped/VictorSP[1]": "Motor Controller",
       "/LiveWindow/Ungrouped/VictorSP[6]": "Motor Controller",
       "/SmartDashboard/Autonomous": "Command",
@@ -49,13 +51,30 @@
       "/SmartDashboard/Climb's Sequence": "Command",
       "/SmartDashboard/Extend/Retract Intake": "Command",
       "/SmartDashboard/Find Distance": "Command",
+=======
+      "/LiveWindow/Ungrouped/Talon[4]": "Motor Controller",
+      "/SmartDashboard/Autonomous": "Command",
+      "/SmartDashboard/Extend Intake": "Command",
+      "/SmartDashboard/Extend/Retract Intake": "Command",
+>>>>>>> Isaiah
       "/SmartDashboard/Intake Run": "Command",
       "/SmartDashboard/Release Gate": "Command",
-      "/SmartDashboard/Shooter Run": "Command"
+      "/SmartDashboard/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/SendableChooser[1]": "String Chooser",
+      "/SmartDashboard/Shooter Run": "Command",
+      "/SmartDashboard/auto Mode": "String Chooser"
+    },
+    "windows": {
+      "/SmartDashboard/SendableChooser[0]": {
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables": {
     "LiveWindow": {
+<<<<<<< HEAD
       ".status": {
         "open": true
       },
@@ -72,6 +91,15 @@
         "open": true
       },
       "Intake Run": {
+=======
+      "Drive": {
+        "open": true
+      },
+      "open": true
+    },
+    "SmartDashboard": {
+      "auto Mode": {
+>>>>>>> Isaiah
         "open": true
       },
       "open": true
