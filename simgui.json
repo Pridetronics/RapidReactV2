@@ -1,4 +1,16 @@
 {
+<<<<<<< HEAD
+=======
+  "HALProvider": {
+    "Other Devices": {
+      "SPARK MAX [1]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
+>>>>>>> Helen
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
@@ -26,5 +38,21 @@
       "/SmartDashboard/Shooter Adjust": "Command",
       "/SmartDashboard/Shooter Run": "Command"
     }
+<<<<<<< HEAD
+=======
+  },
+  "NetworkTables": {
+    "LiveWindow": {
+      "Climb": {
+        "open": true
+      }
+    },
+    "SmartDashboard": {
+      "Climb's Sequence": {
+        "open": true
+      },
+      "open": true
+    }
+>>>>>>> Helen
   }
 }

@@ -13,6 +13,15 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.IncreaseStage;
+import frc.robot.commands.Autonomous;
+import frc.robot.commands.CancellationButtonsClimb;
+import frc.robot.commands.CancelClimb;
+import frc.robot.commands.CancelStage;
+import frc.robot.commands.ClimbButtonSequence;
+
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
@@ -85,12 +94,30 @@ public class RobotContainer {
   public static Intake m_intake;
   public static Shooter m_shooter; // Creates the subsytem for shooter
   public static Drive m_drive;
+  public static CANSparkMax climbMotor; // Climb Motor
+  public static DoubleSolenoid climbPiston; // Climb Piston
+  public static RelativeEncoder climbEncoder;
+  public static DigitalInput upperClimbLimitSwitch;
+  public static DigitalInput lowerClimbLimitSwitch;
+  public static SparkMaxPIDController climbPID;
+
+  public JoystickButton shooterButton; // Button for the shooter
+  public static Command ClimbButtonSequence;
+  public static Command CancelClimb;
+  public static Command AddOne;
+
+  public static Intake intake;
+  public static Shooter shooter; // Creates the subsytem for shooter
+  public static Drive drive;
+  public static Autonomous m_auto;
+  public static Climb climb; // Creates the subsystem for climb
 
   public JoystickButton shooterButton; // Button for the shooter
   public JoystickButton intakeButton;
   public static JoystickButton climbButton;
   public JoystickButton cancellationButton1;
   public JoystickButton cancellationButton2;
+  public JoystickButton cancelStageButton;
   public JoystickButton visionModeButton;
   public JoystickButton shooterModeButton;
   public JoystickButton findTargetButton;
@@ -152,7 +179,20 @@ public class RobotContainer {
     intakePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kIntakePistonForwardChannel, Constants.kIntakePistonReverseChannel);
     intakeMotor = new VictorSP(Constants.kIntakePWMID);
     m_intake = new Intake();
+    // Climb Releveant---
+    climbPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kPistonClimbChannel,
+        Constants.kPistonReverseClimbChannel);
+    climbMotor = new CANSparkMax(Constants.kClimbChannel, MotorType.kBrushless);
+    climbEncoder = climbMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.kEncoderCountsPerRev);
+    upperClimbLimitSwitch = new DigitalInput(Constants.upperClimbLimitSwitchChannel);
+    lowerClimbLimitSwitch = new DigitalInput(Constants.lowerClimbLimitSwitchChannel);
 
+    climbPID = climbMotor.getPIDController();
+    climbPID.setP(Constants.CLIMB_kP);
+    climbPID.setI(Constants.CLIMB_kI);
+    climbPID.setD(Constants.CLIMB_kD);
+    climbPID.setOutputRange(Constants.CLIMB_MIN_OUTPUT, Constants.CLIMB_MAX_OUTPUT);
+    climb = new Climb(); // Defines the subsystem
     // SmartDashboard Relevant-- Remove these during competition time
 
     SmartDashboard.putData("Shooter Run", new ShooterRun(m_shooter, m_drive)); // Puts data on Shuffleboard to use the command.
@@ -164,6 +204,7 @@ public class RobotContainer {
     SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));
     SmartDashboard.putData("Find Target", new FindTarget(m_drive));
     SmartDashboard.putData("Shooter Mode", new ShooterMode(m_shooter));
+    SmartDashboard.putData("Climb Run", new ClimbButtonSequence(climb)); // Puts data on Shuffleboard to use the command
 
     m_chooser.setDefaultOption("Auto Move Backwards", m_auto1);
     m_chooser.addOption("Auto Move Forward", m_autoDriveForward);
@@ -184,6 +225,18 @@ public class RobotContainer {
 
     findTargetButton = new JoystickButton(joystickShooter, Constants.findTargetButtonNumber); // Change this to left trigger
     findTargetButton.whenPressed(new FindTarget(m_drive));
+    // Climb Button Configured
+    climbButton = new JoystickButton(joystickShooter, Constants.climbButtonNumber);
+    climbButton.whileActiveOnce(new ClimbButtonSequence(climb));
+
+    addButton = new JoystickButton(joystickShooter, Constants.addButtonNumber);
+    addButton.whileActiveOnce(new IncreaseStage(climb));
+
+    cancellationButton1 = new JoystickButton(joystickShooter, Constants.cancellationButton1);
+    cancellationButton2 = new JoystickButton(joystickShooter, Constants.cancellationButton2);
+    CancellationButtonsClimb cancellationButtons = new CancellationButtonsClimb(cancellationButton1,
+        cancellationButton2);
+    cancellationButtons.whenPressed(new CancelClimb(climb));
 
     // Shooter Button Configured and Command Assigned to Button
     shooterButton = new JoystickButton(joystickShooter, Constants.shooterButtonNumber);
@@ -191,6 +244,9 @@ public class RobotContainer {
         new SimpleShooterRun(m_shooter),
         new WaitCommand(.4),
         new OpenGate(m_shooter))); // References the command and inside the needed subsytem
+    cancelStageButton = new JoystickButton(joystickShooter, Constants.cancelStageButtonNumber);
+    cancelStageButton.whileActiveOnce(new CancelStage(climb));
+  }
 
     intakeButton = new JoystickButton(joystickDriver, Constants.intakeButtonNumber);
     intakeButton.whileHeld(new ParallelCommandGroup(
