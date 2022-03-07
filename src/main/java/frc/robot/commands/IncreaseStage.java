@@ -34,7 +34,7 @@ public class IncreaseStage extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    SmartDashboard.putNumber("Stage Level", Climb.m_climbValue);
+    SmartDashboard.putNumber("Stage Level", Climb.climbValue);
   }
 
   // Returns true when the command should end.

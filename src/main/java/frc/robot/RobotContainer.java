@@ -72,8 +72,7 @@ public class RobotContainer {
   public static RelativeEncoder climbEncoder;
   public static DigitalInput upperClimbLimitSwitch;
   public static DigitalInput lowerClimbLimitSwitch;
-  public static int climbValue; // For climb's add value
-  public static SparkMaxPIDController climbMotorPID;
+  public static SparkMaxPIDController climbPID;
 
   public static Command ClimbButtonSequence;
   public static Command CancelClimb;
@@ -127,19 +126,19 @@ public class RobotContainer {
     intake = new Intake();
 
     // Climb Releveant---
-    climb = new Climb(); // Defines the subsystem
     climbPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kPistonClimbChannel,
         Constants.kPistonReverseClimbChannel);
     climbMotor = new CANSparkMax(Constants.kClimbChannel, MotorType.kBrushless);
+    climbEncoder = climbMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.kEncoderCountsPerRev);
     upperClimbLimitSwitch = new DigitalInput(Constants.upperClimbLimitSwitchChannel);
     lowerClimbLimitSwitch = new DigitalInput(Constants.lowerClimbLimitSwitchChannel);
-    climbEncoder = climbMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.kEncoderCountsPerRev);
 
-    climbMotorPID = climbMotor.getPIDController();
-    climbMotorPID.setP(Constants.CLIMB_kP);
-    climbMotorPID.setI(Constants.CLIMB_kI);
-    climbMotorPID.setD(Constants.CLIMB_kD);
-    climbMotorPID.setOutputRange(Constants.CLIMB_MIN_OUTPUT, Constants.CLIMB_MAX_OUTPUT);
+    climbPID = climbMotor.getPIDController();
+    climbPID.setP(Constants.CLIMB_kP);
+    climbPID.setI(Constants.CLIMB_kI);
+    climbPID.setD(Constants.CLIMB_kD);
+    climbPID.setOutputRange(Constants.CLIMB_MIN_OUTPUT, Constants.CLIMB_MAX_OUTPUT);
+    climb = new Climb(); // Defines the subsystem
 
     SmartDashboard.putData("Shooter Run", new ShooterRun(shooter)); // Puts data on Shuffleboard to use the command.
                                                                     // Displays
@@ -149,8 +148,6 @@ public class RobotContainer {
     SmartDashboard.putData("Intake Run", new IntakeRun(intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(intake));
     SmartDashboard.putData("Climb Run", new ClimbButtonSequence(climb)); // Puts data on Shuffleboard to use the command
-    SmartDashboard.putNumber("Climb's Sequence", climbValue); // Puts data on Shuffleboard to see what stage climbValue
-                                                              // is at.
 
     configureButtonBindings();
   }
@@ -184,12 +181,6 @@ public class RobotContainer {
 
     cancelStageButton = new JoystickButton(joystickShooter, Constants.cancelStageButtonNumber);
     cancelStageButton.whileActiveOnce(new CancelStage(climb));
-
-    // Need to add encoders, when it is at the bottom you have to make sure the
-    // encoders is at 0.
-    // There is also no need to do anything for the stationary arm
-    // Winches is just the one motor going forward and reverse.
-
   }
 
   public Command getAutonomousCommand() {

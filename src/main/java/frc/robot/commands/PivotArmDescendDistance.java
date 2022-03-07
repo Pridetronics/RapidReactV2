@@ -6,38 +6,51 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Climb;
 
-public class CancelClimb extends CommandBase {
-  /** Creates a new CancellationClimb. */
+public class PivotArmDescendDistance extends CommandBase {
+  /** Creates a new PivotArmDistanceTwo. */
   Climb m_climb;
 
-  public CancelClimb(Climb climb) {
+  double climbGoal;
+  double inch_goal;
+
+  public PivotArmDescendDistance(Climb climb, double inches) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_climb = climb;
     addRequirements(m_climb);
+    inch_goal = inches;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // m_climb.zeroEncoder();
+    climbGoal = m_climb.inchesToRevs(inch_goal);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_climb.cancelClimb();
+    m_climb.decendPivotArmDistance(climbGoal);
+    // SmartDashboard.putNumber("Goal to travel to", climbGoal);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    SmartDashboard.putNumber("Stage Level", Climb.climbValue);
+    m_climb.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (m_climb.getClimbRevs() >= Constants.climbDescendDistance || m_climb.isClimbAtBottom() == true) {
+      // System.out.println("CLIMBPID END");
+      return true;
+    } else {
+      return false;
+    }
   }
 }

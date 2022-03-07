@@ -10,6 +10,7 @@ import frc.robot.subsystems.Climb;
 
 public class CancelStage extends CommandBase {
   Climb m_climb;
+
   /** Creates a new CancelStage. */
   public CancelStage(Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -26,12 +27,13 @@ public class CancelStage extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    SmartDashboard.putNumber("Stage Level", Climb.m_climbValue);
+    SmartDashboard.putNumber("Stage Level", Climb.climbValue);
   }
 
   // Returns true when the command should end.
