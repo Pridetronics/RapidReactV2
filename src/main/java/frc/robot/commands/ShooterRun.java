@@ -30,12 +30,12 @@ public class ShooterRun extends CommandBase {
   @Override
   public void execute() {
     m_drive.shooterAdjust();
-    if (ShooterMode.autoShooter == true)
+    if (ShooterMode.autoShooter == true) //Checks the variable, hopefully to help select a shooter mode
     {
-      m_shooter.AutoShooterMode();
+      m_shooter.AutoShooterMode(); //Complex, if Limelight is present
     }
     else{
-      m_shooter.SimpleShooterMode();
+      m_shooter.SimpleShooterMode(); //Manual-- one distance
     }
   }
 

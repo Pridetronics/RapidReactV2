@@ -67,7 +67,7 @@ public class Shooter extends SubsystemBase {
 
     ty = yEntry.getDouble(0.0); // Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees)
     ta = aEntry.getDouble(0.0); // Target Area (0% of image to 100% of image)
-    tx = xEntry.getDouble(0.0); //Horizontal Offset From Crosshair to Target
+    tx = xEntry.getDouble(0.0); //Horizontal Offset From Crosshair to Target (-27.5 degrees to 27.5 degrees)
     tv = vEntry.getDouble(0.0); // Whether the limelight has any valid targets (0 or 1)
 
     SmartDashboard.putNumber("Limelight Area", ta); //Displays base limelight values to Shuffleboard
@@ -76,7 +76,7 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Limelight V", tv);
     // This method will be called once per scheduler run
   }
-  public void SimpleShooterMode(){
+  public void SimpleShooterMode(){ //Very basic (a manual mode in case the Limelight/Automatic Shooter is faulty)
     m_shooterMotor.set(.95);
   }
 
@@ -122,17 +122,17 @@ public class Shooter extends SubsystemBase {
       }
     SmartDashboard.putNumber("RPM", m_shooterEncoder.getVelocity());
   }
-  public void ShooterStop(){
+  public void ShooterStop(){ //Stops motors
    m_shooterPID.setReference(0.0, ControlType.kVelocity);
   }
-  public void zeroEncoders()
+  public void zeroEncoders() //Resets Encoders
   {
     m_shooterEncoder.setPosition(0);
   }
 
   public void ReleaseGate(){
     //m_shooterBallRelease.set(DoubleSolenoid.Value.kForward);
-    m_shooterServo.setPosition(.3); //(1300 ms)
+    m_shooterServo.setPosition(.3); //(1300 ms-- needs to be tested)
   }
   public void RetractGate(){
     //m_shooterBallRelease.set(DoubleSolenoid.Value.kReverse);
