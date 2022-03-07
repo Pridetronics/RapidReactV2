@@ -49,6 +49,7 @@ public class Shooter extends SubsystemBase {
     m_shooterPID = RobotContainer.shooterMotorPID;
     // m_shooterBallRelease = RobotContainer.shooterBallRelease;
     m_shooterServo = RobotContainer.shooterServo;
+    //m_shooterServo.setBounds(1300, 1150, 1150, 1150, 1000);
     m_shooterEncoder = RobotContainer.shooterEncoder;
     zeroEncoders();
   }
@@ -77,7 +78,8 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   public void SimpleShooterMode(){ //Very basic (a manual mode in case the Limelight/Automatic Shooter is faulty)
-    m_shooterMotor.set(.95);
+    m_shooterPID.setReference(Constants.shooterDefaultSpeed, ControlType.kVelocity);
+    SmartDashboard.putNumber("Shooter RPM", m_shooterEncoder.getVelocity());
   }
 
   public void AutoShooterMode(){ //Function created to run the motor-- referenced later in ShooterRun.java
@@ -123,20 +125,17 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("RPM", m_shooterEncoder.getVelocity());
   }
   public void ShooterStop(){ //Stops motors
-   m_shooterPID.setReference(0.0, ControlType.kVelocity);
+  m_shooterMotor.set(0);  
   }
   public void zeroEncoders() //Resets Encoders
   {
     m_shooterEncoder.setPosition(0);
   }
-
-  public void ReleaseGate(){
-    //m_shooterBallRelease.set(DoubleSolenoid.Value.kForward);
-    m_shooterServo.setPosition(.3); //(1300 ms-- needs to be tested)
+  public void OpenGate(){
+    m_shooterServo.setRaw(1000); 
   }
-  public void RetractGate(){
-    //m_shooterBallRelease.set(DoubleSolenoid.Value.kReverse);
-    m_shooterServo.setPosition(0); //1000 ms
+  public void CloseGate(){
+    m_shooterServo.setRaw(1300);
   }
   public void findDistance(){
     hTotal = 104 - 25.75; //Measures in meters. Change these to the official field values later-- This is for testing INPUT IN INCHES *****

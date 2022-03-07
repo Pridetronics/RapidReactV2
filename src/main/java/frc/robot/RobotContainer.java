@@ -18,7 +18,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 
 import frc.robot.commands.DriveJoystick;
-import frc.robot.commands.ReleaseGate;
+import frc.robot.commands.OpenGate;
 import frc.robot.commands.ShooterAdjust;
 import frc.robot.commands.ShooterRun;
 import frc.robot.commands.SimpleShooterRun;
@@ -79,7 +79,7 @@ public class RobotContainer {
   // Intake--
   public static Compressor intakeCompressor;
   public static DoubleSolenoid intakePiston;
-  public static Talon intakeMotor;
+  public static VictorSP intakeMotor;
 
   // Subsystems--
   public static Intake m_intake;
@@ -114,8 +114,10 @@ public class RobotContainer {
 
     // Drive Relevant---
     frontLeft = new CANSparkMax(Constants.kFrontLeftCANID, MotorType.kBrushless);
+    frontLeft.setInverted(false);
 
     rearLeft = new CANSparkMax(Constants.kRearLeftCANID, MotorType.kBrushless);
+    rearLeft.setInverted(false);
 
     frontRight = new CANSparkMax(Constants.kFrontRightCANID, MotorType.kBrushless);
     frontRight.setInverted(true);
@@ -131,7 +133,7 @@ public class RobotContainer {
 
     // Shooter Relevant---
     shooterMotor = new CANSparkMax(Constants.kShooterCANID, MotorType.kBrushless);
-    shooterMotor.setInverted(true);
+    shooterMotor.setInverted(false);
     shooterEncoder = shooterMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
     shooterMotorPID = shooterMotor.getPIDController();
@@ -147,23 +149,21 @@ public class RobotContainer {
 
     // Intake Relevant---
     intakeCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-    intakePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kIntakePistonForwardChannel,
-        Constants.kIntakePistonReverseChannel);
-    intakeMotor = new Talon(Constants.kIntakePWMID);
+    intakePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kIntakePistonForwardChannel, Constants.kIntakePistonReverseChannel);
+    intakeMotor = new VictorSP(Constants.kIntakePWMID);
     m_intake = new Intake();
 
     // SmartDashboard Relevant-- Remove these during competition time
 
-    SmartDashboard.putData("Shooter Run", new ShooterRun(m_shooter, m_drive)); // Puts data on Shuffleboard to use the
-                                                                               // command.
+    SmartDashboard.putData("Shooter Run", new ShooterRun(m_shooter, m_drive)); // Puts data on Shuffleboard to use the command.
     SmartDashboard.putData("Shooter Adjust", new ShooterAdjust(m_drive));
-    SmartDashboard.putData("Release Gate", new ReleaseGate(m_shooter)); // Displays on the screen and can be run by
-                                                                        // pushing the square. Pretty neat
+    SmartDashboard.putData("Open Gate", new OpenGate(m_shooter)); // Displays on the screen and can be run by pushing the square. Pretty neat
     SmartDashboard.putData("Intake Run", new IntakeRun(m_intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendIntake(m_intake));
     SmartDashboard.putData("Find Distance", new LimelightDistanceFinder(m_shooter));
     SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));
     SmartDashboard.putData("Find Target", new FindTarget(m_drive));
+    SmartDashboard.putData("Shooter Mode", new ShooterMode(m_shooter));
 
     m_chooser.setDefaultOption("Auto Move Backwards", m_auto1);
     m_chooser.addOption("Auto Move Forward", m_autoDriveForward);
@@ -188,13 +188,14 @@ public class RobotContainer {
     // Shooter Button Configured and Command Assigned to Button
     shooterButton = new JoystickButton(joystickShooter, Constants.shooterButtonNumber);
     shooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate commands
-        new ShooterRun(m_shooter, m_drive),
-        new WaitCommand(0.2),
-        new ReleaseGate(m_shooter))); // References the command and inside the needed subsytem
+        new SimpleShooterRun(m_shooter),
+        new WaitCommand(.4),
+        new OpenGate(m_shooter))); // References the command and inside the needed subsytem
 
     intakeButton = new JoystickButton(joystickDriver, Constants.intakeButtonNumber);
-    intakeButton.whileHeld(new SequentialCommandGroup(
+    intakeButton.whileHeld(new ParallelCommandGroup(
         new ExtendIntake(m_intake),
+        new WaitCommand(.4),
         new IntakeRun(m_intake)));
   }
   public Command getAutonomousCommand() {

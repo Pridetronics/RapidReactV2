@@ -10,8 +10,12 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.IntakeRun;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableEntry;
 // import edu.wpi.first.wpilibj2.command.button.*;
 // import edu.wpi.first.wpilibj2.command.button.Button;
 // import edu.wpi.first.wpilibj.Joystick;
@@ -50,12 +54,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer. This will perform all our button bindings,
-    // and put our
-    // autonomous chooser on the dashboard.
+    // Instantiate our RobotContainer. This will perform all our button bindings, and put our autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    SmartDashboard.putString("Program:", "Katie's Broken Code");
-
+    SmartDashboard.putString("Program:", "Is broken");
+    RobotContainer.intakePiston.set(DoubleSolenoid.Value.kForward);
+    RobotContainer.shooterServo.setRaw(1300);
   }
 
   /**
@@ -118,9 +121,6 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
-
-      RobotContainer.intakePiston.set(DoubleSolenoid.Value.kForward);
-
     }
   }
 }

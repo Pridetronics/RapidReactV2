@@ -43,25 +43,21 @@ public class Drive extends SubsystemBase {
   public Drive(Joystick m_joystickDriver) {
 
     m_frontLeftMotor = RobotContainer.frontLeft;
-    m_frontLeftMotor.setInverted(false);
     m_frontLeftEncoder = m_frontLeftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     m_frontLeftEncoder.setPositionConversionFactor(0.0378);
     m_frontLeftPIDController = m_frontLeftMotor.getPIDController();
 
     m_frontRightMotor = RobotContainer.frontRight;
-    m_frontRightMotor.setInverted(false);
     m_frontRightEncoder = m_frontRightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     m_frontRightEncoder.setPositionConversionFactor(0.0378);
     m_frontRightPIDController = m_frontRightMotor.getPIDController();
 
     m_rearLeftMotor = RobotContainer.rearLeft;
-    m_rearLeftMotor.setInverted(false);
     m_rearLeftEncoder = m_rearLeftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     m_rearLeftEncoder.setPositionConversionFactor(0.0378);
     m_rearLeftPIDController = m_rearLeftMotor.getPIDController();
 
     m_rearRightMotor = RobotContainer.rearRight;
-    m_rearRightMotor.setInverted(false);
     m_rearRightEncoder = m_rearRightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     m_rearRightEncoder.setPositionConversionFactor(0.0378);
     m_rearRightPIDController = m_rearRightMotor.getPIDController();
@@ -117,7 +113,9 @@ public class Drive extends SubsystemBase {
     yValue = m_joystickDriver.getY();
     xValue = m_joystickDriver.getX();
     zValue = m_joystickDriver.getZ();
-    mecanumDrive.driveCartesian(yValue, xValue, zValue);
+    mecanumDrive.driveCartesian(yValue, -xValue, -zValue);
+    // mecanumDrive.driveCartesian((yValue * Math.abs(yValue)), -(xValue * Math.abs(xValue)), -(zValue * Math.abs(zValue)));
+
   }
 
   public void driveStop() {

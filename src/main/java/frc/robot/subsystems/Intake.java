@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 public class Intake extends SubsystemBase {
   private Compressor m_intakeCompressor;
   private DoubleSolenoid m_intakePiston;
-  private Talon m_intakeMotor;
+  private VictorSP m_intakeMotor;
 
   public Intake() {
     m_intakeCompressor = RobotContainer.intakeCompressor;
@@ -29,7 +29,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void runIntakeMotor() {
-    m_intakeMotor.set(Constants.kIntakeMotorSpeed);
+    m_intakeMotor.set(.7);
   }
 
   public void stopIntakeMotor() {
@@ -37,10 +37,10 @@ public class Intake extends SubsystemBase {
   }
 
   public void extendIntake() {
-    m_intakePiston.set(DoubleSolenoid.Value.kForward);
+    m_intakePiston.set(DoubleSolenoid.Value.kReverse);
   }
 
   public void retractIntake() {
-    m_intakePiston.set(DoubleSolenoid.Value.kReverse);
+    m_intakePiston.set(DoubleSolenoid.Value.kForward);
   }
 }

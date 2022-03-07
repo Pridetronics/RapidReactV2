@@ -20,16 +20,16 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final int kJoystickDriverID = 0; // For Joystick 0
     public static final int kJoystickShooterID = 1; // For Joystick 1
 
-    public static final int shooterButtonNumber = 8; // All values will need to be adjusted for true values. SOLVE CONFLICTS
+    public static final int shooterButtonNumber = 4; // All values will need to be adjusted for true values. 
     public static final int intakeButtonNumber = 1;
     public static final int visionModeButtonNumber = 7;
     public static final int shooterModeButtonNumber = 7;
-    public static final int findTargetButtonNumber = 7;
+    public static final int findTargetButtonNumber = 9;
 
     // Drive--
     public static final int kFrontLeftCANID = 2; // For all of the drive motors
     public static final int kRearLeftCANID = 4;
-    public static final int kFrontRightCANID = 1; // Switch with shooter motor after testing
+    public static final int kFrontRightCANID = 1; 
     public static final int kRearRightCANID = 3;
 
     public static final double kDriveDistance = 24; // In Inches - wont go exactly due to mecanum wheel loss
@@ -43,17 +43,14 @@ public final class Constants // Note for self: Define integers here. Button numb
 
     // Shooter--
     public static final int kShooterCANID = 5; // For the Shooter Motor
-    public static final int shooterDefaultSpeed = 3000; // This will act as a minimum speed if no target is found.
-                                                        // Allows the Gate to release.
-    public static final double SHOOTER_kP = 0.0002;
+    public static final int shooterDefaultSpeed = 5000; // This will act as a minimum speed if no target is found. Allows the Gate to release.
+    public static final double SHOOTER_kP = 0.0001;
     public static final double SHOOTER_kI = 0.000001;
     public static final double SHOOTER_kD = 0.0004;
     public static final double MAX_NEO_RPM = 5676.0;
     public static final double SHOOTER_MAX_OUTPUT = 6000.0;
     public static final double SHOOTER_MIN_OUTPUT = -6000.0;
     public static final int kShooterServoPWMID = 0;
-    // public static final int kShooterGateForwardID = 4; //Swap out for Servo ID--
-    // leaving this just in case (REMOVE LATER)
     // public static final int kShooterGateReleaseID = 5;
     // RPM Values for Shooter-- Needs to be adjusted later. (HOPEFULLY I CAN GET RID
     // OF THIS... Ask me how later)

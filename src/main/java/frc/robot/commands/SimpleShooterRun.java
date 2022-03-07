@@ -30,7 +30,7 @@ public class SimpleShooterRun extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_shooter.ShooterStop(); //Zeroes motors. 
-    m_shooter.RetractGate();
+    m_shooter.CloseGate();
   }
 
   // Returns true when the command should end.

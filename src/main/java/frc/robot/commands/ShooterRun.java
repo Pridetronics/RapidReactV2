@@ -29,20 +29,21 @@ public class ShooterRun extends CommandBase {
 
   @Override
   public void execute() {
-    m_drive.shooterAdjust();
-    if (ShooterMode.autoShooter == true) //Checks the variable, hopefully to help select a shooter mode
-    {
-      m_shooter.AutoShooterMode(); //Complex, if Limelight is present
-    }
-    else{
-      m_shooter.SimpleShooterMode(); //Manual-- one distance
-    }
+    m_shooter.SimpleShooterMode();
+    // m_drive.shooterAdjust();
+    // if (ShooterMode.autoShooter == true) //Checks the variable, hopefully to help select a shooter mode
+    // {
+    //   m_shooter.AutoShooterMode(); //Complex, if Limelight is present
+    // }
+    // else{
+    //   m_shooter.SimpleShooterMode(); //Manual-- one distance
+    // }
   }
 
   @Override
   public void end(boolean interrupted) {
     m_shooter.ShooterStop(); //Zeroes motors. 
-    m_shooter.RetractGate();
+    m_shooter.CloseGate();
   }
 
   // Returns true when the command should end.
