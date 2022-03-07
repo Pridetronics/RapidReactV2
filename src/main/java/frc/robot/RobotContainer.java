@@ -101,7 +101,6 @@ public class RobotContainer {
   public static DigitalInput lowerClimbLimitSwitch;
   public static SparkMaxPIDController climbPID;
 
-  public JoystickButton shooterButton; // Button for the shooter
   public static Command ClimbButtonSequence;
   public static Command CancelClimb;
   public static Command AddOne;
@@ -115,6 +114,7 @@ public class RobotContainer {
   public JoystickButton shooterButton; // Button for the shooter
   public JoystickButton intakeButton;
   public static JoystickButton climbButton;
+  public JoystickButton addButton;
   public JoystickButton cancellationButton1;
   public JoystickButton cancellationButton2;
   public JoystickButton cancelStageButton;
@@ -246,7 +246,6 @@ public class RobotContainer {
         new OpenGate(m_shooter))); // References the command and inside the needed subsytem
     cancelStageButton = new JoystickButton(joystickShooter, Constants.cancelStageButtonNumber);
     cancelStageButton.whileActiveOnce(new CancelStage(climb));
-  }
 
     intakeButton = new JoystickButton(joystickDriver, Constants.intakeButtonNumber);
     intakeButton.whileHeld(new ParallelCommandGroup(

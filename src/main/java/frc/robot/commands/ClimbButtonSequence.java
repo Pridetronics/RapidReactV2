@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import frc.robot.subsystems.Climb;
 
 public class ClimbButtonSequence extends CommandBase {
@@ -83,6 +84,7 @@ public class ClimbButtonSequence extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    RobotContainer.intakePiston.set(DoubleSolenoid.Value.kForward);
     climbSequence();
   }
 

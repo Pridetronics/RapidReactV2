@@ -20,7 +20,7 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final int kJoystickDriverID = 0; // For Joystick 0
     public static final int kJoystickShooterID = 1; // For Joystick 1
 
-    public static final int shooterButtonNumber = 4; // All values will need to be adjusted for true values. 
+    public static final int shooterButtonNumber = 8; // All values will need to be adjusted for true values. 
     public static final int intakeButtonNumber = 1;
     public static final int visionModeButtonNumber = 7;
     public static final int shooterModeButtonNumber = 7;
