@@ -139,8 +139,8 @@ public class Shooter extends SubsystemBase {
     m_shooterServo.setPosition(0); //1000 ms
   }
   public void findDistance(){
-    hTotal = 104 - 20; //Measures in meters. Change these to the official field values later-- This is for testing
-    aTotal = 0.68 + ty; //MEASURES IN RADIANS NOT DEGREES. DO NOT MAKE THE SAME MISTAKES (PUT THE VALUES IN AS RADIANS)
+    hTotal = 104 - 25.75; //Measures in meters. Change these to the official field values later-- This is for testing INPUT IN INCHES *****
+    aTotal = 0.628 + ty; //MEASURES IN RADIANS NOT DEGREES. DO NOT MAKE THE SAME MISTAKES (PUT THE VALUES IN AS RADIANS)
     aTan = Math.tan(aTotal);
 
     initialDistance = hTotal/aTan; //Outputs in meters/radian. Returns negative, so there's a negative on the next line
