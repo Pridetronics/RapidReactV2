@@ -14,23 +14,17 @@ package frc.robot;
  * It is advised to statically import this class (or one of its inner classes)
  * wherever the constants are needed, to reduce verbosity.
  */
-public final class Constants // Note for self: Define integers here. Button numbers and the addresses of the
-                             // motors.
+public final class Constants // Note for self: Define integers here. Button numbers and the addresses of the motors.
 {
     // Joysticks and Button Numbers--
     public static final int kJoystickDriverID = 0; // For Joystick 0
     public static final int kJoystickShooterID = 1; // For Joystick 1
 
-    public static final int shooterButtonNumber = 4; // All values will need to be adjusted for true values. SOLVE
-                                                     // CONFLICTS
-    public static final int intakeButtonNumber = 2;
-    public static final int visionModeButtonNumber = 3;
+    public static final int shooterButtonNumber = 8; // All values will need to be adjusted for true values. SOLVE CONFLICTS
+    public static final int intakeButtonNumber = 1;
+    public static final int visionModeButtonNumber = 7;
     public static final int shooterModeButtonNumber = 7;
-    public static final int findTargetButtonNumber = 6;
-    public static final int climbButtonNumber = 3; // For climb Button on the Gamepad
-    public static final int cancellationButton1 = 1; // For climb's cancellation button on the Gamepad
-    public static final int cancellationButton2 = 2; // For climb's cancellation button on the Gamepad
-    public static final int addButtonNumber = 5; // For climb's adding one button on the Gamepad
+    public static final int findTargetButtonNumber = 7;
 
     // Drive--
     public static final int kFrontLeftCANID = 2; // For all of the drive motors
@@ -72,21 +66,8 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final int shooterRPM11 = 3500;
     public static final int shooterRPM10 = 3250;
 
-    // Climb--
-    public static final int kClimbCANID = 7; // For Climb Motor
-    public static final int kPistonFirstClimbChannel = 0; // For piston
-    public static final int kPistonFirstReverseClimbChannel = 1; // For piston
-    public static final double ClimbMotorSpeed = 1.0; // Sets speed for climb motor
-    public static final double InverseClimbMotorSpeed = -1.0; // Sets speed for climb motor
-    public static final int upperClimbLimitSwitchChannel = 1; // Upper Limit Switch Channel
-    public static final int lowerClimbLimitSwitchChannel = 0; // Lower Limit Switch Channel
-    public static final int kEncoderCountsPerRev = 42; // Ask about the encoder
-    private static final double kArmDiameter = 2.38; // Arms' diameter in inches
-    public static final double kEncoderPositionConversionFactor = kArmDiameter * Math.PI; // Sets encoder to read
-                                                                                          // position in inches
-
     // Intake--
-    public static final int kIntakeCANID = 6;
+    public static final int kIntakePWMID = 1;
     public static final double kIntakeMotorSpeed = 0.6;
     public static final int kIntakePistonForwardChannel = 2;
     public static final int kIntakePistonReverseChannel = 3;
