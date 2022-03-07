@@ -7,14 +7,22 @@
       "/LiveWindow/Shooter": "Subsystem",
       "/LiveWindow/Ungrouped/MecanumDrive[1]": "MecanumDrive",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+<<<<<<< HEAD
       "/LiveWindow/Ungrouped/Talon[6]": "Motor Controller",
       "/SmartDashboard/Auto Chooser": "String Chooser",
+=======
+      "/LiveWindow/Ungrouped/Talon[4]": "Motor Controller",
+>>>>>>> Katie
       "/SmartDashboard/Change Vision Modes": "Command",
       "/SmartDashboard/Extend/Retract Intake": "Command",
       "/SmartDashboard/Find Distance": "Command",
       "/SmartDashboard/Find Target": "Command",
       "/SmartDashboard/Intake Run": "Command",
       "/SmartDashboard/Release Gate": "Command",
+<<<<<<< HEAD
+=======
+      "/SmartDashboard/SendableChooser[1]": "String Chooser",
+>>>>>>> Katie
       "/SmartDashboard/Shooter Adjust": "Command",
       "/SmartDashboard/Shooter Run": "Command"
     }
