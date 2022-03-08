@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climb;
 
 public class PivotArmDescendDistance extends CommandBase {
@@ -26,7 +27,11 @@ public class PivotArmDescendDistance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // m_climb.zeroEncoder();
+    RobotContainer.climbPID = RobotContainer.climbMotor.getPIDController();
+    RobotContainer.climbPID.setP(Constants.CLIMB_kP);
+    RobotContainer.climbPID.setI(Constants.CLIMB_kI);
+    RobotContainer.climbPID.setD(Constants.CLIMB_kD);
+    RobotContainer.climbPID.setOutputRange(Constants.CLIMB_MIN_OUTPUT, Constants.CLIMB_MAX_OUTPUT);
     climbGoal = m_climb.inchesToRevs(inch_goal);
   }
 
@@ -46,8 +51,10 @@ public class PivotArmDescendDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_climb.getClimbRevs() >= Constants.climbDescendDistance || m_climb.isClimbAtBottom() == true) {
+    if (m_climb.getClimbRevs() >= Constants.climbDescendDistance && m_climb.isClimbAtBottom() == false) {
       // System.out.println("CLIMBPID END");
+      m_climb.stop();
+      m_climb.zeroEncoder();
       return true;
     } else {
       return false;

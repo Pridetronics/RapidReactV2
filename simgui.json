@@ -1,58 +1,27 @@
 {
-<<<<<<< HEAD
-=======
-  "HALProvider": {
-    "Other Devices": {
-      "SPARK MAX [1]": {
-        "header": {
-          "open": true
-        }
-      }
-    }
-  },
->>>>>>> Helen
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Climb": "Subsystem",
       "/LiveWindow/Drive": "Subsystem",
       "/LiveWindow/Intake": "Subsystem",
       "/LiveWindow/Shooter": "Subsystem",
+      "/LiveWindow/Ungrouped/DigitalInput[0]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[1]": "Digital Input",
       "/LiveWindow/Ungrouped/MecanumDrive[1]": "MecanumDrive",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
-<<<<<<< HEAD
-      "/LiveWindow/Ungrouped/Talon[6]": "Motor Controller",
+      "/LiveWindow/Ungrouped/VictorSP[1]": "Motor Controller",
       "/SmartDashboard/Auto Chooser": "String Chooser",
-=======
-      "/LiveWindow/Ungrouped/Talon[4]": "Motor Controller",
->>>>>>> Katie
       "/SmartDashboard/Change Vision Modes": "Command",
+      "/SmartDashboard/Climb Run": "Command",
       "/SmartDashboard/Extend/Retract Intake": "Command",
       "/SmartDashboard/Find Distance": "Command",
       "/SmartDashboard/Find Target": "Command",
       "/SmartDashboard/Intake Run": "Command",
-      "/SmartDashboard/Release Gate": "Command",
-<<<<<<< HEAD
-=======
-      "/SmartDashboard/SendableChooser[1]": "String Chooser",
->>>>>>> Katie
+      "/SmartDashboard/Open Gate": "Command",
       "/SmartDashboard/Shooter Adjust": "Command",
+      "/SmartDashboard/Shooter Mode": "Command",
       "/SmartDashboard/Shooter Run": "Command"
     }
-<<<<<<< HEAD
-=======
-  },
-  "NetworkTables": {
-    "LiveWindow": {
-      "Climb": {
-        "open": true
-      }
-    },
-    "SmartDashboard": {
-      "Climb's Sequence": {
-        "open": true
-      },
-      "open": true
-    }
->>>>>>> Helen
   }
 }

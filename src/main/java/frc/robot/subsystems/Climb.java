@@ -254,11 +254,31 @@ public class Climb extends SubsystemBase {
     public boolean isClimbAtBottom() { // Might have to switch true/false because of magnetic limit switch
         // Returns the state of the lower limit switch
         boolean isClimbAtBottom;
-        if (m_lowerClimbLimitSwitch.get() == true) {
-            isClimbAtBottom = true;
-        } else {
+        if (m_lowerClimbLimitSwitch.get() == false) {
             isClimbAtBottom = false;
+        } else {
+            isClimbAtBottom = true;
         }
         return isClimbAtBottom;
+    }
+    public void ClimbUpSlowly(){
+        m_climbPID.setReference(50, ControlType.kVelocity);
+    }
+    public void ClimbDownSlowly(){
+        m_climbPID.setReference(-50, ControlType.kVelocity);
+    }
+
+
+    public void InitializeEncoders(){
+        while(isClimbAtBottom()== false)
+        {
+            m_climbPID.setReference(-50, ControlType.kVelocity);
+        }
+        while (isClimbAtBottom()== true)
+        {
+            m_climbPID.setReference(50, ControlType.kVelocity);
+        }
+        zeroEncoder();
+        m_climbPID.setReference(1, ControlType.kPosition);
     }
 }

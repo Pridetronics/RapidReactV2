@@ -9,6 +9,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.ClimbInitializationDown;
+import frc.robot.commands.ClimbInitializationSequence;
+import frc.robot.commands.ClimbInitializationUp;
 import frc.robot.commands.IntakeRun;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -16,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import frc.robot.subsystems.Climb;
 // import edu.wpi.first.wpilibj2.command.button.*;
 // import edu.wpi.first.wpilibj2.command.button.Button;
 // import edu.wpi.first.wpilibj.Joystick;
@@ -41,6 +46,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command m_taxi;
   private Command m_testCommand;
+  private Climb m_climb;
 
   private RobotContainer m_robotContainer;
   // private SendableChooser chooser;
@@ -56,9 +62,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer. This will perform all our button bindings, and put our autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    SmartDashboard.putString("Program:", "Is broken");
+    m_climb = new Climb();
+    SmartDashboard.putString("Program:", "Testing 03/07/22");
     RobotContainer.intakePiston.set(DoubleSolenoid.Value.kForward);
+    RobotContainer.climbPiston.set(DoubleSolenoid.Value.kForward);
     RobotContainer.shooterServo.setRaw(1300);
+    new ClimbInitializationSequence(m_climb);
+    
   }
 
   /**

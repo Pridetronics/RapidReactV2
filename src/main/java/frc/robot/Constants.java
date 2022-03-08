@@ -41,7 +41,7 @@ public final class Constants // Note for self: Define integers here. Button numb
     // kDriveWHeelDiameter * Math.PI;
     // public static final double inchesPerRevolution = circumference / gearRatio;
     // ** Climb **//
-    public static final int kClimbChannel = 7; // For Climb Motor
+    public static final int kClimbChannel = 6; // For Climb Motor
     public static final double ClimbMotorSpeed = 1.0; // Sets speed for climb motor
     public static final double InverseClimbMotorSpeed = -1.0; // Sets speed for climb motor
 
@@ -73,8 +73,8 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final int kIntakePistonForwardChannel = 2;
     public static final int kIntakePistonReverseChannel = 3;
 
-    public static final int kPistonClimbChannel = 6; // For piston
-    public static final int kPistonReverseClimbChannel = 7; // For piston
+    public static final int kPistonClimbChannel = 0; // For piston
+    public static final int kPistonReverseClimbChannel = 1; // For piston
 
     public static final int climbButtonNumber = 3; // For climb Button on the Gamepad
     public static final int cancellationButton1 = 5; // For climb's cancellation button on the Gamepad

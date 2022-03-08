@@ -28,6 +28,8 @@ import frc.robot.subsystems.Intake;
 
 import frc.robot.commands.DriveJoystick;
 import frc.robot.commands.OpenGate;
+import frc.robot.commands.PivotArmDescendDistance;
+import frc.robot.commands.PivotArmDistanceOne;
 import frc.robot.commands.ShooterAdjust;
 import frc.robot.commands.ShooterRun;
 import frc.robot.commands.SimpleShooterRun;
@@ -183,6 +185,7 @@ public class RobotContainer {
     climbPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kPistonClimbChannel,
         Constants.kPistonReverseClimbChannel);
     climbMotor = new CANSparkMax(Constants.kClimbChannel, MotorType.kBrushless);
+    climbMotor.setInverted(true);
     climbEncoder = climbMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.kEncoderCountsPerRev);
     upperClimbLimitSwitch = new DigitalInput(Constants.upperClimbLimitSwitchChannel);
     lowerClimbLimitSwitch = new DigitalInput(Constants.lowerClimbLimitSwitchChannel);
@@ -227,7 +230,9 @@ public class RobotContainer {
     findTargetButton.whenPressed(new FindTarget(m_drive));
     // Climb Button Configured
     climbButton = new JoystickButton(joystickShooter, Constants.climbButtonNumber);
-    climbButton.whileActiveOnce(new ClimbButtonSequence(climb));
+    //climbButton.whileActiveOnce(new ClimbButtonSequence(climb));
+    //climbButton.whenPressed(new InstantCommand(climb::pistonRelease, climb));
+    climbButton.whenPressed(new PivotArmDescendDistance(climb, Constants.climbDescendDistance));
 
     addButton = new JoystickButton(joystickShooter, Constants.addButtonNumber);
     addButton.whileActiveOnce(new IncreaseStage(climb));
