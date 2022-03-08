@@ -264,14 +264,9 @@ public class Climb extends SubsystemBase {
         return isClimbAtBottom;
     }
     public void ClimbUpSlowly(){
-        m_climbPID.setReference(100, ControlType.kVelocity);
-    }
+        m_climbMotor.set(0.1);
+        }
     public void ClimbDownSlowly(){
-        m_climbPID.setReference(-100, ControlType.kVelocity);
-    }
-
-
-    public void Initialization(){
-        new SequentialCommandGroup(new ClimbInitializationDown(RobotContainer.m_climb), new ClimbInitializationUp(RobotContainer.m_climb));
+        m_climbMotor.set(-0.1);
     }
 }

@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.ClimbInitializationDown;
-import frc.robot.commands.ClimbInitializationSequence;
 import frc.robot.commands.ClimbInitializationUp;
 import frc.robot.commands.IntakeRun;
 import frc.robot.subsystems.Shooter;
@@ -133,5 +132,21 @@ public class Robot extends TimedRobot {
     }
     
   }
+  @Override
+  public void teleopPeriodic(){}
+
+  @Override
+  public void testInit(){
+    CommandScheduler.getInstance().cancelAll();
+  }
+
+  @Override
+  public void testPeriodic() {}
+
+  @Override
+  public void simulationInit() {}
+
+  @Override
+  public void simulationPeriodic() {}
 }
   

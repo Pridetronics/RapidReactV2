@@ -31,6 +31,8 @@ import frc.robot.commands.DriveJoystick;
 import frc.robot.commands.OpenGate;
 import frc.robot.commands.PivotArmDescendDistance;
 import frc.robot.commands.PivotArmDistanceOne;
+import frc.robot.commands.PivotArmDistanceThree;
+import frc.robot.commands.PivotArmDistanceTwo;
 import frc.robot.commands.ShooterAdjust;
 import frc.robot.commands.ShooterRun;
 import frc.robot.commands.SimpleShooterRun;
@@ -213,9 +215,23 @@ public class RobotContainer {
     SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));
     SmartDashboard.putData("Find Target", new FindTarget(m_drive));
     SmartDashboard.putData("Shooter Mode", new ShooterMode(m_shooter));
-    SmartDashboard.putData("Climb Run", new ClimbButtonSequence(m_climb)); // Puts data on Shuffleboard to use the command
-    SmartDashboard.putData("Climb Init DOWN", new ClimbInitializationDown(m_climb));
-    SmartDashboard.putData("Climb Init UP", new ClimbInitializationUp(m_climb));
+    
+    SmartDashboard.putData("Sequence 1", new SequentialCommandGroup( 
+      new PivotArmDistanceOne(m_climb, Constants.climbDistance1),
+      new InstantCommand(m_climb::pistonRelease, m_climb)));
+    SmartDashboard.putData("Sequence 2", new PivotArmDescendDistance(m_climb, Constants.climbDescendDistance));
+    SmartDashboard.putData("Sequence 3", new  SequentialCommandGroup(
+      new PivotArmDistanceTwo(m_climb, Constants.climbDistance2),
+      new InstantCommand(m_climb::pistonRetract, m_climb),
+      new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
+      new InstantCommand(m_climb::pistonRelease, m_climb)));
+
+    SmartDashboard.putData("Arm Distance One", new PivotArmDistanceOne(m_climb, Constants.climbDistance1));
+    SmartDashboard.putData("Piston Extend", new InstantCommand(m_climb::pistonRelease, m_climb));
+    SmartDashboard.putData("Arm Descend", new PivotArmDescendDistance(m_climb, Constants.climbDescendDistance));
+    SmartDashboard.putData("Arm Distance Two", new PivotArmDistanceTwo(m_climb, Constants.climbDistance2));
+    SmartDashboard.putData("Piston Retract", new InstantCommand(m_climb::pistonRetract, m_climb));
+    SmartDashboard.putData("Arm Distance Three", new PivotArmDistanceThree(m_climb, Constants.climbDistance3));
 
     m_chooser.setDefaultOption("Auto Move Backwards", m_auto1);
     m_chooser.addOption("Auto Move Forward", m_autoDriveForward);

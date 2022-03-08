@@ -51,12 +51,11 @@ public class PivotArmDescendDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_climb.getClimbRevs() >= Constants.climbDescendDistance && m_climb.isClimbAtBottom() == true) {
+    if (m_climb.getClimbRevs() >= Constants.climbDescendDistance || m_climb.isClimbAtBottom() == true) {
       // System.out.println("CLIMBPID END");
-      m_climb.stop();
-      return true;
-    } else {
       return false;
+    } else {
+      return true;
     }
   }
 }
