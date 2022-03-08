@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.AutoDriveForwards;
+import frc.robot.commands.AutoDriveShoot;
 import frc.robot.commands.ClimbInitializationDown;
 import frc.robot.commands.ClimbInitializationUp;
 import frc.robot.commands.IntakeRun;
@@ -50,8 +52,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   // private SendableChooser chooser;
-  // SendableChooser<Command> m_chooser = new SendableChooser<>();
-  private SendableChooser<Command> chooser = RobotContainer.m_chooser;
+  SendableChooser<Command> chooser = new SendableChooser<Command>();
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -67,6 +68,11 @@ public class Robot extends TimedRobot {
     RobotContainer.intakePiston.set(DoubleSolenoid.Value.kForward);
     RobotContainer.climbPiston.set(DoubleSolenoid.Value.kForward);
     RobotContainer.shooterServo.setRaw(1300);    
+
+    chooser.setDefaultOption("HoneClimb", RobotContainer.HoneClimb);
+    chooser.addOption("Drive", new AutoDriveForwards(RobotContainer.m_drive));
+    chooser.addOption("Drive and Shoot", new AutoDriveShoot(RobotContainer.m_drive));
+    SmartDashboard.putData("Auto Choices", chooser);
   }
 
   /**
@@ -107,10 +113,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = chooser.getSelected();
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
+    if (chooser.getSelected() != null) {
       m_autonomousCommand.schedule();
     }
   }

@@ -124,16 +124,10 @@ public class RobotContainer {
   public JoystickButton visionModeButton;
   public JoystickButton shooterModeButton;
   public JoystickButton findTargetButton;
-  public JoystickButton climbHoningButton;
   public Joystick joystickDriver; // Controller 0 --Ensure that all controllers are in proper ports in Driver Station
   public Joystick joystickShooter; // Controller 1
+  public static Command HoneClimb;
 
-  // Sendable Chooser--
-  static SendableChooser<Command> m_chooser;
-  private final AutoDriveShoot m_auto2;
-  private final AutoMoveBackwards m_auto1;
-  private final AutoDriveForwards m_autoDriveForward;
-  private final ExtendIntake m_extendIntake;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -179,11 +173,6 @@ public class RobotContainer {
     m_intake = new Intake();
 
     m_drive = new Drive(joystickDriver);
-    m_chooser = new SendableChooser<>();
-    m_auto2 = new AutoDriveShoot(m_drive);
-    m_auto1 = new AutoMoveBackwards(m_drive, m_climb);
-    m_autoDriveForward = new AutoDriveForwards(m_drive);
-    m_extendIntake = new ExtendIntake(m_intake);
 
     // Shooter Relevant---
     shooterMotor = new CANSparkMax(Constants.kShooterCANID, MotorType.kBrushless);
@@ -233,12 +222,6 @@ public class RobotContainer {
     SmartDashboard.putData("Piston Retract", new InstantCommand(m_climb::pistonRetract, m_climb));
     SmartDashboard.putData("Arm Distance Three", new PivotArmDistanceThree(m_climb, Constants.climbDistance3));
 
-    m_chooser.setDefaultOption("Auto Move Backwards", m_auto1);
-    m_chooser.addOption("Auto Move Forward", m_autoDriveForward);
-    m_chooser.addOption("Auto Move and Shoot", m_auto2);
-    m_chooser.addOption("Extend Intake", m_extendIntake);
-    SmartDashboard.putData("Auto Chooser", m_chooser);
-
     configureButtonBindings();
     m_drive.setDefaultCommand(new DriveJoystick(joystickDriver, m_drive));
   }
@@ -283,12 +266,11 @@ public class RobotContainer {
         new WaitCommand(.4),
         new IntakeRun(m_intake)));
 
-    climbHoningButton = new JoystickButton(joystickDriver, Constants.climbHoningButtonNumber);
-    climbHoningButton.whenPressed(new SequentialCommandGroup(
+    HoneClimb = new SequentialCommandGroup(
       new ClimbInitializationUp(m_climb),
-      new ClimbInitializationDown(m_climb)));
+      new ClimbInitializationDown(m_climb));
   }
-  public Command getAutonomousCommand() {
-    return (Command) m_chooser.getSelected();
-  }
+  // public Command getAutonomousCommand() {
+  //   return (Command) m_chooser.getSelected();
+  // }
 }
