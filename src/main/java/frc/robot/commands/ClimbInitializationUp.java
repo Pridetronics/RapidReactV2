@@ -19,7 +19,10 @@ public class ClimbInitializationUp extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    System.out.println("Running Initialization Up");
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -37,7 +40,7 @@ public class ClimbInitializationUp extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_climb.isClimbAtBottom() == false) 
+    if (m_climb.isClimbAtBottom() == true) 
     {
       return false;
     }

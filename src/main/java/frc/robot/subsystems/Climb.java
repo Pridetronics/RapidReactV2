@@ -20,6 +20,8 @@ import com.revrobotics.SparkMaxRelativeEncoder;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.commands.ClimbInitializationDown;
+import frc.robot.commands.ClimbInitializationUp;
 import frc.robot.commands.PivotArmDistanceOne;
 
 public class Climb extends SubsystemBase {
@@ -255,30 +257,21 @@ public class Climb extends SubsystemBase {
         // Returns the state of the lower limit switch
         boolean isClimbAtBottom;
         if (m_lowerClimbLimitSwitch.get() == false) {
-            isClimbAtBottom = false;
-        } else {
             isClimbAtBottom = true;
+        } else {
+            isClimbAtBottom = false;
         }
         return isClimbAtBottom;
     }
     public void ClimbUpSlowly(){
-        m_climbPID.setReference(50, ControlType.kVelocity);
+        m_climbPID.setReference(100, ControlType.kVelocity);
     }
     public void ClimbDownSlowly(){
-        m_climbPID.setReference(-50, ControlType.kVelocity);
+        m_climbPID.setReference(-100, ControlType.kVelocity);
     }
 
 
-    public void InitializeEncoders(){
-        while(isClimbAtBottom()== false)
-        {
-            m_climbPID.setReference(-50, ControlType.kVelocity);
-        }
-        while (isClimbAtBottom()== true)
-        {
-            m_climbPID.setReference(50, ControlType.kVelocity);
-        }
-        zeroEncoder();
-        m_climbPID.setReference(1, ControlType.kPosition);
+    public void Initialization(){
+        new SequentialCommandGroup(new ClimbInitializationDown(RobotContainer.m_climb), new ClimbInitializationUp(RobotContainer.m_climb));
     }
 }

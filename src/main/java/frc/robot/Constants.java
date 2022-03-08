@@ -25,6 +25,7 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final int visionModeButtonNumber = 7;
     public static final int shooterModeButtonNumber = 7;
     public static final int findTargetButtonNumber = 9;
+    public static final int climbHoningButtonNumber = 11;
 
     // Drive--
     public static final int kFrontLeftCANID = 2; // For all of the drive motors

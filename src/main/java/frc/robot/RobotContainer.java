@@ -20,7 +20,8 @@ import frc.robot.commands.CancellationButtonsClimb;
 import frc.robot.commands.CancelClimb;
 import frc.robot.commands.CancelStage;
 import frc.robot.commands.ClimbButtonSequence;
-
+import frc.robot.commands.ClimbInitializationDown;
+import frc.robot.commands.ClimbInitializationUp;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Shooter;
@@ -95,6 +96,7 @@ public class RobotContainer {
   // Subsystems--
   public static Intake m_intake;
   public static Shooter m_shooter; // Creates the subsytem for shooter
+  public static Climb m_climb;
   public static Drive m_drive;
   public static CANSparkMax climbMotor; // Climb Motor
   public static DoubleSolenoid climbPiston; // Climb Piston
@@ -107,11 +109,8 @@ public class RobotContainer {
   public static Command CancelClimb;
   public static Command AddOne;
 
-  public static Intake intake;
-  public static Shooter shooter; // Creates the subsytem for shooter
-  public static Drive drive;
   public static Autonomous m_auto;
-  public static Climb climb; // Creates the subsystem for climb
+   // Creates the subsystem for climb
 
   public JoystickButton shooterButton; // Button for the shooter
   public JoystickButton intakeButton;
@@ -123,6 +122,7 @@ public class RobotContainer {
   public JoystickButton visionModeButton;
   public JoystickButton shooterModeButton;
   public JoystickButton findTargetButton;
+  public JoystickButton climbHoningButton;
   public Joystick joystickDriver; // Controller 0 --Ensure that all controllers are in proper ports in Driver Station
   public Joystick joystickShooter; // Controller 1
 
@@ -131,6 +131,7 @@ public class RobotContainer {
   private final AutoDriveShoot m_auto2;
   private final AutoMoveBackwards m_auto1;
   private final AutoDriveForwards m_autoDriveForward;
+  private final ExtendIntake m_extendIntake;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -140,6 +141,21 @@ public class RobotContainer {
     // bindings, this is below.
     joystickDriver = new Joystick(Constants.kJoystickDriverID);
     joystickShooter = new Joystick(Constants.kJoystickShooterID); // Sets shooter joystick to port 1
+    //Climb Relevant
+    climbPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kPistonClimbChannel,
+        Constants.kPistonReverseClimbChannel);
+    climbMotor = new CANSparkMax(Constants.kClimbChannel, MotorType.kBrushless);
+    climbMotor.setInverted(true);
+    climbEncoder = climbMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.kEncoderCountsPerRev);
+    upperClimbLimitSwitch = new DigitalInput(Constants.upperClimbLimitSwitchChannel);
+    lowerClimbLimitSwitch = new DigitalInput(Constants.lowerClimbLimitSwitchChannel);
+
+    climbPID = climbMotor.getPIDController();
+    climbPID.setP(Constants.CLIMB_kP);
+    climbPID.setI(Constants.CLIMB_kI);
+    climbPID.setD(Constants.CLIMB_kD);
+    climbPID.setOutputRange(Constants.CLIMB_MIN_OUTPUT, Constants.CLIMB_MAX_OUTPUT);
+    m_climb = new Climb(); // Defines the subsystem
 
     // Drive Relevant---
     frontLeft = new CANSparkMax(Constants.kFrontLeftCANID, MotorType.kBrushless);
@@ -154,11 +170,18 @@ public class RobotContainer {
     rearRight = new CANSparkMax(Constants.kRearRightCANID, MotorType.kBrushless);
     rearRight.setInverted(true);
 
+    // Intake Relevant---
+    intakeCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
+    intakePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kIntakePistonForwardChannel, Constants.kIntakePistonReverseChannel);
+    intakeMotor = new VictorSP(Constants.kIntakePWMID);
+    m_intake = new Intake();
+
     m_drive = new Drive(joystickDriver);
     m_chooser = new SendableChooser<>();
     m_auto2 = new AutoDriveShoot(m_drive);
-    m_auto1 = new AutoMoveBackwards(m_drive);
+    m_auto1 = new AutoMoveBackwards(m_drive, m_climb);
     m_autoDriveForward = new AutoDriveForwards(m_drive);
+    m_extendIntake = new ExtendIntake(m_intake);
 
     // Shooter Relevant---
     shooterMotor = new CANSparkMax(Constants.kShooterCANID, MotorType.kBrushless);
@@ -176,26 +199,9 @@ public class RobotContainer {
     shooterServo = new Servo(Constants.kShooterServoPWMID);
     m_shooter = new Shooter(); // Defines the subsystem
 
-    // Intake Relevant---
-    intakeCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-    intakePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kIntakePistonForwardChannel, Constants.kIntakePistonReverseChannel);
-    intakeMotor = new VictorSP(Constants.kIntakePWMID);
-    m_intake = new Intake();
-    // Climb Releveant---
-    climbPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kPistonClimbChannel,
-        Constants.kPistonReverseClimbChannel);
-    climbMotor = new CANSparkMax(Constants.kClimbChannel, MotorType.kBrushless);
-    climbMotor.setInverted(true);
-    climbEncoder = climbMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.kEncoderCountsPerRev);
-    upperClimbLimitSwitch = new DigitalInput(Constants.upperClimbLimitSwitchChannel);
-    lowerClimbLimitSwitch = new DigitalInput(Constants.lowerClimbLimitSwitchChannel);
 
-    climbPID = climbMotor.getPIDController();
-    climbPID.setP(Constants.CLIMB_kP);
-    climbPID.setI(Constants.CLIMB_kI);
-    climbPID.setD(Constants.CLIMB_kD);
-    climbPID.setOutputRange(Constants.CLIMB_MIN_OUTPUT, Constants.CLIMB_MAX_OUTPUT);
-    climb = new Climb(); // Defines the subsystem
+    // Climb Releveant---
+    
     // SmartDashboard Relevant-- Remove these during competition time
 
     SmartDashboard.putData("Shooter Run", new ShooterRun(m_shooter, m_drive)); // Puts data on Shuffleboard to use the command.
@@ -207,11 +213,14 @@ public class RobotContainer {
     SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));
     SmartDashboard.putData("Find Target", new FindTarget(m_drive));
     SmartDashboard.putData("Shooter Mode", new ShooterMode(m_shooter));
-    SmartDashboard.putData("Climb Run", new ClimbButtonSequence(climb)); // Puts data on Shuffleboard to use the command
+    SmartDashboard.putData("Climb Run", new ClimbButtonSequence(m_climb)); // Puts data on Shuffleboard to use the command
+    SmartDashboard.putData("Climb Init DOWN", new ClimbInitializationDown(m_climb));
+    SmartDashboard.putData("Climb Init UP", new ClimbInitializationUp(m_climb));
 
     m_chooser.setDefaultOption("Auto Move Backwards", m_auto1);
     m_chooser.addOption("Auto Move Forward", m_autoDriveForward);
     m_chooser.addOption("Auto Move and Shoot", m_auto2);
+    m_chooser.addOption("Extend Intake", m_extendIntake);
     SmartDashboard.putData("Auto Chooser", m_chooser);
 
     configureButtonBindings();
@@ -232,16 +241,16 @@ public class RobotContainer {
     climbButton = new JoystickButton(joystickShooter, Constants.climbButtonNumber);
     //climbButton.whileActiveOnce(new ClimbButtonSequence(climb));
     //climbButton.whenPressed(new InstantCommand(climb::pistonRelease, climb));
-    climbButton.whenPressed(new PivotArmDescendDistance(climb, Constants.climbDescendDistance));
+    climbButton.whenPressed(new PivotArmDescendDistance(m_climb, Constants.climbDescendDistance));
 
     addButton = new JoystickButton(joystickShooter, Constants.addButtonNumber);
-    addButton.whileActiveOnce(new IncreaseStage(climb));
+    addButton.whileActiveOnce(new IncreaseStage(m_climb));
 
     cancellationButton1 = new JoystickButton(joystickShooter, Constants.cancellationButton1);
     cancellationButton2 = new JoystickButton(joystickShooter, Constants.cancellationButton2);
     CancellationButtonsClimb cancellationButtons = new CancellationButtonsClimb(cancellationButton1,
         cancellationButton2);
-    cancellationButtons.whenPressed(new CancelClimb(climb));
+    cancellationButtons.whenPressed(new CancelClimb(m_climb));
 
     // Shooter Button Configured and Command Assigned to Button
     shooterButton = new JoystickButton(joystickShooter, Constants.shooterButtonNumber);
@@ -250,13 +259,18 @@ public class RobotContainer {
         new WaitCommand(.4),
         new OpenGate(m_shooter))); // References the command and inside the needed subsytem
     cancelStageButton = new JoystickButton(joystickShooter, Constants.cancelStageButtonNumber);
-    cancelStageButton.whileActiveOnce(new CancelStage(climb));
+    cancelStageButton.whileActiveOnce(new CancelStage(m_climb));
 
     intakeButton = new JoystickButton(joystickDriver, Constants.intakeButtonNumber);
     intakeButton.whileHeld(new ParallelCommandGroup(
         new ExtendIntake(m_intake),
         new WaitCommand(.4),
         new IntakeRun(m_intake)));
+
+    climbHoningButton = new JoystickButton(joystickDriver, Constants.climbHoningButtonNumber);
+    climbHoningButton.whenPressed(new SequentialCommandGroup(
+      new ClimbInitializationUp(m_climb),
+      new ClimbInitializationDown(m_climb)));
   }
   public Command getAutonomousCommand() {
     return (Command) m_chooser.getSelected();

@@ -9,18 +9,23 @@ import java.util.TimerTask;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Climb;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class AutoMoveBackwards extends CommandBase {
   private Drive m_drive;
+  private Climb m_climb;
   static final int ticks = 1120;
-public AutoMoveBackwards(Drive drive) 
+public AutoMoveBackwards(Drive drive, Climb climb) 
 {
   m_drive = drive;
+  m_climb = climb;
   
   addRequirements(m_drive);
+  addRequirements(m_climb);
 }
 
   // Called when the command is initially scheduled.
@@ -45,6 +50,7 @@ public void execute()
   if (encoder == doubledtar){
     this.cancel();
   }
+
   //long start = System. currentTimeMillis(); long end = start + 50*1000; while (System. currentTimeMillis() < end);
   //long beginning = System.currentTimeMillis();
   //long end = beginning + 5*1000;

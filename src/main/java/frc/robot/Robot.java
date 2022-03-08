@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.ClimbInitializationDown;
 import frc.robot.commands.ClimbInitializationSequence;
@@ -66,9 +67,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("Program:", "Testing 03/07/22");
     RobotContainer.intakePiston.set(DoubleSolenoid.Value.kForward);
     RobotContainer.climbPiston.set(DoubleSolenoid.Value.kForward);
-    RobotContainer.shooterServo.setRaw(1300);
-    new ClimbInitializationSequence(m_climb);
-    
+    RobotContainer.shooterServo.setRaw(1300);    
   }
 
   /**
@@ -132,6 +131,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    
   }
 }
   

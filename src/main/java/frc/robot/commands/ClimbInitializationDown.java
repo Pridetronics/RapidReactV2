@@ -19,18 +19,22 @@ public class ClimbInitializationDown extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    System.out.println("Running Initialization Down");
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     m_climb.ClimbDownSlowly();
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_climb.stop();
+    m_climb.zeroEncoder();
   }
 
   // Returns true when the command should end.

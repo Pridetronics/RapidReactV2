@@ -27,7 +27,6 @@ public class PivotArmDistanceOne extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climb.zeroEncoder();
     RobotContainer.climbPID = RobotContainer.climbMotor.getPIDController();
     RobotContainer.climbPID.setP(Constants.CLIMB_kP);
     RobotContainer.climbPID.setI(Constants.CLIMB_kI);
