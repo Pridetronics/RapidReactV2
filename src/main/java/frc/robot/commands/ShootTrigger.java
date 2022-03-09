@@ -29,17 +29,14 @@ public class ShootTrigger extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooterSequence = new ParallelCommandGroup(
-      new SimpleShooterRun(m_shooter),
-      new WaitCommand(.4),
-      new OpenGate(m_shooter));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if (m_joystickShooter.getRawAxis(3) > .1){
-      shooterSequence.schedule();
+      m_shooter.SimpleShooterMode();
+      m_shooter.OpenGate();
     }
     else
     {
@@ -49,7 +46,10 @@ public class ShootTrigger extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_shooter.ShooterStop();
+    m_shooter.CloseGate();
+  }
 
   // Returns true when the command should end.
   @Override
