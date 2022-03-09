@@ -94,8 +94,8 @@ public final class Constants // Note for self: Define integers here. Button numb
 
     public static final double climbDistance1 = 140; // Distance for fully extended PUT AT 130-- Could be higher
     public static final double climbDistance2 = 60; // Distance for 23 inches
-    public static final double climbDistance3 = 123;
-    public static final double climbDescendDistance = 1; // Distance for fully retracted
+    public static final double climbDistance3 = 135;
+    public static final double climbDescendDistance = -4; // Distance for fully retracted
 
     public static final int kEncoderCountsPerRev = 42; // Ask about the encoder
     private static final double kArmDiameter = 0.75; // Arms' diameter in inches

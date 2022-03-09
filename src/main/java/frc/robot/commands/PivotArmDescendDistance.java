@@ -38,8 +38,8 @@ public class PivotArmDescendDistance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_climb.decendPivotArmDistance(climbGoal);
-    // SmartDashboard.putNumber("Goal to travel to", climbGoal);
+    m_climb.descendPivotArmDistance(climbGoal);
+      // SmartDashboard.putNumber("Goal to travel to", climbGoal);
   }
 
   // Called once the command ends or is interrupted.

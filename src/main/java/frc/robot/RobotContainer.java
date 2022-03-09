@@ -33,6 +33,7 @@ import frc.robot.commands.PivotArmDescendDistance;
 import frc.robot.commands.PivotArmDistanceOne;
 import frc.robot.commands.PivotArmDistanceThree;
 import frc.robot.commands.PivotArmDistanceTwo;
+import frc.robot.commands.ShootTrigger;
 import frc.robot.commands.ShooterAdjust;
 import frc.robot.commands.ShooterRun;
 import frc.robot.commands.SimpleShooterRun;
@@ -61,6 +62,7 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.AnalogTrigger;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -224,6 +226,7 @@ public class RobotContainer {
 
     configureButtonBindings();
     m_drive.setDefaultCommand(new DriveJoystick(joystickDriver, m_drive));
+    m_shooter.setDefaultCommand(new ShootTrigger(joystickShooter, m_shooter));
   }
 
   private void configureButtonBindings() {
@@ -252,11 +255,11 @@ public class RobotContainer {
     cancellationButtons.whenPressed(new CancelClimb(m_climb));
 
     // Shooter Button Configured and Command Assigned to Button
-    shooterButton = new JoystickButton(joystickShooter, Constants.shooterButtonNumber);
-    shooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate commands
-        new SimpleShooterRun(m_shooter),
-        new WaitCommand(.4),
-        new OpenGate(m_shooter))); // References the command and inside the needed subsytem
+    // shooterButton = new JoystickButton(joystickShooter, Constants.shooterButtonNumber);
+    // shooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate commands
+    //     new SimpleShooterRun(m_shooter),
+    //     new WaitCommand(.4),
+    //     new OpenGate(m_shooter))); // References the command and inside the needed subsytem
     cancelStageButton = new JoystickButton(joystickShooter, Constants.cancelStageButtonNumber);
     cancelStageButton.whileActiveOnce(new CancelStage(m_climb));
 
