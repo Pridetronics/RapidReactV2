@@ -34,14 +34,14 @@ public class ShootTrigger extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_joystickShooter.getRawAxis(3) > .1){
-      m_shooter.HighSpeedShooterMode();
-      m_shooter.OpenGate();
-    }
-    else
-    {
+    //if (m_joystickShooter.getRawAxis(3) > .1){
+      //m_shooter.HighSpeedShooterMode();
+      //m_shooter.OpenGate();
+    //}
+    //else
+    //{
       SmartDashboard.putString("Shooter Status", "Shooter Not Running");
-    }
+    //}
   }
 
   // Called once the command ends or is interrupted.

@@ -100,6 +100,12 @@ public class Shooter extends SubsystemBase {
       m_shooterServo.setRaw(1000);
     }
   }
+  public void OpenGateLow(){
+    if (m_shooterEncoder.getVelocity() >= 2500){
+      new WaitCommand(7);
+      m_shooterServo.setRaw(1000);
+    }
+  }
   public void CloseGate(){
     m_shooterServo.setRaw(1300);
   }

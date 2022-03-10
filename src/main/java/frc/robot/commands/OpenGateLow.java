@@ -4,15 +4,23 @@
 
 package frc.robot.commands;
 
+import com.revrobotics.RelativeEncoder;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
+import frc.robot.RobotContainer;
 
-public class lowGoalShooterRun extends CommandBase {
+public class OpenGateLow extends CommandBase {
+
   private Shooter m_shooter;
-  public lowGoalShooterRun(Shooter shooter) {
-    m_shooter = shooter;
+  private RelativeEncoder m_shooterEncoder;
 
+  public OpenGateLow(Shooter shooter) {
+    m_shooter = new Shooter();
     addRequirements(m_shooter);
+    m_shooterEncoder = RobotContainer.shooterEncoder;
   }
 
   // Called when the command is initially scheduled.
@@ -21,14 +29,17 @@ public class lowGoalShooterRun extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    m_shooter.LowSpeedShooterMode();
+  public void execute() 
+  {
+    if (m_shooterEncoder.getVelocity() >= Constants.lowShooterSpeed){
+      new WaitCommand(7);
+      m_shooter.OpenGateLow();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.ShooterStop();
     m_shooter.CloseGate();
   }
 
@@ -38,3 +49,4 @@ public class lowGoalShooterRun extends CommandBase {
     return false;
   }
 }
+

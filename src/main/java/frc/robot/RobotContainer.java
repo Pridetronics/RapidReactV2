@@ -24,6 +24,7 @@ import frc.robot.commands.ClimbInitializationDown;
 import frc.robot.commands.ClimbInitializationUp;
 import frc.robot.commands.DriveJoystick;
 import frc.robot.commands.OpenGate;
+import frc.robot.commands.OpenGateLow;
 import frc.robot.commands.PivotArmDescendDistance;
 import frc.robot.commands.PivotArmDistanceOne;
 import frc.robot.commands.PivotArmDistanceThree;
@@ -287,7 +288,7 @@ public class RobotContainer {
     lowSpeedShooterButton = new JoystickButton(joystickShooter, Constants.lowSpeedShooterButtonNumber);
     lowSpeedShooterButton.whileHeld(new ParallelCommandGroup(
       new lowGoalShooterRun(m_shooter),
-      new OpenGate(m_shooter)));
+      new OpenGateLow(m_shooter)));
 
     intakeButton = new JoystickButton(joystickDriver, Constants.intakeButtonNumber);
     intakeButton.whileHeld(new ParallelCommandGroup(

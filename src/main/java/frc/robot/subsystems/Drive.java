@@ -113,7 +113,8 @@ public class Drive extends SubsystemBase {
     yValue = m_joystickDriver.getY();
     xValue = m_joystickDriver.getX();
     zValue = m_joystickDriver.getZ();
-    mecanumDrive.driveCartesian(yValue, -xValue, -zValue);
+    //mecanumDrive.driveCartesian(yValue, -xValue, -zValue);
+    mecanumDrive.driveCartesian(yValue, -xValue, -(zValue * Math.abs(zValue)));
     // mecanumDrive.driveCartesian((yValue * Math.abs(yValue)), -(xValue * Math.abs(xValue)), -(zValue * Math.abs(zValue)));
 
   }
