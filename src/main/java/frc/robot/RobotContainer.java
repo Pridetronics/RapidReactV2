@@ -22,17 +22,13 @@ import frc.robot.commands.CancelStage;
 import frc.robot.commands.ClimbButtonSequence;
 import frc.robot.commands.ClimbInitializationDown;
 import frc.robot.commands.ClimbInitializationUp;
-import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Intake;
-
 import frc.robot.commands.DriveJoystick;
 import frc.robot.commands.OpenGate;
 import frc.robot.commands.PivotArmDescendDistance;
 import frc.robot.commands.PivotArmDistanceOne;
 import frc.robot.commands.PivotArmDistanceThree;
 import frc.robot.commands.PivotArmDistanceTwo;
+import frc.robot.commands.ShootTrigger;
 import frc.robot.commands.ShooterAdjust;
 import frc.robot.commands.ShooterRun;
 import frc.robot.commands.SimpleShooterRun;
@@ -43,14 +39,11 @@ import frc.robot.commands.ExtendIntake;
 import frc.robot.commands.FindTarget;
 import frc.robot.commands.IntakeRun;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.commands.AutoDriveForwards;
-import frc.robot.commands.AutoDriveShoot;
-import frc.robot.commands.AutoMoveBackwards;
+import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.DriveJoystick;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -234,6 +227,7 @@ public class RobotContainer {
 
     configureButtonBindings();
     m_drive.setDefaultCommand(new DriveJoystick(joystickDriver, m_drive));
+    m_shooter.setDefaultCommand(new ShootTrigger(joystickShooter, m_shooter));
   }
 
   private void configureButtonBindings() {

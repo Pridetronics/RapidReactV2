@@ -35,7 +35,7 @@ public class ShooterMode extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.AutoShooterMode();
+   // m_shooter.AutoShooterMode();
     autoShooter = true;
     SmartDashboard.putString("Shooting Mode", "Automatic Shooter");
   }

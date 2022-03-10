@@ -29,7 +29,7 @@ public class ShooterRun extends CommandBase {
 
   @Override
   public void execute() {
-    m_shooter.SimpleShooterMode();
+    m_shooter.HighSpeedShooterMode();
     // m_drive.shooterAdjust();
     // if (ShooterMode.autoShooter == true) //Checks the variable, hopefully to help select a shooter mode
     // {

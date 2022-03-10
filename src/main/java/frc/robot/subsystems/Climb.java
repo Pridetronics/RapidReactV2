@@ -22,7 +22,9 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.commands.ClimbInitializationDown;
 import frc.robot.commands.ClimbInitializationUp;
+import frc.robot.commands.PivotArmDescendDistance;
 import frc.robot.commands.PivotArmDistanceOne;
+
 
 public class Climb extends SubsystemBase {
     private CANSparkMax m_climbMotor; // Initalizes motor
@@ -33,6 +35,8 @@ public class Climb extends SubsystemBase {
     public static int climbValue; // Initalizes value
     private static SparkMaxPIDController m_climbPID; // Initalizes PID
     public static String climbMessage = "Example";
+    private String m_climbMessage;
+
 
     public Climb() {
         m_climbMotor = RobotContainer.climbMotor; // References the object from Robot Container
@@ -89,7 +93,7 @@ public class Climb extends SubsystemBase {
         m_climbPID.setReference(Constants.climbDistance3, ControlType.kPosition);
     }
 
-    public void decendPivotArmDistance(double climbGoal) {
+    public void descendPivotArmDistance(double climbGoal) {
         m_climbPID.setReference(Constants.climbDescendDistance, ControlType.kPosition);
     }
 
@@ -169,77 +173,6 @@ public class Climb extends SubsystemBase {
             m_climbPID.setReference(Constants.climbDescendDistance, ControlType.kPosition);
         }
     }
-
-    /*
-     * public void climbSequence() { // If climb is > 0, set to 0 || test with
-     * cancelstage- Cannot change to
-     * // Static!!!
-     * if (m_climbValue <= -1) {
-     * m_climbValue = 0;
-     * } else if (m_climbValue == 0) {
-     * climbMessage = "Ready to raise Pivot Arms?";
-     * SmartDashboard.putString("Climb", climbMessage);
-     * } else if (m_climbValue == 1) { // Raise Pivot Arms ||Maybe add if statement
-     * in raisePivotArms function?
-     * pistonRelease();
-     * climbMessage = "Raising Pivot Arms";
-     * SmartDashboard.putString("ClimbArms", climbMessage);
-     * m_climbPID.setReference(Constants.climbDistance1, ControlType.kPosition);
-     * climbMessage = "Ready to descend Pivot Arms?";
-     * SmartDashboard.putString("Climb", climbMessage);
-     * } else if (m_climbValue == 2) { // Descend Pivot Arms- Should be on latches
-     * climbMessage = "Descending Pivot Arms";
-     * SmartDashboard.putString("ClimbArms", climbMessage);
-     * m_climbPID.setReference(Constants.climbDescendDistance,
-     * ControlType.kPosition);
-     * climbMessage = "Ready to raise Pivot Arms?";
-     * SmartDashboard.putString("Climb", climbMessage);
-     * } else if (m_climbValue == 3) { // Piston retracts, extends climb, piston
-     * extends, then climb extends again
-     * pistonRetract();
-     * // m_climbPiston.set(DoubleSolenoid.Value.kReverse);
-     * climbMessage = "Raising Pivot Arms";
-     * SmartDashboard.putString("ClimbArms", climbMessage);
-     * m_climbPID.setReference(Constants.climbDistance2, ControlType.kPosition);
-     * pistonRelease();
-     * // m_climbPiston.set(DoubleSolenoid.Value.kForward);
-     * m_climbPID.setReference(Constants.climbDistance3, ControlType.kPosition);
-     * climbMessage = "Ready to descend Pivot Arms?";
-     * SmartDashboard.putString("Climb", climbMessage);
-     * } else if (m_climbValue == 4) { // Descend Pivot Arms- Should be on latches
-     * climbMessage = "Descending Pivot Arms";
-     * SmartDashboard.putString("ClimbArms", climbMessage);
-     * m_climbPID.setReference(Constants.climbDescendDistance,
-     * ControlType.kPosition);
-     * climbMessage = "Ready to raise Pivot Arms?";
-     * SmartDashboard.putString("Climb", climbMessage);
-     * } else if (m_climbValue == 5) { // Piston retracts, extends climb, piston
-     * extends, then climb extends again
-     * pistonRetract();
-     * // m_climbPiston.set(DoubleSolenoid.Value.kReverse);
-     * climbMessage = "Raising Pivot Arms";
-     * SmartDashboard.putString("ClimbArms", climbMessage);
-     * m_climbPID.setReference(Constants.climbDistance2, ControlType.kPosition);
-     * pistonRelease();
-     * // m_climbPiston.set(DoubleSolenoid.Value.kForward);
-     * m_climbPID.setReference(Constants.climbDistance3, ControlType.kPosition);
-     * climbMessage = "Ready to descend Pivot Arms?";
-     * SmartDashboard.putString("Climb", climbMessage);
-     * } else if (m_climbValue == 6) { // Descend Pivot Arms- Should be on latches -
-     * finish
-     * climbMessage = "Descending Pivot Arms";
-     * SmartDashboard.putString("ClimbArms", climbMessage);
-     * m_climbPID.setReference(Constants.climbDescendDistance,
-     * ControlType.kPosition);
-     * } else { // Descend default distance
-     * climbMessage = "Descending Pivot Arms";
-     * SmartDashboard.putString("ClimbArms", climbMessage);
-     * m_climbPID.setReference(Constants.climbDescendDistance,
-     * ControlType.kPosition);
-     * pistonRelease();
-     * }
-     * }
-     */
 
     public boolean isClimbAtTop() {
         // Returns the state of the upper limit switch
