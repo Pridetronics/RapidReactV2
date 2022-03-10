@@ -78,9 +78,13 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Limelight V", tv);
     // This method will be called once per scheduler run
   }
-  public void SimpleShooterMode(){ //Very basic (a manual mode in case the Limelight/Automatic Shooter is faulty)
-    m_shooterPID.setReference(Constants.shooterDefaultSpeed, ControlType.kVelocity);
+  public void HighSpeedShooterMode(){ //Very basic (a manual mode in case the Limelight/Automatic Shooter is faulty)
+    m_shooterPID.setReference(Constants.highShooterSpeed, ControlType.kVelocity);
     SmartDashboard.putNumber("Shooter RPM", m_shooterEncoder.getVelocity());
+  }
+  public void LowSpeedShooterMode(){
+    m_shooterPID.setReference(Constants.lowShooterSpeed, ControlType.kVelocity);
+    SmartDashboard.putNumber("ShooterRPM", m_shooterEncoder.getVelocity());
   }
 
   public void ShooterStop(){ //Stops motors
@@ -91,7 +95,7 @@ public class Shooter extends SubsystemBase {
     m_shooterEncoder.setPosition(0);
   }
   public void OpenGate(){
-    if (m_shooterEncoder.getVelocity() >= Constants.shooterDefaultSpeed){
+    if (m_shooterEncoder.getVelocity() >= Constants.highShooterSpeed){
       new WaitCommand(7);
       m_shooterServo.setRaw(1000);
     }

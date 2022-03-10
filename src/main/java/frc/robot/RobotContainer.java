@@ -22,11 +22,6 @@ import frc.robot.commands.CancelStage;
 import frc.robot.commands.ClimbButtonSequence;
 import frc.robot.commands.ClimbInitializationDown;
 import frc.robot.commands.ClimbInitializationUp;
-import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Intake;
-
 import frc.robot.commands.DriveJoystick;
 import frc.robot.commands.OpenGate;
 import frc.robot.commands.PivotArmDescendDistance;
@@ -44,14 +39,11 @@ import frc.robot.commands.ExtendIntake;
 import frc.robot.commands.FindTarget;
 import frc.robot.commands.IntakeRun;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.commands.AutoDriveForwards;
-import frc.robot.commands.AutoDriveShoot;
-import frc.robot.commands.AutoMoveBackwards;
+import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.DriveJoystick;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -62,7 +54,6 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.AnalogTrigger;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 

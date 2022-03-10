@@ -48,7 +48,8 @@ public final class Constants // Note for self: Define integers here. Button numb
 
     // Shooter--
     public static final int kShooterCANID = 5; // For the Shooter Motor
-    public static final int shooterDefaultSpeed = 5000; // This will act as a minimum speed if no target is found. Allows the Gate to release.
+    public static final int highShooterSpeed = 5000; // This will act as a minimum speed if no target is found. Allows the Gate to release.
+    public static final int lowShooterSpeed = 2500;
     public static final double SHOOTER_kP = 0.0001;
     public static final double SHOOTER_kI = 0.000001;
     public static final double SHOOTER_kD = 0.0004;
@@ -56,17 +57,6 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final double SHOOTER_MAX_OUTPUT = 6000.0;
     public static final double SHOOTER_MIN_OUTPUT = -6000.0;
     public static final int kShooterServoPWMID = 0;
-    // public static final int kShooterGateReleaseID = 5;
-    // RPM Values for Shooter-- Needs to be adjusted later. (HOPEFULLY I CAN GET RID
-    // OF THIS... Ask me how later)
-    public static final int shooterRPM17 = 5000;
-    public static final int shooterRPM16 = 4750;
-    public static final int shooterRPM15 = 4500;
-    public static final int shooterRPM14 = 4250;
-    public static final int shooterRPM13 = 4000;
-    public static final int shooterRPM12 = 3750;
-    public static final int shooterRPM11 = 3500;
-    public static final int shooterRPM10 = 3250;
 
     // Intake--
     public static final int kIntakePWMID = 1;

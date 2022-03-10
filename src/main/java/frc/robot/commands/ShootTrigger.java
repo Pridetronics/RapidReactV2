@@ -35,7 +35,7 @@ public class ShootTrigger extends CommandBase {
   @Override
   public void execute() {
     if (m_joystickShooter.getRawAxis(3) > .1){
-      m_shooter.SimpleShooterMode();
+      m_shooter.HighSpeedShooterMode();
       m_shooter.OpenGate();
     }
     else
