@@ -32,6 +32,7 @@ import frc.robot.commands.ShootTrigger;
 import frc.robot.commands.ShooterAdjust;
 import frc.robot.commands.ShooterRun;
 import frc.robot.commands.SimpleShooterRun;
+import frc.robot.commands.lowGoalShooterRun;
 import frc.robot.commands.ShooterMode;
 import frc.robot.commands.VisionMode;
 import frc.robot.commands.LimelightDistanceFinder;
@@ -106,7 +107,8 @@ public class RobotContainer {
   public static Autonomous m_auto;
   // Creates the subsystem for climb
 
-  public JoystickButton shooterButton; // Button for the shooter
+  public JoystickButton highSpeedShooterButton; // Button for the shooter
+  public JoystickButton lowSpeedShooterButton;
   public JoystickButton intakeButton;
   public static JoystickButton climbButton;
   public JoystickButton addButton;
@@ -197,11 +199,9 @@ public class RobotContainer {
     // Puts data on Shuffleboard to use the
     // // command.
     // SmartDashboard.putData("Shooter Adjust", new ShooterAdjust(m_drive));
-    // SmartDashboard.putData("Open Gate", new OpenGate(m_shooter)); // Displays on
-    // the screen and can be run by pushing
-    // // the square. Pretty neat
+    // SmartDashboard.putData("Open Gate", new OpenGate(m_shooter)); // Displays on the screen and can be run by pushing the square. Pretty neat
     // SmartDashboard.putData("Intake Run", new IntakeRun(m_intake));
-    SmartDashboard.putData("Extend/Retract Intake", new ExtendIntake(m_intake));
+    // SmartDashboard.putData("Extend/Retract Intake", new ExtendIntake(m_intake));
     // SmartDashboard.putData("Find Distance", new
     // LimelightDistanceFinder(m_shooter));
     // SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));
@@ -235,8 +235,8 @@ public class RobotContainer {
     visionModeButton.toggleWhenPressed(new VisionMode(m_shooter)); // Switches between modes. See Shooter subsytem for
                                                                    // function.
 
-    shooterModeButton = new JoystickButton(joystickShooter, Constants.shooterModeButtonNumber);
-    shooterModeButton.toggleWhenPressed(new ShooterMode(m_shooter));
+    // shooterModeButton = new JoystickButton(joystickShooter, Constants.shooterModeButtonNumber);
+    // shooterModeButton.toggleWhenPressed(new ShooterMode(m_shooter));
 
     findTargetButton = new JoystickButton(joystickShooter, Constants.findTargetButtonNumber); // Change this to left
                                                                                               // trigger
@@ -279,12 +279,15 @@ public class RobotContainer {
     // cancelStageButton.whileActiveOnce(new CancelStage(m_climb));
 
     // Shooter Button Configured and Command Assigned to Button
-    shooterButton = new JoystickButton(joystickShooter, Constants.shooterButtonNumber);
-    shooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate
-                                                      // commands
+    highSpeedShooterButton = new JoystickButton(joystickShooter, Constants.highSpeedShooterButtonNumber);
+    highSpeedShooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate commands
         new SimpleShooterRun(m_shooter),
-        new WaitCommand(.4),
         new OpenGate(m_shooter))); // References the command and inside the needed subsytem
+
+    lowSpeedShooterButton = new JoystickButton(joystickShooter, Constants.lowSpeedShooterButtonNumber);
+    lowSpeedShooterButton.whileHeld(new ParallelCommandGroup(
+      new lowGoalShooterRun(m_shooter),
+      new OpenGate(m_shooter)));
 
     intakeButton = new JoystickButton(joystickDriver, Constants.intakeButtonNumber);
     intakeButton.whileHeld(new ParallelCommandGroup(

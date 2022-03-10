@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drive;
 
 public class AutoDriveForwards extends CommandBase {
@@ -29,7 +30,13 @@ public class AutoDriveForwards extends CommandBase {
     // RobotContainer.climbPID.setI(Constants.CLIMB_kI);
     // RobotContainer.climbPID.setD(Constants.CLIMB_kD);
 
-    // m_drive.m_frontLeftPIDController.setP(Constants.kP)
+    m_drive.m_frontLeftPIDController.setP(Constants.DRIVE_kP);
+    m_drive.m_frontRightPIDController.setP(Constants.DRIVE_kP);
+    m_drive.m_rearLeftPIDController.setP(Constants.DRIVE_kP);
+    m_drive.m_rearRightPIDController.setP(Constants.DRIVE_kP);
+
+
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.

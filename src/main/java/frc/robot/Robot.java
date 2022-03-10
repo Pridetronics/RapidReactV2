@@ -71,9 +71,9 @@ public class Robot extends TimedRobot {
     RobotContainer.climbPiston.set(DoubleSolenoid.Value.kForward);
     RobotContainer.shooterServo.setRaw(1300);
 
-    chooser.setDefaultOption("HoneClimb", new HoningCommand(RobotContainer.m_climb));
+    chooser.setDefaultOption("HoneClimb", new HoningCommand(RobotContainer.m_climb, RobotContainer.m_shooter));
     chooser.addOption("Drive Forwards", new ParallelCommandGroup(
-        new HoningCommand(RobotContainer.m_climb),
+        new HoningCommand(RobotContainer.m_climb, RobotContainer.m_shooter),
         new AutoDriveForwards(RobotContainer.m_drive)));
 
     SmartDashboard.putData("Auto Choices", chooser);

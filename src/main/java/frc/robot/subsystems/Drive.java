@@ -93,10 +93,10 @@ public class Drive extends SubsystemBase {
   }
 
   public void autoDriveBack() {
-    m_frontLeftMotor.set(-0.5);
-    m_rearLeftMotor.set(-0.5);
-    m_frontRightMotor.set(-0.5);
-    m_rearRightMotor.set(-0.5);
+    m_frontLeftMotor.set(0.5);
+    m_rearLeftMotor.set(0.5);
+    m_frontRightMotor.set(0.5);
+    m_rearRightMotor.set(0.5);
   }
 
   public void autoDriveFwd() {

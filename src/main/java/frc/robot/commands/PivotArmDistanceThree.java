@@ -45,7 +45,7 @@ public class PivotArmDistanceThree extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_climb.stop();
+    //m_climb.stop(); Test-- might need to uncomment this later
   }
 
   // Returns true when the command should end.

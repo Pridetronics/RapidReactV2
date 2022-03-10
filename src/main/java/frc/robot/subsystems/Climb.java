@@ -199,6 +199,7 @@ public class Climb extends SubsystemBase {
 
     public void ClimbUpSlowly() {
         if (isClimbAtBottom() == true) {
+            System.out.println("Go up slowly");
             m_climbMotor.set(0.1);
         } else {
             stop();
@@ -208,6 +209,7 @@ public class Climb extends SubsystemBase {
 
     public void ClimbDownSlowly() {
         if (isClimbAtBottom() == false) {
+            System.out.println("Climb DOwn slowly");
             m_climbMotor.set(-0.1);
         } else {
             stop();

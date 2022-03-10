@@ -118,10 +118,14 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Distance in Feet", distanceInFeet);
     SmartDashboard.putNumber("Rounded Distance", roundedDistance);
   }
+  public void lightsOut()
+  {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+  }
   public void processingMode() //For the toggle between vision modes. 
   {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0); //Sets camMode to processing
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0); //Tells LEDs to follow the pipeline settings
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(2); //Tells LEDs to turn on
   }
   public void cameraMode()
   {

@@ -21,7 +21,8 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final int kJoystickDriverID = 0; // For Joystick 0
     public static final int kJoystickShooterID = 1; // For Joystick 1
 
-    public static final int shooterButtonNumber = 8; // All values will need to be adjusted for true values.
+    public static final int highSpeedShooterButtonNumber = 6; // All values will need to be adjusted for true values.
+    public static final int lowSpeedShooterButtonNumber = 5;
     public static final int intakeButtonNumber = 1;
     public static final int visionModeButtonNumber = 7;
     public static final int shooterModeButtonNumber = 7;
@@ -33,6 +34,7 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final int kRearLeftCANID = 4;
     public static final int kFrontRightCANID = 1;
     public static final int kRearRightCANID = 3;
+    public static final double DRIVE_kP = 0.0001; //taken from shooter
 
     public static final double kDriveDistance = 24; // In Inches - wont go exactly due to mecanum wheel loss
     // Not used yet
