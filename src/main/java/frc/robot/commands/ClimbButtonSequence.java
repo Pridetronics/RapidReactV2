@@ -28,70 +28,61 @@ public class ClimbButtonSequence extends CommandBase {
 
   public ClimbButtonSequence(Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_climb = new Climb();
+    m_climb = climb;
     m_climbMessage = Climb.climbMessage;
     addRequirements(m_climb);
-    
   }
 
   public void climbSequence() {
     if (Climb.climbValue <= -1) {
       Climb.climbValue = 0;
-    } 
-    else if (Climb.climbValue == 0) {
+    } else if (Climb.climbValue == 0) {
       m_climbMessage = "Ready to raise Pivot Arms?";
       SmartDashboard.putString("Climb", m_climbMessage);
-    } 
-    else if (Climb.climbValue == 1) { // Pivot arm fully extended and piston extends
+    } else if (Climb.climbValue == 1) { // Pivot arm fully extended and piston extends
       // new SequentialCommandGroup(
-      //     new PivotArmDistanceOne(m_climb, Constants.climbDistance1),
-      //     new InstantCommand(m_climb::pistonRelease, m_climb));
-        climbSequenceOne.schedule();  
+      // new PivotArmDistanceOne(m_climb, Constants.climbDistance1),
+      // new InstantCommand(m_climb::pistonRelease, m_climb));
+      climbSequenceOne.schedule();
       m_climbMessage = "Ready to descend Pivot Arms?";
       SmartDashboard.putString("Climb", m_climbMessage);
-    } 
-    else if (Climb.climbValue == 2) { // Pivot arm fully retracted
+    } else if (Climb.climbValue == 2) { // Pivot arm fully retracted
       // new PivotArmDescendDistance(m_climb, Constants.climbDescendDistance);
       m_pivotArmDescendDistance.schedule();
       m_climbMessage = "Ready to raise Pivot Arms?";
       SmartDashboard.putString("Climb", m_climbMessage);
-    } 
-    else if (Climb.climbValue == 3) {
-      //new SequentialCommandGroup(
-      //   new PivotArmDistanceTwo(m_climb, Constants.climbDistance2),
-      //   new InstantCommand(m_climb::pistonRetract, m_climb),
-      //   new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
-      //   new InstantCommand(m_climb::pistonRelease, m_climb));
+    } else if (Climb.climbValue == 3) {
+      // new SequentialCommandGroup(
+      // new PivotArmDistanceTwo(m_climb, Constants.climbDistance2),
+      // new InstantCommand(m_climb::pistonRetract, m_climb),
+      // new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
+      // new InstantCommand(m_climb::pistonRelease, m_climb));
       climbSequenceThree.schedule();
       m_climbMessage = "Ready to descend Pivot Arms?";
       SmartDashboard.putString("Climb", m_climbMessage);
-    } 
-    else if (Climb.climbValue == 4) { // Pivot arm fully retracted
-      //new PivotArmDescendDistance(m_climb, Constants.climbDescendDistance);
+    } else if (Climb.climbValue == 4) { // Pivot arm fully retracted
+      // new PivotArmDescendDistance(m_climb, Constants.climbDescendDistance);
       m_pivotArmDescendDistance.schedule();
       m_climbMessage = "Ready to raise Pivot Arms?";
       SmartDashboard.putString("Climb", m_climbMessage);
-    } 
-    else if (Climb.climbValue == 5) { // Pivot arm extends 9 inches, extends pistons, pivot arm extends 23 inches,
+    } else if (Climb.climbValue == 5) { // Pivot arm extends 9 inches, extends pistons, pivot arm extends 23 inches,
       // retract pistons
       // new SequentialCommandGroup(
-      //   new PivotArmDistanceTwo(m_climb, Constants.climbDistance2),
-      //   new InstantCommand(m_climb::pistonRetract, m_climb),
-      //   new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
-      //   new InstantCommand(m_climb::pistonRelease, m_climb));
+      // new PivotArmDistanceTwo(m_climb, Constants.climbDistance2),
+      // new InstantCommand(m_climb::pistonRetract, m_climb),
+      // new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
+      // new InstantCommand(m_climb::pistonRelease, m_climb));
       climbSequenceThree.schedule();
       m_climbMessage = "Ready to descend Pivot Arms?";
       SmartDashboard.putString("Climb", m_climbMessage);
-    } 
-    else if (Climb.climbValue == 6) { // Pivot arm fully retracted
-      //new PivotArmDescendDistance(m_climb, Constants.climbDescendDistance);
+    } else if (Climb.climbValue == 6) { // Pivot arm fully retracted
+      // new PivotArmDescendDistance(m_climb, Constants.climbDescendDistance);
       m_pivotArmDescendDistance.schedule();
       m_climbMessage = "Press Add Button Once Done, Climb Finished";
       SmartDashboard.putString("Climb", m_climbMessage);
-    } 
-    else { // Ask about piston postion for when climb isn't being used. Extended or
+    } else { // Ask about piston postion for when climb isn't being used. Extended or
              // retracted?
-      //new PivotArmDescendDistance(m_climb, Constants.climbDescendDistance);
+      // new PivotArmDescendDistance(m_climb, Constants.climbDescendDistance);
       m_pivotArmDescendDistance.schedule();
     }
   }
@@ -100,13 +91,14 @@ public class ClimbButtonSequence extends CommandBase {
   @Override
   public void initialize() {
     climbSequenceOne = new SequentialCommandGroup(new PivotArmDistanceOne(m_climb, Constants.climbDistance1),
-    new InstantCommand(m_climb::pistonRelease, m_climb));
+        new InstantCommand(m_climb::pistonRelease, m_climb));
     m_pivotArmDescendDistance = new PivotArmDescendDistance(m_climb, Constants.climbDescendDistance);
-    climbSequenceThree = new SequentialCommandGroup( // Pivot arm extends 9 inches, extends pistons, pivot arm extends 23 inches, retract pistons
-    new PivotArmDistanceTwo(m_climb, Constants.climbDistance2),
-    new InstantCommand(m_climb::pistonRetract, m_climb),
-    new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
-    new InstantCommand(m_climb::pistonRelease, m_climb)); 
+    climbSequenceThree = new SequentialCommandGroup( // Pivot arm extends 9 inches, extends pistons, pivot arm extends
+                                                     // 23 inches, retract pistons
+        new PivotArmDistanceTwo(m_climb, Constants.climbDistance2),
+        new InstantCommand(m_climb::pistonRetract, m_climb),
+        new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
+        new InstantCommand(m_climb::pistonRelease, m_climb));
 
   }
 

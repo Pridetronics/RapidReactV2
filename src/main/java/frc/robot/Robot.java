@@ -10,11 +10,13 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AutoDriveForwards;
 import frc.robot.commands.AutoDriveShoot;
 import frc.robot.commands.ClimbInitializationDown;
 import frc.robot.commands.ClimbInitializationUp;
+import frc.robot.commands.HoningCommand;
 import frc.robot.commands.IntakeRun;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -48,8 +50,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command m_taxi;
   private Command m_testCommand;
-  private Climb m_climb;
-
+  private Command m_honeCommand;
   private RobotContainer m_robotContainer;
   // private SendableChooser chooser;
   SendableChooser<Command> chooser = new SendableChooser<Command>();
@@ -61,17 +62,20 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer. This will perform all our button bindings, and put our autonomous chooser on the dashboard.
+    // Instantiate our RobotContainer. This will perform all our button bindings,
+    // and put our autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    m_climb = new Climb();
+    m_honeCommand = RobotContainer.HoneClimb;
     SmartDashboard.putString("Program:", "Testing 03/07/22");
     RobotContainer.intakePiston.set(DoubleSolenoid.Value.kForward);
     RobotContainer.climbPiston.set(DoubleSolenoid.Value.kForward);
-    RobotContainer.shooterServo.setRaw(1300);    
+    RobotContainer.shooterServo.setRaw(1300);
 
-    chooser.setDefaultOption("HoneClimb", RobotContainer.HoneClimb);
-    chooser.addOption("Drive", new AutoDriveForwards(RobotContainer.m_drive));
-    chooser.addOption("Drive and Shoot", new AutoDriveShoot(RobotContainer.m_drive));
+    chooser.setDefaultOption("HoneClimb", new HoningCommand(RobotContainer.m_climb));
+    chooser.addOption("Drive Forwards", new ParallelCommandGroup(
+        new HoningCommand(RobotContainer.m_climb),
+        new AutoDriveForwards(RobotContainer.m_drive)));
+
     SmartDashboard.putData("Auto Choices", chooser);
   }
 
@@ -136,23 +140,27 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    
+
   }
-  @Override
-  public void teleopPeriodic(){}
 
   @Override
-  public void testInit(){
+  public void teleopPeriodic() {
+  }
+
+  @Override
+  public void testInit() {
     CommandScheduler.getInstance().cancelAll();
   }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+  }
 
   @Override
-  public void simulationInit() {}
+  public void simulationInit() {
+  }
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+  }
 }
-  

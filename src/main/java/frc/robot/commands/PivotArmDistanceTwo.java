@@ -52,6 +52,7 @@ public class PivotArmDistanceTwo extends CommandBase {
   @Override
   public boolean isFinished() {
     if (m_climb.getClimbRevs() >= Constants.climbDistance2) {
+      // m_climb.isClimbAtBottom() == true) {
       // System.out.println("CLIMBPID END");
       return true;
     } else {

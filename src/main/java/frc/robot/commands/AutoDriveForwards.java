@@ -24,6 +24,12 @@ public class AutoDriveForwards extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // RobotContainer.climbPID = RobotContainer.climbMotor.getPIDController();
+    // RobotContainer.climbPID.setP(Constants.CLIMB_kP);
+    // RobotContainer.climbPID.setI(Constants.CLIMB_kI);
+    // RobotContainer.climbPID.setD(Constants.CLIMB_kD);
+
+    // m_drive.m_frontLeftPIDController.setP(Constants.kP)
   }
 
   // Called every time the scheduler runs while the command is scheduled.

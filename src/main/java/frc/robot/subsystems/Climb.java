@@ -263,10 +263,22 @@ public class Climb extends SubsystemBase {
         }
         return isClimbAtBottom;
     }
-    public void ClimbUpSlowly(){
-        m_climbMotor.set(0.1);
+
+    public void ClimbUpSlowly() {
+        if (isClimbAtBottom() == true) {
+            m_climbMotor.set(0.1);
+        } else {
+            stop();
+            zeroEncoder();
         }
-    public void ClimbDownSlowly(){
-        m_climbMotor.set(-0.1);
+    }
+
+    public void ClimbDownSlowly() {
+        if (isClimbAtBottom() == false) {
+            m_climbMotor.set(-0.1);
+        } else {
+            stop();
+            zeroEncoder();
+        }
     }
 }

@@ -14,13 +14,14 @@ package frc.robot;
  * It is advised to statically import this class (or one of its inner classes)
  * wherever the constants are needed, to reduce verbosity.
  */
-public final class Constants // Note for self: Define integers here. Button numbers and the addresses of the motors.
+public final class Constants // Note for self: Define integers here. Button numbers and the addresses of the
+                             // motors.
 {
     // Joysticks and Button Numbers--
     public static final int kJoystickDriverID = 0; // For Joystick 0
     public static final int kJoystickShooterID = 1; // For Joystick 1
 
-    public static final int shooterButtonNumber = 8; // All values will need to be adjusted for true values. 
+    public static final int shooterButtonNumber = 8; // All values will need to be adjusted for true values.
     public static final int intakeButtonNumber = 1;
     public static final int visionModeButtonNumber = 7;
     public static final int shooterModeButtonNumber = 7;
@@ -30,7 +31,7 @@ public final class Constants // Note for self: Define integers here. Button numb
     // Drive--
     public static final int kFrontLeftCANID = 2; // For all of the drive motors
     public static final int kRearLeftCANID = 4;
-    public static final int kFrontRightCANID = 1; 
+    public static final int kFrontRightCANID = 1;
     public static final int kRearRightCANID = 3;
 
     public static final double kDriveDistance = 24; // In Inches - wont go exactly due to mecanum wheel loss
@@ -48,7 +49,8 @@ public final class Constants // Note for self: Define integers here. Button numb
 
     // Shooter--
     public static final int kShooterCANID = 5; // For the Shooter Motor
-    public static final int shooterDefaultSpeed = 5000; // This will act as a minimum speed if no target is found. Allows the Gate to release.
+    public static final int shooterDefaultSpeed = 5000; // This will act as a minimum speed if no target is found.
+                                                        // Allows the Gate to release.
     public static final double SHOOTER_kP = 0.0001;
     public static final double SHOOTER_kI = 0.000001;
     public static final double SHOOTER_kD = 0.0004;
@@ -77,11 +79,11 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final int kPistonClimbChannel = 0; // For piston
     public static final int kPistonReverseClimbChannel = 1; // For piston
 
-    public static final int climbButtonNumber = 3; // For climb Button on the Gamepad
     public static final int cancellationButton1 = 5; // For climb's cancellation button on the Gamepad
     public static final int cancellationButton2 = 6; // For climb's cancellation button on the Gamepad
-    public static final int addButtonNumber = 1; // For climb's adding one button on the Gamepad
-    public static final int cancelStageButtonNumber = 2; // For climb's decrease stage button on the Gamepad
+    public static final int sequence1ButtonNumber = 2; // For climb's sequence 1 button on the Gamepad
+    public static final int sequence2ButtonNumber = 1; // For climb's sequence 2 button on the Gamepad
+    public static final int sequence3ButtonNumber = 3; // For climb's sequence 3 button on the Gamepad
 
     public static final int upperClimbLimitSwitchChannel = 1; // Upper Limit Switch Channel
     public static final int lowerClimbLimitSwitchChannel = 0; // Lower Limit Switch Channel
@@ -92,10 +94,10 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final double CLIMB_MIN_OUTPUT = -6000.0;
     public static final double CLIMB_MAX_OUTPUT = 6000.0;
 
-    public static final double climbDistance1 = 140; // Distance for fully extended PUT AT 130-- Could be higher
-    public static final double climbDistance2 = 60; // Distance for 23 inches
-    public static final double climbDistance3 = 123;
-    public static final double climbDescendDistance = 1; // Distance for fully retracted
+    public static final double climbDistance1 = 140; // Distance for fully extended (climb's pivot arms)
+    public static final double climbDistance2 = 40; // Distance 2 for climb's pivot arms
+    public static final double climbDistance3 = 135; // Distance 3 for climb's pivot arms
+    public static final double climbDescendDistance = -4; // Distance for fully retracted (climb's pivot arms)
 
     public static final int kEncoderCountsPerRev = 42; // Ask about the encoder
     private static final double kArmDiameter = 0.75; // Arms' diameter in inches

@@ -64,7 +64,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 
-
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -112,7 +111,7 @@ public class RobotContainer {
   public static Command AddOne;
 
   public static Autonomous m_auto;
-   // Creates the subsystem for climb
+  // Creates the subsystem for climb
 
   public JoystickButton shooterButton; // Button for the shooter
   public JoystickButton intakeButton;
@@ -124,10 +123,16 @@ public class RobotContainer {
   public JoystickButton visionModeButton;
   public JoystickButton shooterModeButton;
   public JoystickButton findTargetButton;
-  public Joystick joystickDriver; // Controller 0 --Ensure that all controllers are in proper ports in Driver Station
+
+  public JoystickButton sequence1Button;
+  public JoystickButton sequence2Button;
+  public JoystickButton sequence3Button;
+
+  public Joystick joystickDriver; // Controller 0 --Ensure that all controllers are in proper ports in Driver
+                                  // Station
   public Joystick joystickShooter; // Controller 1
   public static Command HoneClimb;
-
+  public JoystickButton honeButton;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -137,7 +142,7 @@ public class RobotContainer {
     // bindings, this is below.
     joystickDriver = new Joystick(Constants.kJoystickDriverID);
     joystickShooter = new Joystick(Constants.kJoystickShooterID); // Sets shooter joystick to port 1
-    //Climb Relevant
+    // Climb Relevant
     climbPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kPistonClimbChannel,
         Constants.kPistonReverseClimbChannel);
     climbMotor = new CANSparkMax(Constants.kClimbChannel, MotorType.kBrushless);
@@ -168,7 +173,8 @@ public class RobotContainer {
 
     // Intake Relevant---
     intakeCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-    intakePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kIntakePistonForwardChannel, Constants.kIntakePistonReverseChannel);
+    intakePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kIntakePistonForwardChannel,
+        Constants.kIntakePistonReverseChannel);
     intakeMotor = new VictorSP(Constants.kIntakePWMID);
     m_intake = new Intake();
 
@@ -190,30 +196,34 @@ public class RobotContainer {
     shooterServo = new Servo(Constants.kShooterServoPWMID);
     m_shooter = new Shooter(); // Defines the subsystem
 
-
     // Climb Releveant---
-    
+
     // SmartDashboard Relevant-- Remove these during competition time
 
-    SmartDashboard.putData("Shooter Run", new ShooterRun(m_shooter, m_drive)); // Puts data on Shuffleboard to use the command.
-    SmartDashboard.putData("Shooter Adjust", new ShooterAdjust(m_drive));
-    SmartDashboard.putData("Open Gate", new OpenGate(m_shooter)); // Displays on the screen and can be run by pushing the square. Pretty neat
-    SmartDashboard.putData("Intake Run", new IntakeRun(m_intake));
+    // SmartDashboard.putData("Shooter Run", new ShooterRun(m_shooter, m_drive)); //
+    // Puts data on Shuffleboard to use the
+    // // command.
+    // SmartDashboard.putData("Shooter Adjust", new ShooterAdjust(m_drive));
+    // SmartDashboard.putData("Open Gate", new OpenGate(m_shooter)); // Displays on
+    // the screen and can be run by pushing
+    // // the square. Pretty neat
+    // SmartDashboard.putData("Intake Run", new IntakeRun(m_intake));
     SmartDashboard.putData("Extend/Retract Intake", new ExtendIntake(m_intake));
-    SmartDashboard.putData("Find Distance", new LimelightDistanceFinder(m_shooter));
-    SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));
-    SmartDashboard.putData("Find Target", new FindTarget(m_drive));
-    SmartDashboard.putData("Shooter Mode", new ShooterMode(m_shooter));
-    
-    SmartDashboard.putData("Sequence 1", new SequentialCommandGroup( 
-      new PivotArmDistanceOne(m_climb, Constants.climbDistance1),
-      new InstantCommand(m_climb::pistonRelease, m_climb)));
+    // SmartDashboard.putData("Find Distance", new
+    // LimelightDistanceFinder(m_shooter));
+    // SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));
+    // SmartDashboard.putData("Find Target", new FindTarget(m_drive));
+    // SmartDashboard.putData("Shooter Mode", new ShooterMode(m_shooter));
+
+    SmartDashboard.putData("Sequence 1", new SequentialCommandGroup(
+        new PivotArmDistanceOne(m_climb, Constants.climbDistance1),
+        new InstantCommand(m_climb::pistonRelease, m_climb)));
     SmartDashboard.putData("Sequence 2", new PivotArmDescendDistance(m_climb, Constants.climbDescendDistance));
-    SmartDashboard.putData("Sequence 3", new  SequentialCommandGroup(
-      new PivotArmDistanceTwo(m_climb, Constants.climbDistance2),
-      new InstantCommand(m_climb::pistonRetract, m_climb),
-      new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
-      new InstantCommand(m_climb::pistonRelease, m_climb)));
+    SmartDashboard.putData("Sequence 3", new SequentialCommandGroup(
+        new PivotArmDistanceTwo(m_climb, Constants.climbDistance2),
+        new InstantCommand(m_climb::pistonRetract, m_climb),
+        new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
+        new InstantCommand(m_climb::pistonRelease, m_climb)));
 
     SmartDashboard.putData("Arm Distance One", new PivotArmDistanceOne(m_climb, Constants.climbDistance1));
     SmartDashboard.putData("Piston Extend", new InstantCommand(m_climb::pistonRelease, m_climb));
@@ -234,16 +244,35 @@ public class RobotContainer {
     shooterModeButton = new JoystickButton(joystickShooter, Constants.shooterModeButtonNumber);
     shooterModeButton.toggleWhenPressed(new ShooterMode(m_shooter));
 
-    findTargetButton = new JoystickButton(joystickShooter, Constants.findTargetButtonNumber); // Change this to left trigger
+    findTargetButton = new JoystickButton(joystickShooter, Constants.findTargetButtonNumber); // Change this to left
+                                                                                              // trigger
     findTargetButton.whenPressed(new FindTarget(m_drive));
     // Climb Button Configured
-    climbButton = new JoystickButton(joystickShooter, Constants.climbButtonNumber);
-    //climbButton.whileActiveOnce(new ClimbButtonSequence(climb));
-    //climbButton.whenPressed(new InstantCommand(climb::pistonRelease, climb));
-    climbButton.whenPressed(new PivotArmDescendDistance(m_climb, Constants.climbDescendDistance));
+    // climbButton = new JoystickButton(joystickShooter,
+    // Constants.climbButtonNumber);
+    // climbButton.whileActiveOnce(new ClimbButtonSequence(m_climb));
+    // climbButton.whenPressed(new InstantCommand(m_climb::pistonRelease, m_climb));
+    // climbButton.whenPressed(new PivotArmDescendDistance(m_climb,
+    // Constants.climbDescendDistance));
+    sequence1Button = new JoystickButton(joystickShooter,
+        Constants.sequence1ButtonNumber);
+    sequence1Button.whenPressed(new SequentialCommandGroup(new SequentialCommandGroup(
+        new PivotArmDistanceOne(m_climb, Constants.climbDistance1),
+        new InstantCommand(m_climb::pistonRelease, m_climb))));
+    sequence2Button = new JoystickButton(joystickShooter,
+        Constants.sequence2ButtonNumber);
+    sequence2Button.whenPressed(new PivotArmDescendDistance(m_climb,
+        Constants.climbDescendDistance));
+    sequence3Button = new JoystickButton(joystickShooter,
+        Constants.sequence3ButtonNumber);
+    sequence3Button.whenPressed(new SequentialCommandGroup(
+        new PivotArmDistanceTwo(m_climb, Constants.climbDistance2),
+        new InstantCommand(m_climb::pistonRetract, m_climb),
+        new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
+        new InstantCommand(m_climb::pistonRelease, m_climb)));
 
-    addButton = new JoystickButton(joystickShooter, Constants.addButtonNumber);
-    addButton.whileActiveOnce(new IncreaseStage(m_climb));
+    // addButton = new JoystickButton(joystickShooter, Constants.addButtonNumber);
+    // addButton.whileActiveOnce(new IncreaseStage(m_climb));
 
     cancellationButton1 = new JoystickButton(joystickShooter, Constants.cancellationButton1);
     cancellationButton2 = new JoystickButton(joystickShooter, Constants.cancellationButton2);
@@ -251,14 +280,17 @@ public class RobotContainer {
         cancellationButton2);
     cancellationButtons.whenPressed(new CancelClimb(m_climb));
 
+    // cancelStageButton = new JoystickButton(joystickShooter,
+    // Constants.cancelStageButtonNumber);
+    // cancelStageButton.whileActiveOnce(new CancelStage(m_climb));
+
     // Shooter Button Configured and Command Assigned to Button
     shooterButton = new JoystickButton(joystickShooter, Constants.shooterButtonNumber);
-    shooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate commands
+    shooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate
+                                                      // commands
         new SimpleShooterRun(m_shooter),
         new WaitCommand(.4),
         new OpenGate(m_shooter))); // References the command and inside the needed subsytem
-    cancelStageButton = new JoystickButton(joystickShooter, Constants.cancelStageButtonNumber);
-    cancelStageButton.whileActiveOnce(new CancelStage(m_climb));
 
     intakeButton = new JoystickButton(joystickDriver, Constants.intakeButtonNumber);
     intakeButton.whileHeld(new ParallelCommandGroup(
@@ -267,10 +299,15 @@ public class RobotContainer {
         new IntakeRun(m_intake)));
 
     HoneClimb = new SequentialCommandGroup(
-      new ClimbInitializationUp(m_climb),
-      new ClimbInitializationDown(m_climb));
+        new ClimbInitializationUp(m_climb),
+        new ClimbInitializationDown(m_climb));
+
+    honeButton = new JoystickButton(joystickDriver, 11);
+    honeButton.whenPressed(new SequentialCommandGroup(
+        new ClimbInitializationUp(m_climb),
+        new ClimbInitializationDown(m_climb)));
   }
   // public Command getAutonomousCommand() {
-  //   return (Command) m_chooser.getSelected();
+  // return (Command) m_chooser.getSelected();
   // }
 }
