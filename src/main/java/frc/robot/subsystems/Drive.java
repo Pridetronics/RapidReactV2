@@ -93,10 +93,10 @@ public class Drive extends SubsystemBase {
   }
 
   public void autoDriveBack() {
-    m_frontLeftMotor.set(0.5);
-    m_rearLeftMotor.set(0.5);
-    m_frontRightMotor.set(0.5);
-    m_rearRightMotor.set(0.5);
+    m_frontLeftMotor.set(-0.2);
+    m_rearLeftMotor.set(-0.2);
+    m_frontRightMotor.set(-0.2);
+    m_rearRightMotor.set(-0.2);
   }
 
   public void autoDriveFwd() {
@@ -114,7 +114,7 @@ public class Drive extends SubsystemBase {
     xValue = m_joystickDriver.getX();
     zValue = m_joystickDriver.getZ();
     //mecanumDrive.driveCartesian(yValue, -xValue, -zValue);
-    mecanumDrive.driveCartesian(yValue, -xValue, -(zValue * Math.abs(zValue)));
+    mecanumDrive.driveCartesian(yValue, -xValue, -((zValue * Math.abs(zValue)) * 0.8));
     // mecanumDrive.driveCartesian((yValue * Math.abs(yValue)), -(xValue * Math.abs(xValue)), -(zValue * Math.abs(zValue)));
 
   }

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AutoDriveForwards;
 import frc.robot.commands.AutoDriveShoot;
+import frc.robot.commands.AutoMoveBackwards;
 import frc.robot.commands.ClimbInitializationDown;
 import frc.robot.commands.ClimbInitializationUp;
 import frc.robot.commands.HoningCommand;
@@ -71,10 +72,8 @@ public class Robot extends TimedRobot {
     RobotContainer.climbPiston.set(DoubleSolenoid.Value.kForward);
     RobotContainer.shooterServo.setRaw(1300);
 
-    chooser.setDefaultOption("HoneClimb", new HoningCommand(RobotContainer.m_climb, RobotContainer.m_shooter));
-    chooser.addOption("Drive Forwards", new ParallelCommandGroup(
-        new HoningCommand(RobotContainer.m_climb, RobotContainer.m_shooter),
-        new AutoDriveForwards(RobotContainer.m_drive)));
+    chooser.setDefaultOption("Drive Forward", new AutoMoveBackwards(RobotContainer.m_drive));
+    chooser.addOption("HoneClimb",new HoningCommand(RobotContainer.m_climb, RobotContainer.m_shooter));
 
     SmartDashboard.putData("Auto Choices", chooser);
   }
