@@ -19,6 +19,7 @@ import frc.robot.commands.ClimbInitializationDown;
 import frc.robot.commands.ClimbInitializationUp;
 import frc.robot.commands.HoningCommand;
 import frc.robot.commands.IntakeRun;
+import frc.robot.commands.SimpleShooterRun;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -74,6 +75,9 @@ public class Robot extends TimedRobot {
 
     chooser.setDefaultOption("Drive Forward", new AutoMoveBackwards(RobotContainer.m_drive));
     chooser.addOption("HoneClimb",new HoningCommand(RobotContainer.m_climb, RobotContainer.m_shooter));
+    chooser.addOption("Drive and Shoot", new SequentialCommandGroup(
+      new SimpleShooterRun(RobotContainer.m_shooter).withTimeout(4), 
+      new AutoMoveBackwards(RobotContainer.m_drive)));
 
     SmartDashboard.putData("Auto Choices", chooser);
   }
