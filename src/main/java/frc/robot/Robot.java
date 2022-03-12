@@ -19,6 +19,7 @@ import frc.robot.commands.ClimbInitializationDown;
 import frc.robot.commands.ClimbInitializationUp;
 import frc.robot.commands.HoningCommand;
 import frc.robot.commands.IntakeRun;
+import frc.robot.commands.OpenGateLow;
 import frc.robot.commands.SimpleShooterRun;
 import frc.robot.commands.lowGoalShooterRun;
 import frc.robot.subsystems.Shooter;
@@ -74,11 +75,37 @@ public class Robot extends TimedRobot {
     RobotContainer.climbPiston.set(DoubleSolenoid.Value.kForward);
     RobotContainer.shooterServo.setRaw(1300);
 
-    chooser.setDefaultOption("Drive Forward", new AutoMoveBackwards(RobotContainer.m_drive));
-    chooser.addOption("HoneClimb",new HoningCommand(RobotContainer.m_climb, RobotContainer.m_shooter));
-    chooser.addOption("Drive and Shoot", new SequentialCommandGroup(
-      new lowGoalShooterRun(RobotContainer.m_shooter).withTimeout(4), 
-      new AutoMoveBackwards(RobotContainer.m_drive)));
+    chooser.setDefaultOption("Drive and Shoot", new SequentialCommandGroup(new ParallelCommandGroup(
+        new lowGoalShooterRun(RobotContainer.m_shooter),
+        new OpenGateLow(RobotContainer.m_shooter)).withTimeout(4),
+        new AutoMoveBackwards(RobotContainer.m_drive)));
+    // chooser.addOption("Drive. Shoot. Hone", new SequentialCommandGroup(new
+    // ParallelCommandGroup(
+    // new HoningCommand(RobotContainer.m_climb, RobotContainer.m_shooter),
+    // new lowGoalShooterRun(RobotContainer.m_shooter),
+    // new OpenGateLow(RobotContainer.m_shooter)).withTimeout(4), //why timeout?
+    // new AutoMoveBackwards(RobotContainer.m_drive)));
+
+    // chooser.addOption("Drive. Shoot. Hone Part 2", new SequentialCommandGroup(new
+    // ParallelCommandGroup(
+    // new HoningCommand(RobotContainer.m_climb, RobotContainer.m_shooter),
+    // new lowGoalShooterRun(RobotContainer.m_shooter),
+    // new
+    // OpenGateLow(RobotContainer.m_shooter)).until(RobotContainer.m_climb.isClimbAtBottom()
+    // == true), //testing until
+    // new AutoMoveBackwards(RobotContainer.m_drive)));
+
+    chooser.addOption("Drive Forward", new AutoMoveBackwards(RobotContainer.m_drive));
+    // chooser.addOption("Hone and Drive", new ParallelCommandGroup(
+    // new HoningCommand(RobotContainer.m_climb,
+    // RobotContainer.m_shooter).withTimeout(5),
+    // new AutoMoveBackwards(RobotContainer.m_drive)));
+    // chooser.addOption("Do Nothing", new HoningCommand(RobotContainer.m_climb,
+    // RobotContainer.m_shooter).withTimeout(4));
+    // chooser.addOption("Do Nothing Test", new
+    // HoningCommand(RobotContainer.m_climb,
+    // RobotContainer.m_shooter).until(RobotContainer.m_climb.isClimbAtBottom() ==
+    // true));
 
     SmartDashboard.putData("Auto Choices", chooser);
   }
