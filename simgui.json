@@ -12,15 +12,20 @@
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Ungrouped/VictorSP[1]": "Motor Controller",
       "/SmartDashboard/Auto Chooser": "String Chooser",
+      "/SmartDashboard/Auto Intake Prep": "Command",
+      "/SmartDashboard/Auto Move Backwards": "Command",
+      "/SmartDashboard/Auto Shoot Prep": "Command",
       "/SmartDashboard/Change Vision Modes": "Command",
       "/SmartDashboard/Climb Run": "Command",
       "/SmartDashboard/Extend/Retract Intake": "Command",
       "/SmartDashboard/Find Distance": "Command",
       "/SmartDashboard/Find Target": "Command",
+      "/SmartDashboard/Intake Parallel Command": "Command",
       "/SmartDashboard/Intake Run": "Command",
       "/SmartDashboard/Open Gate": "Command",
       "/SmartDashboard/Shooter Adjust": "Command",
       "/SmartDashboard/Shooter Mode": "Command",
+      "/SmartDashboard/Shooter Parallel Command": "Command",
       "/SmartDashboard/Shooter Run": "Command"
     }
   }

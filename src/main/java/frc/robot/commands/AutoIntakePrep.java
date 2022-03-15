@@ -7,37 +7,51 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 
-public class Autonomous extends CommandBase {
+public class AutoIntakePrep extends CommandBase {
   private Drive m_drive;
+  static final int ticks = 42;
+  private double intakeTarget;
 
-  public Autonomous(Drive drive) {
+  public AutoIntakePrep(Drive drive) {
     m_drive = drive;
 
     addRequirements(m_drive);
+
+    intakeTarget = 1;
   }
 
-  // Called when the command is initially scheduled
-  
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_drive.zeroEncoders();
+    System.out.println("AutoIntakePrep Started");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drive.autoDriveBack();
-    System.out.println("AUTONOMOUSSSSSSSSSSS");
+    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) < intakeTarget){
+      m_drive.autoDriveIntakePrep();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_drive.driveStop();
+    System.out.println("AutoIntakePrep Finished");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) > intakeTarget)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 }

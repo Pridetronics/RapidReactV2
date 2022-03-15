@@ -99,6 +99,20 @@ public class Drive extends SubsystemBase {
     m_rearRightMotor.set(-0.5);
   }
 
+  public void autoDriveIntakePrep() {
+    m_frontLeftMotor.set(-0.4);
+    m_rearLeftMotor.set(-0.4);
+    m_frontRightMotor.set(-0.4);
+    m_rearRightMotor.set(-0.4);
+  }
+
+  public void autoDriveShooterPrep() {
+    m_frontLeftMotor.set(0.4);
+    m_rearLeftMotor.set(0.4);
+    m_frontRightMotor.set(0.4);
+    m_rearRightMotor.set(0.4);
+  }
+
   public void autoDriveFwd() {
     m_frontRightPIDController.setReference(Constants.kDriveDistance, ControlType.kPosition);
     m_rearLeftPIDController.setReference(Constants.kDriveDistance, ControlType.kPosition);

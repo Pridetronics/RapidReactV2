@@ -5,15 +5,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.Intake;
 
-public class AutoDriveShoot extends CommandBase {
-  private Drive m_drive;
-  /** Creates a new Auto_drive_shoot. */
-  public AutoDriveShoot(Drive m_drive2) {
+public class OpenGateLow extends CommandBase {
+  /** Creates a new OpenGateLow. */
+  public OpenGateLow() {
     // Use addRequirements() here to declare subsystem dependencies.
- 
   }
 
   // Called when the command is initially scheduled.

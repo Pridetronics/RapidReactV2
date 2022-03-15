@@ -11,11 +11,25 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+<<<<<<< Updated upstream
 import frc.robot.commands.AutoDriveForwards;
 import frc.robot.commands.AutoDriveShoot;
 import frc.robot.commands.ClimbInitializationDown;
 import frc.robot.commands.ClimbInitializationUp;
 import frc.robot.commands.IntakeRun;
+=======
+import frc.robot.commands.AutoIntakePrep;
+import frc.robot.commands.AutoMoveBackwards;
+import frc.robot.commands.AutoShootPrep;
+import frc.robot.commands.ClimbInitializationDown;
+import frc.robot.commands.ClimbInitializationUp;
+import frc.robot.commands.ExtendIntake;
+import frc.robot.commands.HoningCommand;
+import frc.robot.commands.IntakeRun;
+import frc.robot.commands.OpenGateLow;
+import frc.robot.commands.SimpleShooterRun;
+import frc.robot.commands.lowGoalShooterRun;
+>>>>>>> Stashed changes
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,17 +37,15 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.robot.subsystems.Climb;
-// import edu.wpi.first.wpilibj2.command.button.*;
-// import edu.wpi.first.wpilibj2.command.button.Button;
-// import edu.wpi.first.wpilibj.Joystick;
 
-// import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
-// import edu.wpi.first.wpilibj.motorcontrol.Spark;
-// import com.revrobotics.CANSparkMax;
-// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-// import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
-// import edu.wpi.first.wpilibj.drive.MecanumDrive;
-// import edu.wpi.first.wpilibj.PowerDistribution;
+/*
+  This is a comment outlining the autonomous goal:
+  1. Drive Forward (create a different command to go a specific distance for the ball)
+  2. Intake Ball for x seconds (Intake should extend, run the motor, and then retract)
+  3. Drive Backwards (x distance)
+  4. Shoot (Low speed shooter-- runs at the same time of the open gate command)
+  5. Drive Forward (to leave the tarmac)
+*/
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -67,11 +79,48 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("Program:", "Testing 03/07/22");
     RobotContainer.intakePiston.set(DoubleSolenoid.Value.kForward);
     RobotContainer.climbPiston.set(DoubleSolenoid.Value.kForward);
+<<<<<<< Updated upstream
     RobotContainer.shooterServo.setRaw(1300);    
 
     chooser.setDefaultOption("HoneClimb", RobotContainer.HoneClimb);
     chooser.addOption("Drive", new AutoDriveForwards(RobotContainer.m_drive));
     chooser.addOption("Drive and Shoot", new AutoDriveShoot(RobotContainer.m_drive));
+=======
+    RobotContainer.shooterServo.setRaw(1300);
+
+    
+    chooser.setDefaultOption("Drive and Shoot", new SequentialCommandGroup(new ParallelCommandGroup(
+      new lowGoalShooterRun(RobotContainer.m_shooter),
+      new OpenGateLow(RobotContainer.m_shooter)).withTimeout(4), 
+      new AutoMoveBackwards(RobotContainer.m_drive)));
+    // chooser.addOption("Drive. Shoot. Hone", new SequentialCommandGroup(new ParallelCommandGroup(
+    //   new HoningCommand(RobotContainer.m_climb, RobotContainer.m_shooter),
+    //   new lowGoalShooterRun(RobotContainer.m_shooter),
+    //   new OpenGateLow(RobotContainer.m_shooter)).until(RobotContainer.m_climb.isClimbAtBottom() == true)),
+    //   new AutoMoveBackwards(RobotContainer.m_drive)));
+
+    chooser.addOption("Drive Forward", new AutoMoveBackwards(RobotContainer.m_drive));
+    
+    chooser.addOption("Two Ball Auto", new SequentialCommandGroup(
+      new ParallelCommandGroup(
+        new lowGoalShooterRun(RobotContainer.m_shooter),
+        new OpenGateLow(RobotContainer.m_shooter)).withTimeout(2),
+      new AutoIntakePrep(RobotContainer.m_drive),
+      new ParallelCommandGroup(
+        new ExtendIntake(RobotContainer.m_intake),
+        new IntakeRun(RobotContainer.m_intake)).withTimeout(5),
+      new AutoShootPrep(RobotContainer.m_drive),
+      new ParallelCommandGroup(
+        new lowGoalShooterRun(RobotContainer.m_shooter),
+        new OpenGateLow(RobotContainer.m_shooter)).withTimeout(3),
+      new AutoIntakePrep(RobotContainer.m_drive)));
+
+    // chooser.addOption("Hone and Drive", new ParallelCommandGroup(
+    //   new HoningCommand(RobotContainer.m_climb, RobotContainer.m_shooter).until(RobotContainer.m_climb.isClimbAtBottom() == true)), 
+    //   new AutoMoveBackwards(RobotContainer.m_drive));
+    // chooser.addOption("Do Nothing Test", new HoningCommand(RobotContainer.m_climb, 
+    // RobotContainer.m_shooter).until(RobotContainer.m_climb.isClimbAtBottom() == true));
+>>>>>>> Stashed changes
     SmartDashboard.putData("Auto Choices", chooser);
   }
 
@@ -79,7 +128,7 @@ public class Robot extends TimedRobot {
    * This function is called every robot packet, no matter the mode. Use this for
    * items like
    * diagnostics that you want ran during disabled, autonomous, teleoperated and
-   * test.
+   * test.3333
    *
    * <p>
    * This runs after the mode specific periodic functions, but before LiveWindow

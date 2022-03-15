@@ -5,34 +5,34 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
-public class IntakeRun extends CommandBase {
-  private Intake m_intake;
+public class lowGoalShooterRun extends CommandBase {
+  private Shooter m_shooter;
+  public lowGoalShooterRun(Shooter shooter) {
+    m_shooter = shooter;
 
-  public IntakeRun(Intake intake) {
-    m_intake = intake;
-
-    // addRequirements(intake);
+    addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("IntakeRun Started");
+    System.out.println("LowGoalShooterRun Running");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.runIntakeMotor();
+    m_shooter.LowSpeedShooterMode();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.stopIntakeMotor();
-    System.out.println("IntakeRun Finished");
+    m_shooter.ShooterStop();
+    m_shooter.CloseGate();
+    System.out.println("LowGoalShooter Finished");
   }
 
   // Returns true when the command should end.

@@ -31,7 +31,7 @@ public class Climb extends SubsystemBase {
     private static DoubleSolenoid m_climbPiston; // Initalizes pistons
     private DigitalInput m_upperClimbLimitSwitch; // Initalizes upper limit switch
     private DigitalInput m_lowerClimbLimitSwitch; // Initalizes lower limit switch
-    private RelativeEncoder m_climbEncoder; // Initalizes encoder
+    public RelativeEncoder m_climbEncoder; // Initalizes encoder
     public static int climbValue; // Initalizes value
     private static SparkMaxPIDController m_climbPID; // Initalizes PID
     public static String climbMessage = "Example";
