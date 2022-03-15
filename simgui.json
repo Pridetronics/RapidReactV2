@@ -24,8 +24,11 @@
       "/LiveWindow/Ungrouped/MecanumDrive[1]": "MecanumDrive",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/SmartDashboard/Autonomous": "Command",
+      "/SmartDashboard/Extend/Retract Intake": "Command",
+      "/SmartDashboard/Intake Run": "Command",
       "/SmartDashboard/Release Gate": "Command",
-      "/SmartDashboard/Shooter Run": "Command"
+      "/SmartDashboard/Shooter Run": "Command",
+      "/SmartDashboard/auto chooser": "String Chooser"
     }
   },
   "NetworkTables": {

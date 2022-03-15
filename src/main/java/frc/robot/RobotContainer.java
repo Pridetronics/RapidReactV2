@@ -55,10 +55,11 @@ public class RobotContainer {
   // private final Subsystem watch = new Camera();
   // private final Subsystem driver = new Drive();
   Drive drive = new Drive();
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
-  private final Auto_drive_shoot m_auto2 = new Auto_drive_shoot(drive);
-  private final Auto_move_backwards m_auto1 = new Auto_move_backwards(drive);
-
+  public Auto_move_backwards mBackwards;
+  public Auto_drive_shoot mDrive_shoot;
+  public static SendableChooser<Command> m_chooser = new SendableChooser<>();
+  final Auto_drive_shoot m_auto2 = new Auto_drive_shoot(drive);
+  final Auto_move_backwards m_auto1 = new Auto_move_backwards(drive);
   // private final Command m_autoCommand = new Auto_move_backwards(drive);
 
   public static CANSparkMax frontLeft;
@@ -147,7 +148,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
+    // return (Command) m_chooser.getSelected();
     return (Command) m_chooser.getSelected();
-
   }
 }
