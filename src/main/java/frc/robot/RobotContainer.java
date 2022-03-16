@@ -21,6 +21,7 @@ import frc.robot.commands.CancelStage;
 import frc.robot.commands.ClimbButtonSequence;
 import frc.robot.commands.ClimbInitializationDown;
 import frc.robot.commands.ClimbInitializationUp;
+import frc.robot.commands.ClimbPistons;
 import frc.robot.commands.DriveJoystick;
 import frc.robot.commands.OpenGate;
 import frc.robot.commands.OpenGateLow;
@@ -55,6 +56,12 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.MjpegServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -69,6 +76,10 @@ import edu.wpi.first.wpilibj.DigitalInput;
  */
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
+    // Camera--
+    public UsbCamera cam_0;
+    public CameraServer server1;
+
     // Drive--
     public static CANSparkMax frontLeft; // Creates all four drive motors
     public static CANSparkMax rearLeft;
@@ -134,6 +145,26 @@ public class RobotContainer {
     public RobotContainer() {
         // Assign values for the motors, and for the joysticks. Do not do button
         // bindings, this is below.
+
+        // Camera Relevant
+        // Creates UsbCamera and MjpegServer [1] and connects them
+        CameraServer.startAutomaticCapture();
+        // Creates the CvSink and connects it to the UsbCamera
+        CvSink cvSink = CameraServer.getVideo();
+        // Creates the CvSource and MjpegServer [2] and connects them
+        CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
+        // Creates the UsbCamera and MjpegServer [1] and connects them
+        UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
+        MjpegServer mjpegServer1 = new MjpegServer("USB Camera 0", 1181);
+        mjpegServer1.setSource(usbCamera);
+        // Creates the CvSink and connects it to the UsbCamera
+        cvSink = new CvSink("opencv_USB Camera 0");
+        cvSink.setSource(usbCamera);
+        // Creates the CvSource and MjpegServer[2] and connects them
+        outputStream = new CvSource("Blur", PixelFormat.kMJPEG, 1280, 720, 30);
+        MjpegServer mjpegServer2 = new MjpegServer("Serve_BLur", 1182);
+        mjpegServer2.setSource(outputStream);
+
         joystickDriver = new Joystick(Constants.kJoystickDriverID);
         joystickShooter = new Joystick(Constants.kJoystickShooterID); // Sets shooter joystick to port 1
         // Climb Relevant
@@ -201,7 +232,7 @@ public class RobotContainer {
         // SmartDashboard.putData("Open Gate", new OpenGate(m_shooter)); // Displays on
         // the screen and can be run by pushing the square. Pretty neat
         // SmartDashboard.putData("Intake Run", new IntakeRun(m_intake));
-        // SmartDashboard.putData("Extend/Retract Intake", new ExtendIntake(m_intake));
+        SmartDashboard.putData("Extend/Retract Intake", new ExtendIntake(m_intake));
         // SmartDashboard.putData("Find Distance", new
         // LimelightDistanceFinder(m_shooter));
         // SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));
@@ -243,13 +274,7 @@ public class RobotContainer {
         findTargetButton = new JoystickButton(joystickShooter, Constants.findTargetButtonNumber); // Change this to left
                                                                                                   // trigger
         findTargetButton.whenPressed(new FindTarget(m_drive));
-        // Climb Button Configured
-        // climbButton = new JoystickButton(joystickShooter,
-        // Constants.climbButtonNumber);
-        // climbButton.whileActiveOnce(new ClimbButtonSequence(m_climb));
-        // climbButton.whenPressed(new InstantCommand(m_climb::pistonRelease, m_climb));
-        // climbButton.whenPressed(new PivotArmDescendDistance(m_climb,
-        // Constants.climbDescendDistance));
+
         sequence1Button = new JoystickButton(joystickShooter,
                 Constants.sequence1ButtonNumber);
         sequence1Button.whenPressed(new SequentialCommandGroup(new SequentialCommandGroup(
@@ -266,6 +291,11 @@ public class RobotContainer {
                 new InstantCommand(m_climb::pistonRetract, m_climb),
                 new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
                 new InstantCommand(m_climb::pistonRelease, m_climb)));
+
+        // sequence1Button.whileHeld(new InstantCommand(m_climb::climbMotorSpeedRaise));
+        // sequence2Button.whileHeld(new
+        // InstantCommand(m_climb::climbMotorSpeedDescend));
+        // sequence3Button.toggleWhenPressed(new ClimbPistons(m_climb));
 
         // addButton = new JoystickButton(joystickShooter, Constants.addButtonNumber);
         // addButton.whileActiveOnce(new IncreaseStage(m_climb));

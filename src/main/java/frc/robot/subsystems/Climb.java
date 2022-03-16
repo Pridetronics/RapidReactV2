@@ -25,7 +25,6 @@ import frc.robot.commands.ClimbInitializationUp;
 import frc.robot.commands.PivotArmDescendDistance;
 import frc.robot.commands.PivotArmDistanceOne;
 
-
 public class Climb extends SubsystemBase {
     private CANSparkMax m_climbMotor; // Initalizes motor
     private static DoubleSolenoid m_climbPiston; // Initalizes pistons
@@ -36,7 +35,6 @@ public class Climb extends SubsystemBase {
     private static SparkMaxPIDController m_climbPID; // Initalizes PID
     public static String climbMessage = "Example";
     private String m_climbMessage;
-
 
     public Climb() {
         m_climbMotor = RobotContainer.climbMotor; // References the object from Robot Container
@@ -214,6 +212,22 @@ public class Climb extends SubsystemBase {
         } else {
             stop();
             zeroEncoder();
+        }
+    }
+
+    public void climbMotorSpeedDescend() {
+        if (isClimbAtBottom() == false) {
+            m_climbMotor.set(-.4);
+        } else {
+            stop();
+        }
+    }
+
+    public void climbMotorSpeedRaise() {
+        if (isClimbAtTop() == true) {
+            m_climbMotor.set(.5);
+        } else {
+            stop();
         }
     }
 }
