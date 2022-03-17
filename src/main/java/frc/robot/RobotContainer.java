@@ -49,6 +49,13 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.MjpegServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoMode.PixelFormat;
+
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -73,6 +80,10 @@ import edu.wpi.first.wpilibj.DigitalInput;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+
+  // Camera--
+  public UsbCamera cam_0;
+  public CameraServer server1;
   // Drive--
   public static CANSparkMax frontLeft; // Creates all four drive motors
   public static CANSparkMax rearLeft;
@@ -138,6 +149,25 @@ public class RobotContainer {
   public RobotContainer() {
     // Assign values for the motors, and for the joysticks. Do not do button
     // bindings, this is below.
+    // Camera Relevant
+        // Creates UsbCamera and MjpegServer [1] and connects them
+        CameraServer.startAutomaticCapture();
+        // Creates the CvSink and connects it to the UsbCamera
+        CvSink cvSink = CameraServer.getVideo();
+        // Creates the CvSource and MjpegServer [2] and connects them
+        CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
+        // Creates the UsbCamera and MjpegServer [1] and connects them
+        UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
+        MjpegServer mjpegServer1 = new MjpegServer("USB Camera 0", 1181);
+        mjpegServer1.setSource(usbCamera);
+        // Creates the CvSink and connects it to the UsbCamera
+        cvSink = new CvSink("opencv_USB Camera 0");
+        cvSink.setSource(usbCamera);
+        // Creates the CvSource and MjpegServer[2] and connects them
+        outputStream = new CvSource("Blur", PixelFormat.kMJPEG, 1280, 720, 30);
+        MjpegServer mjpegServer2 = new MjpegServer("Serve_BLur", 1182);
+        mjpegServer2.setSource(outputStream);
+    
     joystickDriver = new Joystick(Constants.kJoystickDriverID);
     joystickShooter = new Joystick(Constants.kJoystickShooterID); // Sets shooter joystick to port 1
     // Climb Relevant
