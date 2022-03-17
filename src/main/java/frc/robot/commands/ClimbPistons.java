@@ -4,40 +4,32 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climb;
+public class ClimbPistons extends CommandBase {
+  /** Creates a new ClimbPistons. */
+  Climb m_climb;
 
-public class ShooterMode extends CommandBase {
-  /** Creates a new ShooterMode. */
-  private Shooter m_shooter;
-  public static Boolean autoShooter;
-
-  public ShooterMode(Shooter shooter) {
-    m_shooter = shooter;
-
-    addRequirements(m_shooter);
+  public ClimbPistons(Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_climb = climb;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //m_shooter.HighSpeedShooterMode();
-    autoShooter = false;
-    SmartDashboard.putString("Shooting Mode", "Manual Shooter");
+    m_climb.pistonRetract();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-   // m_shooter.AutoShooterMode();
-    autoShooter = true;
-    SmartDashboard.putString("Shooting Mode", "Automatic Shooter");
+    m_climb.pistonRelease();
   }
 
   // Returns true when the command should end.

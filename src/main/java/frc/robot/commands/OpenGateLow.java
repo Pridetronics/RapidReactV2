@@ -25,13 +25,9 @@ public class OpenGateLow extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-<<<<<<< HEAD
-  public void initialize() {}
-=======
   public void initialize() {
     System.out.println("OpenGateLow Running");
   }
->>>>>>> origin/Katie
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

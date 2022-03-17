@@ -42,17 +42,9 @@ public class HoningCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //m_shooter.lightsOut();
-<<<<<<< HEAD
-    //if (m_climbEncoder.getPosition() > - 3 || m_climbEncoder.getPosition() < 3)
-    //{
-      m_climb.ClimbUpSlowly();
-      m_climb.ClimbDownSlowly();
-    //}
-=======
+    m_shooter.lightsOut();
     m_climb.ClimbUpSlowly();
     m_climb.ClimbDownSlowly();
->>>>>>> origin/Katie
   }
 
   // Called once the command ends or is interrupted.
@@ -64,15 +56,11 @@ public class HoningCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-<<<<<<< HEAD
-    return false;
-=======
     if (m_climb.isClimbAtBottom() == true){
       return true;
     }
     else{
       return false;
     }
->>>>>>> origin/Katie
   }
 }

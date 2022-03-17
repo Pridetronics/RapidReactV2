@@ -100,11 +100,7 @@ public class Shooter extends SubsystemBase {
     }
   }
   public void OpenGateLow(){
-<<<<<<< HEAD
-    if (m_shooterEncoder.getVelocity() >= 2500){
-=======
     if (m_shooterEncoder.getVelocity() >= Constants.lowShooterSpeed){
->>>>>>> origin/Katie
       new WaitCommand(7);
       m_shooterServo.setRaw(1000);
     }

@@ -108,10 +108,6 @@ public class RobotContainer {
   public static Command CancelClimb;
   public static Command AddOne;
 
-<<<<<<< HEAD
-  public static Autonomous m_auto;
-=======
->>>>>>> origin/Katie
   // Creates the subsystem for climb
 
   public JoystickButton highSpeedShooterButton; // Button for the shooter
