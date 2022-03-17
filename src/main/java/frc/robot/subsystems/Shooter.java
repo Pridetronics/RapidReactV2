@@ -21,8 +21,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-//import edu.wpi.first.wpilibj.PWM;
-import edu.wpi.first.util.sendable.Sendable;
 
 public class Shooter extends SubsystemBase {
   private CANSparkMax m_shooterMotor;
@@ -96,6 +94,12 @@ public class Shooter extends SubsystemBase {
   }
   public void OpenGate(){
     if (m_shooterEncoder.getVelocity() >= Constants.highShooterSpeed){
+      new WaitCommand(7);
+      m_shooterServo.setRaw(1000);
+    }
+  }
+  public void OpenGateLow(){
+    if (m_shooterEncoder.getVelocity() >= Constants.lowShooterSpeed){
       new WaitCommand(7);
       m_shooterServo.setRaw(1000);
     }

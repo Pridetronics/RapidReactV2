@@ -31,7 +31,7 @@ public class OpenGate extends CommandBase {
   @Override
   public void execute() 
   {
-    if (m_shooterEncoder.getVelocity() >= Constants.shooterDefaultSpeed){
+    if (m_shooterEncoder.getVelocity() >= Constants.highShooterSpeed){
       new WaitCommand(7);
       m_shooter.OpenGate();
     }

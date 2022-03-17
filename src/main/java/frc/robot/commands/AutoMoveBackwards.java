@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+
 import java.util.Timer;
 import frc.robot.subsystems.*;
 import java.util.TimerTask;
@@ -17,69 +18,54 @@ import frc.robot.RobotContainer;
 
 public class AutoMoveBackwards extends CommandBase {
   private Drive m_drive;
-  private Climb m_climb;
-  static final int ticks = 1120;
-public AutoMoveBackwards(Drive drive, Climb climb) 
-{
-  m_drive = drive;
-  m_climb = climb;
-  
-  addRequirements(m_drive);
-<<<<<<< Updated upstream
-  addRequirements(m_climb);
-=======
-  //encoder = Drive.m_frontLeftEncoder.getPosition();
-  circumference = 3.14*6;
-  // rotationsneeded = 6/circumference;
-  doubledtar = .90; //Measured in dau
->>>>>>> Stashed changes
-}
+  static final int ticks = 42; // Buddy Bot has 1120
+  // private double encoder;
+  private double circumference;
+  private double rotationsneeded;
+  private double doubledtar;
+
+  public AutoMoveBackwards(Drive drive) {
+    m_drive = drive;
+
+    addRequirements(m_drive);
+    // encoder = Drive.m_frontLeftEncoder.getPosition();
+    circumference = 3.14 * 6;
+    // rotationsneeded = 6/circumference;
+    doubledtar = .90;
+  }
 
   // Called when the command is initially scheduled.
-@Override
-public void initialize() 
-{
-  m_drive.zeroEncoders();
-  System.out.println("AutoMoveBackwards Started");
-}
-// Called every time the scheduler runs while the command is scheduled.
-@Override
-public void execute() 
-{
-  double encoder = Drive.m_frontLeftEncoder.getPosition();
-  double circumference = 3.14*4 ;
-  double rotationsneeded = 4/circumference; // 4 to 1 ft` ratio probably 2 to 1 with 6" wheels
-  int doubledtar = (int)(rotationsneeded*39);
-  //int drivetarget = doubledtar/4;
-  //long target = drivetarget;
-  if (encoder < doubledtar){
-    m_drive.autoDriveBack();
-  }
-  if (encoder == doubledtar){
-    this.cancel();
+  @Override
+  public void initialize() {
+    m_drive.zeroEncoders();
   }
 
-  //long start = System. currentTimeMillis(); long end = start + 50*1000; while (System. currentTimeMillis() < end);
-  //long beginning = System.currentTimeMillis();
-  //long end = beginning + 5*1000;
-  //while (end > System.currentTimeMillis()){
-  //m_drive.autoDriveBack();
-  // }
-  //if(end == System.currentTimeMillis()){
-  //this.cancel();
-  //}
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    // int drivetarget = doubledtar/4;
+    // long target = drivetarget;
+    // WORKS JUST HAS A SCALING ISSUE
+    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) < doubledtar && Math.abs(Drive.m_frontRightEncoder.getPosition()) < doubledtar && Math.abs(Drive.m_rearLeftEncoder.getPosition()) < doubledtar && Math.abs(Drive.m_rearRightEncoder.getPosition()) < doubledtar) {
+      m_drive.autoDriveBack();
+    }
+  }
 
-}
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_drive.driveStop();
-    System.out.println("AutoMoveBackwards Finished");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    // return false;
+    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) > doubledtar) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
+

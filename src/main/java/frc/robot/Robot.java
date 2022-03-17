@@ -10,14 +10,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-<<<<<<< Updated upstream
-import frc.robot.commands.AutoDriveForwards;
-import frc.robot.commands.AutoDriveShoot;
-import frc.robot.commands.ClimbInitializationDown;
-import frc.robot.commands.ClimbInitializationUp;
-import frc.robot.commands.IntakeRun;
-=======
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoIntakePrep;
 import frc.robot.commands.AutoMoveBackwards;
 import frc.robot.commands.AutoShootPrep;
@@ -29,7 +24,6 @@ import frc.robot.commands.IntakeRun;
 import frc.robot.commands.OpenGateLow;
 import frc.robot.commands.SimpleShooterRun;
 import frc.robot.commands.lowGoalShooterRun;
->>>>>>> Stashed changes
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -58,9 +52,6 @@ import frc.robot.subsystems.Climb;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private Command m_taxi;
-  private Command m_testCommand;
-  private Climb m_climb;
 
   private RobotContainer m_robotContainer;
   // private SendableChooser chooser;
@@ -75,17 +66,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer. This will perform all our button bindings, and put our autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    m_climb = new Climb();
     SmartDashboard.putString("Program:", "Testing 03/07/22");
     RobotContainer.intakePiston.set(DoubleSolenoid.Value.kForward);
     RobotContainer.climbPiston.set(DoubleSolenoid.Value.kForward);
-<<<<<<< Updated upstream
-    RobotContainer.shooterServo.setRaw(1300);    
-
-    chooser.setDefaultOption("HoneClimb", RobotContainer.HoneClimb);
-    chooser.addOption("Drive", new AutoDriveForwards(RobotContainer.m_drive));
-    chooser.addOption("Drive and Shoot", new AutoDriveShoot(RobotContainer.m_drive));
-=======
     RobotContainer.shooterServo.setRaw(1300);
 
     
@@ -110,6 +93,7 @@ public class Robot extends TimedRobot {
         new ExtendIntake(RobotContainer.m_intake),
         new IntakeRun(RobotContainer.m_intake)).withTimeout(5),
       new AutoShootPrep(RobotContainer.m_drive),
+      new WaitCommand(1),
       new ParallelCommandGroup(
         new lowGoalShooterRun(RobotContainer.m_shooter),
         new OpenGateLow(RobotContainer.m_shooter)).withTimeout(3),
@@ -120,7 +104,6 @@ public class Robot extends TimedRobot {
     //   new AutoMoveBackwards(RobotContainer.m_drive));
     // chooser.addOption("Do Nothing Test", new HoningCommand(RobotContainer.m_climb, 
     // RobotContainer.m_shooter).until(RobotContainer.m_climb.isClimbAtBottom() == true));
->>>>>>> Stashed changes
     SmartDashboard.putData("Auto Choices", chooser);
   }
 

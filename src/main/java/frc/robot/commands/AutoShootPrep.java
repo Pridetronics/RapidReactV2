@@ -18,7 +18,7 @@ public class AutoShootPrep extends CommandBase {
 
     addRequirements(m_drive);
 
-    shooterTarget = -1;
+    shooterTarget = 1;
   }
 
   // Called when the command is initially scheduled.
@@ -31,7 +31,7 @@ public class AutoShootPrep extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) < shooterTarget){
+    if (Drive.m_frontLeftEncoder.getPosition() < shooterTarget){
       m_drive.autoDriveShooterPrep();
     }
   }
@@ -46,7 +46,7 @@ public class AutoShootPrep extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) <  shooterTarget) 
+    if (Drive.m_frontLeftEncoder.getPosition() > shooterTarget) 
     {
       return true;
     }

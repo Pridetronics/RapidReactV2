@@ -26,6 +26,7 @@ import frc.robot.commands.ClimbInitializationDown;
 import frc.robot.commands.ClimbInitializationUp;
 import frc.robot.commands.DriveJoystick;
 import frc.robot.commands.OpenGate;
+import frc.robot.commands.OpenGateLow;
 import frc.robot.commands.PivotArmDescendDistance;
 import frc.robot.commands.PivotArmDistanceOne;
 import frc.robot.commands.PivotArmDistanceThree;
@@ -36,6 +37,7 @@ import frc.robot.commands.ShooterRun;
 import frc.robot.commands.SimpleShooterRun;
 import frc.robot.commands.ShooterMode;
 import frc.robot.commands.VisionMode;
+import frc.robot.commands.lowGoalShooterRun;
 import frc.robot.commands.LimelightDistanceFinder;
 import frc.robot.commands.ExtendIntake;
 import frc.robot.commands.FindTarget;
@@ -106,12 +108,7 @@ public class RobotContainer {
   public static Command CancelClimb;
   public static Command AddOne;
 
-<<<<<<< Updated upstream
-  public static Autonomous m_auto;
-   // Creates the subsystem for climb
-=======
   // Creates the subsystem for climb
->>>>>>> Stashed changes
 
   public JoystickButton shooterButton; // Button for the shooter
   public JoystickButton intakeButton;
