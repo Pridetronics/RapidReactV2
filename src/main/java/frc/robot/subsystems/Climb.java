@@ -31,7 +31,7 @@ public class Climb extends SubsystemBase {
     private static DoubleSolenoid m_climbPiston; // Initalizes pistons
     private DigitalInput m_upperClimbLimitSwitch; // Initalizes upper limit switch
     private DigitalInput m_lowerClimbLimitSwitch; // Initalizes lower limit switch
-    private RelativeEncoder m_climbEncoder; // Initalizes encoder
+    public RelativeEncoder m_climbEncoder; // Initalizes encoder
     public static int climbValue; // Initalizes value
     private static SparkMaxPIDController m_climbPID; // Initalizes PID
     public static String climbMessage = "Example";
@@ -84,6 +84,17 @@ public class Climb extends SubsystemBase {
     public void extendPivotArmDistanceOne(double climbGoal) {
         m_climbPID.setReference(Constants.climbDistance1, ControlType.kPosition);
     }
+    // public void extendPivotArmDistanceOneEncoder(double climbGoal){
+    //     if (m_climbEncoder.getPosition() <= Constants.climbDistance1){ //Signs would need to be flipped for the descend distance. 
+    //         m_climbMotor.set(.4);
+    //     }
+    // } This is simply an idea on how to approach the climb in a faster state. Keep in mind this would cause overshoot. The purpose of the PID
+    // loop is to have it reach as close to this position as possible. Without it, it simply would stop at the encoder and therefore overshoot.
+    // This should be fine with going upwards (as it already must fight gravity), but I'd go slower on the descend distance. Just a thought. 
+    // Actually now that I use my big programmer brain-- there may be a better way to approach this. Simply have a set motor statement here and 
+    // then when you create the command make an isFinished statement that checks the value of the encoder from RobotContainer (WHEREVER IT IS CREATED)
+    // and then can return whether or not the motors stop moving. That would likely be more efficient. Whatever. I'll bring this up in the meeting
+    // I just wanted to write this here. Thank you internal self-- I'll see you later. 
 
     public void extendPivotArmDistanceTwo(double climbGoal) {
         m_climbPID.setReference(Constants.climbDistance2, ControlType.kPosition);

@@ -27,7 +27,11 @@ public class ShooterMode extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+<<<<<<< HEAD
     // m_shooter.HighSpeedShooterMode();
+=======
+    m_shooter.HighSpeedShooterMode();
+>>>>>>> origin/Katie
     autoShooter = false;
     SmartDashboard.putString("Shooting Mode", "Manual Shooter");
   }

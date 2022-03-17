@@ -5,39 +5,53 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Drive;
 
-public class IntakeRun extends CommandBase {
-  private Intake m_intake;
+public class AutoIntakePrep extends CommandBase {
+  private Drive m_drive;
+  static final int ticks = 42;
+  private double intakeTarget;
 
-  public IntakeRun(Intake intake) {
-    m_intake = intake;
+  public AutoIntakePrep(Drive drive) {
+    m_drive = drive;
 
-    // addRequirements(intake);
+    addRequirements(m_drive);
+
+    intakeTarget = 1;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("IntakeRun Started");
+    m_drive.zeroEncoders();
+    System.out.println("AutoIntakePrep Started");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.runIntakeMotor();
+    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) < intakeTarget){
+      m_drive.autoDriveIntakePrep();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.stopIntakeMotor();
-    System.out.println("IntakeRun Finished");
+    m_drive.driveStop();
+    System.out.println("AutoIntakePrep Finished");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) > intakeTarget)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 }

@@ -15,8 +15,10 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.IncreaseStage;
-import frc.robot.commands.Autonomous;
 import frc.robot.commands.CancellationButtonsClimb;
+import frc.robot.commands.AutoIntakePrep;
+import frc.robot.commands.AutoMoveBackwards;
+import frc.robot.commands.AutoShootPrep;
 import frc.robot.commands.CancelClimb;
 import frc.robot.commands.CancelStage;
 import frc.robot.commands.ClimbButtonSequence;
@@ -36,6 +38,7 @@ import frc.robot.commands.SimpleShooterRun;
 import frc.robot.commands.lowGoalShooterRun;
 import frc.robot.commands.ShooterMode;
 import frc.robot.commands.VisionMode;
+import frc.robot.commands.lowGoalShooterRun;
 import frc.robot.commands.LimelightDistanceFinder;
 import frc.robot.commands.ExtendIntake;
 import frc.robot.commands.FindTarget;
@@ -105,7 +108,10 @@ public class RobotContainer {
   public static Command CancelClimb;
   public static Command AddOne;
 
+<<<<<<< HEAD
   public static Autonomous m_auto;
+=======
+>>>>>>> origin/Katie
   // Creates the subsystem for climb
 
   public JoystickButton highSpeedShooterButton; // Button for the shooter
@@ -225,6 +231,15 @@ public class RobotContainer {
     SmartDashboard.putData("Arm Distance Two", new PivotArmDistanceTwo(m_climb, Constants.climbDistance2));
     SmartDashboard.putData("Piston Retract", new InstantCommand(m_climb::pistonRetract, m_climb));
     SmartDashboard.putData("Arm Distance Three", new PivotArmDistanceThree(m_climb, Constants.climbDistance3));
+ 
+  //Complex Autonomous data testing
+    SmartDashboard.putData("Auto Intake Prep", new AutoIntakePrep(m_drive));
+    SmartDashboard.putData("Intake Parallel Command", new ParallelCommandGroup(new ExtendIntake(m_intake), new IntakeRun(m_intake)));
+    SmartDashboard.putData("Auto Shoot Prep", new AutoShootPrep(m_drive));
+    SmartDashboard.putData("Shooter Parallel Command",  new ParallelCommandGroup(
+      new lowGoalShooterRun(RobotContainer.m_shooter),
+      new OpenGateLow(RobotContainer.m_shooter)));
+    SmartDashboard.putData("Auto Move Backwards", new AutoMoveBackwards(m_drive));
 
     configureButtonBindings();
     m_drive.setDefaultCommand(new DriveJoystick(joystickDriver, m_drive));

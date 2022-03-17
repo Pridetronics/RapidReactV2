@@ -27,9 +27,9 @@ public class Drive extends SubsystemBase {
   private CANSparkMax m_rearRightMotor;
 
   public static RelativeEncoder m_frontLeftEncoder;
-  private RelativeEncoder m_frontRightEncoder;
-  private RelativeEncoder m_rearLeftEncoder;
-  private RelativeEncoder m_rearRightEncoder;
+  public static RelativeEncoder m_frontRightEncoder;
+  public static RelativeEncoder m_rearLeftEncoder;
+  public static RelativeEncoder m_rearRightEncoder;
 
   public SparkMaxPIDController m_frontLeftPIDController;
   public SparkMaxPIDController m_rearLeftPIDController;
@@ -97,6 +97,20 @@ public class Drive extends SubsystemBase {
     m_rearLeftMotor.set(-0.2);
     m_frontRightMotor.set(-0.2);
     m_rearRightMotor.set(-0.2);
+  }
+
+  public void autoDriveIntakePrep() {
+    m_frontLeftMotor.set(-0.4);
+    m_rearLeftMotor.set(-0.4);
+    m_frontRightMotor.set(-0.4);
+    m_rearRightMotor.set(-0.4);
+  }
+
+  public void autoDriveShooterPrep() {
+    m_frontLeftMotor.set(0.4);
+    m_rearLeftMotor.set(0.4);
+    m_frontRightMotor.set(0.4);
+    m_rearRightMotor.set(0.4);
   }
 
   public void autoDriveFwd() {

@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+
 import java.util.Timer;
 import frc.robot.subsystems.*;
 import java.util.TimerTask;
@@ -17,6 +18,7 @@ import frc.robot.RobotContainer;
 
 public class AutoMoveBackwards extends CommandBase {
   private Drive m_drive;
+<<<<<<< HEAD
   static final int ticks = 42; //Buddy Bot has 1120
   //private double encoder;
   private double circumference;
@@ -59,8 +61,41 @@ public void execute()
   // if(m_end == System.currentTimeMillis()){
   // this.cancel();
   // }
+=======
+  static final int ticks = 42; // Buddy Bot has 1120
+  // private double encoder;
+  private double circumference;
+  private double rotationsneeded;
+  private double doubledtar;
 
-}
+  public AutoMoveBackwards(Drive drive) {
+    m_drive = drive;
+
+    addRequirements(m_drive);
+    // encoder = Drive.m_frontLeftEncoder.getPosition();
+    circumference = 3.14 * 6;
+    // rotationsneeded = 6/circumference;
+    doubledtar = .90;
+  }
+
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    m_drive.zeroEncoders();
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    // int drivetarget = doubledtar/4;
+    // long target = drivetarget;
+    // WORKS JUST HAS A SCALING ISSUE
+    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) < doubledtar && Math.abs(Drive.m_frontRightEncoder.getPosition()) < doubledtar && Math.abs(Drive.m_rearLeftEncoder.getPosition()) < doubledtar && Math.abs(Drive.m_rearRightEncoder.getPosition()) < doubledtar) {
+      m_drive.autoDriveBack();
+    }
+  }
+>>>>>>> origin/Katie
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
@@ -70,6 +105,7 @@ public void execute()
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+<<<<<<< HEAD
     //return false;
     if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) > doubledtar)
     {
@@ -77,7 +113,14 @@ public void execute()
     }
     else
     {
+=======
+    // return false;
+    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) > doubledtar) {
+      return true;
+    } else {
+>>>>>>> origin/Katie
       return false;
     }
   }
 }
+
