@@ -82,8 +82,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   // Camera--
-  public UsbCamera cam_0;
-  public CameraServer server1;
+  // public UsbCamera cam_0;
+  // public CameraServer server1;
   // Drive--
   public static CANSparkMax frontLeft; // Creates all four drive motors
   public static CANSparkMax rearLeft;
@@ -149,24 +149,24 @@ public class RobotContainer {
   public RobotContainer() {
     // Assign values for the motors, and for the joysticks. Do not do button
     // bindings, this is below.
-    // Camera Relevant
+   // Camera Relevant
         // Creates UsbCamera and MjpegServer [1] and connects them
-        CameraServer.startAutomaticCapture();
+        // CameraServer.startAutomaticCapture();
         // Creates the CvSink and connects it to the UsbCamera
-        CvSink cvSink = CameraServer.getVideo();
+        // CvSink cvSink = CameraServer.getVideo();
         // Creates the CvSource and MjpegServer [2] and connects them
-        CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
+        // CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
         // Creates the UsbCamera and MjpegServer [1] and connects them
-        UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
-        MjpegServer mjpegServer1 = new MjpegServer("USB Camera 0", 1181);
-        mjpegServer1.setSource(usbCamera);
+        // UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
+        // MjpegServer mjpegServer1 = new MjpegServer("USB Camera 0", 1181);
+        // mjpegServer1.setSource(usbCamera);
         // Creates the CvSink and connects it to the UsbCamera
-        cvSink = new CvSink("opencv_USB Camera 0");
-        cvSink.setSource(usbCamera);
+        // cvSink = new CvSink("opencv_USB Camera 0");
+        // cvSink.setSource(usbCamera);
         // Creates the CvSource and MjpegServer[2] and connects them
-        outputStream = new CvSource("Blur", PixelFormat.kMJPEG, 1280, 720, 30);
-        MjpegServer mjpegServer2 = new MjpegServer("Serve_BLur", 1182);
-        mjpegServer2.setSource(outputStream);
+        // outputStream = new CvSource("Blur", PixelFormat.kMJPEG, 1280, 720, 30);
+        // MjpegServer mjpegServer2 = new MjpegServer("Serve_BLur", 1182);
+        // mjpegServer2.setSource(outputStream);
     
     joystickDriver = new Joystick(Constants.kJoystickDriverID);
     joystickShooter = new Joystick(Constants.kJoystickShooterID); // Sets shooter joystick to port 1
@@ -202,7 +202,7 @@ public class RobotContainer {
     // Intake Relevant---
     intakeCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
     intakePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kIntakePistonForwardChannel,
-        Constants.kIntakePistonReverseChannel);
+      Constants.kIntakePistonReverseChannel);
     intakeMotor = new VictorSP(Constants.kIntakePWMID);
     m_intake = new Intake();
 
@@ -258,14 +258,14 @@ public class RobotContainer {
     SmartDashboard.putData("Piston Retract", new InstantCommand(m_climb::pistonRetract, m_climb));
     SmartDashboard.putData("Arm Distance Three", new PivotArmDistanceThree(m_climb, Constants.climbDistance3));
  
-  //Complex Autonomous data testing
-    SmartDashboard.putData("Auto Intake Prep", new AutoIntakePrep(m_drive));
-    SmartDashboard.putData("Intake Parallel Command", new ParallelCommandGroup(new ExtendIntake(m_intake), new IntakeRun(m_intake)));
-    SmartDashboard.putData("Auto Shoot Prep", new AutoShootPrep(m_drive));
-    SmartDashboard.putData("Shooter Parallel Command",  new ParallelCommandGroup(
-      new lowGoalShooterRun(RobotContainer.m_shooter),
-      new OpenGateLow(RobotContainer.m_shooter)));
-    SmartDashboard.putData("Auto Move Backwards", new AutoMoveBackwards(m_drive));
+  // //Complex Autonomous data testing
+  //   SmartDashboard.putData("Auto Intake Prep", new AutoIntakePrep(m_drive));
+  //   SmartDashboard.putData("Intake Parallel Command", new ParallelCommandGroup(new ExtendIntake(m_intake), new IntakeRun(m_intake)));
+  //   SmartDashboard.putData("Auto Shoot Prep", new AutoShootPrep(m_drive));
+  //   SmartDashboard.putData("Shooter Parallel Command",  new ParallelCommandGroup(
+  //     new lowGoalShooterRun(RobotContainer.m_shooter),
+  //     new OpenGateLow(RobotContainer.m_shooter)));
+  //   SmartDashboard.putData("Auto Move Backwards", new AutoMoveBackwards(m_drive));
 
     configureButtonBindings();
     m_drive.setDefaultCommand(new DriveJoystick(joystickDriver, m_drive));

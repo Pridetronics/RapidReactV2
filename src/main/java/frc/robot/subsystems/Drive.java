@@ -92,6 +92,14 @@ public class Drive extends SubsystemBase {
     return (m_rearLeftEncoder.getPosition() + m_rearRightEncoder.getPosition()) / 2;
   }
 
+  public void cartesianDrive(Joystick m_joystickDriver, double yValue, double xValue, double zValue) {
+    yValue = m_joystickDriver.getY();
+    xValue = m_joystickDriver.getX();
+    zValue = m_joystickDriver.getZ();
+    //mecanumDrive.driveCartesian(yValue, -xValue, -zValue);
+    mecanumDrive.driveCartesian(yValue, -xValue, -((zValue * Math.abs(zValue)) * 0.8));
+    // mecanumDrive.driveCartesian((yValue * Math.abs(yValue)), -(xValue * Math.abs(xValue)), -(zValue * Math.abs(zValue)));
+  }
   public void autoDriveBack() {
     m_frontLeftMotor.set(-0.2);
     m_rearLeftMotor.set(-0.2);
@@ -113,26 +121,88 @@ public class Drive extends SubsystemBase {
     m_rearRightMotor.set(0.4);
   }
 
-  public void autoDriveFwd() {
-    m_frontRightPIDController.setReference(Constants.kDriveDistance, ControlType.kPosition);
-    m_rearLeftPIDController.setReference(Constants.kDriveDistance, ControlType.kPosition);
-    m_frontLeftPIDController.setReference(Constants.kDriveDistance, ControlType.kPosition);
-    m_rearRightPIDController.setReference(Constants.kDriveDistance, ControlType.kPosition);
-  }
-
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public void cartesianDrive(Joystick m_joystickDriver, double yValue, double xValue, double zValue) {
-    yValue = m_joystickDriver.getY();
-    xValue = m_joystickDriver.getX();
-    zValue = m_joystickDriver.getZ();
-    //mecanumDrive.driveCartesian(yValue, -xValue, -zValue);
-    mecanumDrive.driveCartesian(yValue, -xValue, -((zValue * Math.abs(zValue)) * 0.8));
-    // mecanumDrive.driveCartesian((yValue * Math.abs(yValue)), -(xValue * Math.abs(xValue)), -(zValue * Math.abs(zValue)));
 
-  }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   public void driveStop() {
     m_frontLeftMotor.set(0);
     m_rearLeftMotor.set(0);

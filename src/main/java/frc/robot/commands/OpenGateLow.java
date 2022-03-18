@@ -43,10 +43,7 @@ public class OpenGateLow extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_shooter.CloseGate();
-<<<<<<< HEAD
-=======
     System.out.println("OpenGateLow Finished");
->>>>>>> origin/Katie
   }
 
   // Returns true when the command should end.

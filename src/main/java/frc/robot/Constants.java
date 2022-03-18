@@ -85,9 +85,9 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final double CLIMB_MIN_OUTPUT = -6000.0;
     public static final double CLIMB_MAX_OUTPUT = 6000.0;
 
-    public static final double climbDistance1 = 140; // Distance for fully extended (climb's pivot arms)
+    public static final double climbDistance1 = 145; // Distance for fully extended (climb's pivot arms)
     public static final double climbDistance2 = 40; // Distance 2 for climb's pivot arms
-    public static final double climbDistance3 = 135; // Distance 3 for climb's pivot arms
+    public static final double climbDistance3 = 140; // Distance 3 for climb's pivot arms
     public static final double climbDescendDistance = -4; // Distance for fully retracted (climb's pivot arms)
 
     public static final int kEncoderCountsPerRev = 42; // Ask about the encoder
