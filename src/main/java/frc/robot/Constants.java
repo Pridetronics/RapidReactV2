@@ -90,6 +90,11 @@ public final class Constants // Note for self: Define integers here. Button numb
     public static final double climbDistance3 = 140; // Distance 3 for climb's pivot arms
     public static final double climbDescendDistance = -4; // Distance for fully retracted (climb's pivot arms)
 
+    public static final double encoderClimbDistance1 = 150;
+    public static final double encoderClimbDistance2 = 40;
+    public static final double encoderClimbDistance3 = 140;
+    public static final double encoderClimbDescendDistance = -4;
+
     public static final int kEncoderCountsPerRev = 42; // Ask about the encoder
     private static final double kArmDiameter = 0.75; // Arms' diameter in inches
     private static final double kGearBox = 0.0625; // Gear Box ratio

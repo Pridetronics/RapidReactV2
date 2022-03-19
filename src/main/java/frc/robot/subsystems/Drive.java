@@ -101,10 +101,10 @@ public class Drive extends SubsystemBase {
     // mecanumDrive.driveCartesian((yValue * Math.abs(yValue)), -(xValue * Math.abs(xValue)), -(zValue * Math.abs(zValue)));
   }
   public void autoDriveBack() {
-    m_frontLeftMotor.set(-0.2);
-    m_rearLeftMotor.set(-0.2);
-    m_frontRightMotor.set(-0.2);
-    m_rearRightMotor.set(-0.2);
+    m_frontLeftMotor.set(-0.6);
+    m_rearLeftMotor.set(-0.6);
+    m_frontRightMotor.set(-0.6);
+    m_rearRightMotor.set(-0.6);
   }
 
   public void autoDriveIntakePrep() {
@@ -124,85 +124,6 @@ public class Drive extends SubsystemBase {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
   public void driveStop() {
     m_frontLeftMotor.set(0);
     m_rearLeftMotor.set(0);

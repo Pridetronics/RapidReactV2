@@ -31,7 +31,7 @@ public class AutoMoveBackwards extends CommandBase {
     // encoder = Drive.m_frontLeftEncoder.getPosition();
     circumference = 3.14 * 6;
     // rotationsneeded = 6/circumference;
-    doubledtar = .90;
+    doubledtar = 1;
   }
 
   // Called when the command is initially scheduled.

@@ -25,6 +25,10 @@ import frc.robot.commands.ClimbButtonSequence;
 import frc.robot.commands.ClimbInitializationDown;
 import frc.robot.commands.ClimbInitializationUp;
 import frc.robot.commands.DriveJoystick;
+import frc.robot.commands.EncoderPivotArmDescend;
+import frc.robot.commands.EncoderPivotArmDistanceOne;
+import frc.robot.commands.EncoderPivotArmDistanceThree;
+import frc.robot.commands.EncoderPivotArmDistanceTwo;
 import frc.robot.commands.OpenGate;
 import frc.robot.commands.OpenGateLow;
 import frc.robot.commands.PivotArmDescendDistance;
@@ -136,6 +140,10 @@ public class RobotContainer {
   public JoystickButton sequence1Button;
   public JoystickButton sequence2Button;
   public JoystickButton sequence3Button;
+
+  public JoystickButton encoderSequence1Button;
+  public JoystickButton encoderSequence2Button;
+  public JoystickButton encoderSequence3Button;
 
   public Joystick joystickDriver; // Controller 0 --Ensure that all controllers are in proper ports in Driver
                                   // Station
@@ -290,22 +298,35 @@ public class RobotContainer {
     // climbButton.whenPressed(new InstantCommand(m_climb::pistonRelease, m_climb));
     // climbButton.whenPressed(new PivotArmDescendDistance(m_climb,
     // Constants.climbDescendDistance));
-    sequence1Button = new JoystickButton(joystickShooter,
-        Constants.sequence1ButtonNumber);
-    sequence1Button.whenPressed(new SequentialCommandGroup(new SequentialCommandGroup(
-        new PivotArmDistanceOne(m_climb, Constants.climbDistance1),
-        new InstantCommand(m_climb::pistonRelease, m_climb))));
-    sequence2Button = new JoystickButton(joystickShooter,
-        Constants.sequence2ButtonNumber);
-    sequence2Button.whenPressed(new PivotArmDescendDistance(m_climb,
-        Constants.climbDescendDistance));
-    sequence3Button = new JoystickButton(joystickShooter,
-        Constants.sequence3ButtonNumber);
-    sequence3Button.whenPressed(new SequentialCommandGroup(
-        new PivotArmDistanceTwo(m_climb, Constants.climbDistance2),
-        new InstantCommand(m_climb::pistonRetract, m_climb),
-        new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
-        new InstantCommand(m_climb::pistonRelease, m_climb)));
+    // sequence1Button = new JoystickButton(joystickShooter,
+    //     Constants.sequence1ButtonNumber);
+    // sequence1Button.whenPressed(new SequentialCommandGroup(new SequentialCommandGroup(
+    //     new PivotArmDistanceOne(m_climb, Constants.climbDistance1),
+    //     new InstantCommand(m_climb::pistonRelease, m_climb))));
+    // sequence2Button = new JoystickButton(joystickShooter,
+    //     Constants.sequence2ButtonNumber);
+    // sequence2Button.whenPressed(new PivotArmDescendDistance(m_climb,
+    //     Constants.climbDescendDistance));
+    // sequence3Button = new JoystickButton(joystickShooter,
+    //     Constants.sequence3ButtonNumber);
+    // sequence3Button.whenPressed(new SequentialCommandGroup(
+    //     new PivotArmDistanceTwo(m_climb, Constants.climbDistance2),
+    //     new InstantCommand(m_climb::pistonRetract, m_climb),
+    //     new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
+    //     new InstantCommand(m_climb::pistonRelease, m_climb)));
+
+    encoderSequence1Button = new JoystickButton(joystickShooter, Constants.sequence1ButtonNumber);
+    encoderSequence1Button.whenPressed(new SequentialCommandGroup(    //Removed a random sequential command- might fixif broken??? - isaiah 
+      new EncoderPivotArmDistanceOne(m_climb),
+      new InstantCommand(m_climb::pistonRelease, m_climb)));
+    encoderSequence2Button = new JoystickButton(joystickShooter, Constants.sequence2ButtonNumber);
+    encoderSequence2Button.whenPressed(new EncoderPivotArmDescend(m_climb));
+    encoderSequence3Button = new JoystickButton(joystickShooter, Constants.sequence3ButtonNumber);
+    encoderSequence3Button.whenPressed(new SequentialCommandGroup(
+      new EncoderPivotArmDistanceTwo(m_climb),
+      new InstantCommand(m_climb::pistonRetract, m_climb),
+      new EncoderPivotArmDistanceThree(m_climb),
+      new InstantCommand(m_climb::pistonRelease, m_climb)));
 
     // addButton = new JoystickButton(joystickShooter, Constants.addButtonNumber);
     // addButton.whileActiveOnce(new IncreaseStage(m_climb));

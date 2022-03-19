@@ -71,8 +71,22 @@ public class Robot extends TimedRobot {
     RobotContainer.climbPiston.set(DoubleSolenoid.Value.kForward);
     RobotContainer.shooterServo.setRaw(1300);
 
+    chooser.setDefaultOption("Two Ball Auto", new SequentialCommandGroup(
+      new ParallelCommandGroup(
+        new lowGoalShooterRun(RobotContainer.m_shooter),
+        new OpenGateLow(RobotContainer.m_shooter)).withTimeout(2),
+      new AutoIntakePrep(RobotContainer.m_drive),
+      new ParallelCommandGroup(
+        new ExtendIntake(RobotContainer.m_intake),
+        new IntakeRun(RobotContainer.m_intake)).withTimeout(4),
+      new AutoShootPrep(RobotContainer.m_drive),
+      new WaitCommand(1),
+      new ParallelCommandGroup(
+        new lowGoalShooterRun(RobotContainer.m_shooter),
+        new OpenGateLow(RobotContainer.m_shooter)).withTimeout(2),
+      new AutoMoveBackwards(RobotContainer.m_drive)));
     
-    chooser.setDefaultOption("Drive and Shoot", new SequentialCommandGroup(new ParallelCommandGroup(
+    chooser.addOption("Drive and Shoot", new SequentialCommandGroup(new ParallelCommandGroup(
       new lowGoalShooterRun(RobotContainer.m_shooter),
       new OpenGateLow(RobotContainer.m_shooter)).withTimeout(4), 
       new AutoMoveBackwards(RobotContainer.m_drive)));
@@ -84,20 +98,7 @@ public class Robot extends TimedRobot {
 
     chooser.addOption("Drive Forward", new AutoMoveBackwards(RobotContainer.m_drive));
     
-    chooser.addOption("Two Ball Auto", new SequentialCommandGroup(
-      new ParallelCommandGroup(
-        new lowGoalShooterRun(RobotContainer.m_shooter),
-        new OpenGateLow(RobotContainer.m_shooter)).withTimeout(2),
-      new AutoIntakePrep(RobotContainer.m_drive),
-      new ParallelCommandGroup(
-        new ExtendIntake(RobotContainer.m_intake),
-        new IntakeRun(RobotContainer.m_intake)).withTimeout(5),
-      new AutoShootPrep(RobotContainer.m_drive),
-      new WaitCommand(1),
-      new ParallelCommandGroup(
-        new lowGoalShooterRun(RobotContainer.m_shooter),
-        new OpenGateLow(RobotContainer.m_shooter)).withTimeout(3),
-      new AutoIntakePrep(RobotContainer.m_drive)));
+    
 
     // chooser.addOption("Hone and Drive", new ParallelCommandGroup(
     //   new HoningCommand(RobotContainer.m_climb, RobotContainer.m_shooter).until(RobotContainer.m_climb.isClimbAtBottom() == true)), 

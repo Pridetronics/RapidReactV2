@@ -105,6 +105,12 @@ public class Climb extends SubsystemBase {
     public void descendPivotArmDistance(double climbGoal) {
         m_climbPID.setReference(Constants.climbDescendDistance, ControlType.kPosition);
     }
+    public void ExtendArm(){
+        m_climbMotor.set(.4);
+    }
+    public void DescendArm(){
+        m_climbMotor.set(-1);
+    }
 
     public double inchesToRevs(double INCHES) {
         return INCHES / Constants.kEncoderPositionConversionFactor;
