@@ -18,7 +18,7 @@ public class AutoShootPrep extends CommandBase {
 
     addRequirements(m_drive);
 
-    shooterTarget = 1;
+    shooterTarget = 0.2;
   }
 
   // Called when the command is initially scheduled.

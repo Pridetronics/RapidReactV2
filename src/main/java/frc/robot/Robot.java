@@ -9,37 +9,18 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoIntakePrep;
 import frc.robot.commands.AutoMoveBackwards;
 import frc.robot.commands.AutoShootPrep;
-import frc.robot.commands.ClimbInitializationDown;
-import frc.robot.commands.ClimbInitializationUp;
 import frc.robot.commands.ExtendIntake;
-import frc.robot.commands.HoningCommand;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.OpenGateLow;
-import frc.robot.commands.SimpleShooterRun;
 import frc.robot.commands.lowGoalShooterRun;
-import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import frc.robot.subsystems.Climb;
-
-/*
-  This is a comment outlining the autonomous goal:
-  1. Drive Forward (create a different command to go a specific distance for the ball)
-  2. Intake Ball for x seconds (Intake should extend, run the motor, and then retract)
-  3. Drive Backwards (x distance)
-  4. Shoot (Low speed shooter-- runs at the same time of the open gate command)
-  5. Drive Forward (to leave the tarmac)
-*/
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -66,7 +47,8 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    SmartDashboard.putString("Program:", "Testing 03/07/22");
+    SmartDashboard.putString("Program:", "Reorgnized Code"); //This is meant to help identify the code, be sure to change the string
+    //The next three lines set the default state for both pistons and the servo. Called upon initialization (when robot is enabled)
     RobotContainer.intakePiston.set(DoubleSolenoid.Value.kForward);
     RobotContainer.climbPiston.set(DoubleSolenoid.Value.kForward);
     RobotContainer.shooterServo.setRaw(1300);
@@ -90,21 +72,9 @@ public class Robot extends TimedRobot {
       new lowGoalShooterRun(RobotContainer.m_shooter),
       new OpenGateLow(RobotContainer.m_shooter)).withTimeout(4), 
       new AutoMoveBackwards(RobotContainer.m_drive)));
-    // chooser.addOption("Drive. Shoot. Hone", new SequentialCommandGroup(new ParallelCommandGroup(
-    //   new HoningCommand(RobotContainer.m_climb, RobotContainer.m_shooter),
-    //   new lowGoalShooterRun(RobotContainer.m_shooter),
-    //   new OpenGateLow(RobotContainer.m_shooter)).until(RobotContainer.m_climb.isClimbAtBottom() == true)),
-    //   new AutoMoveBackwards(RobotContainer.m_drive)));
-
+      
     chooser.addOption("Drive Forward", new AutoMoveBackwards(RobotContainer.m_drive));
-    
-    
 
-    // chooser.addOption("Hone and Drive", new ParallelCommandGroup(
-    //   new HoningCommand(RobotContainer.m_climb, RobotContainer.m_shooter).until(RobotContainer.m_climb.isClimbAtBottom() == true)), 
-    //   new AutoMoveBackwards(RobotContainer.m_drive));
-    // chooser.addOption("Do Nothing Test", new HoningCommand(RobotContainer.m_climb, 
-    // RobotContainer.m_shooter).until(RobotContainer.m_climb.isClimbAtBottom() == true));
     SmartDashboard.putData("Auto Choices", chooser);
   }
 

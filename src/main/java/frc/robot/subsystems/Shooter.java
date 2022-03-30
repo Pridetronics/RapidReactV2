@@ -42,6 +42,7 @@ public class Shooter extends SubsystemBase {
   public static double tx;
   static double tv;
   private double ta;
+  private double RPMCheck;
 
   public Shooter() {
     //PID and solenoid information referenced from RobotContainer
@@ -77,37 +78,104 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Limelight V", tv);
     // This method will be called once per scheduler run
   }
-  public void HighSpeedShooterMode(){ //Very basic (a manual mode in case the Limelight/Automatic Shooter is faulty)
-    m_shooterPID.setReference(Constants.highShooterSpeed, ControlType.kVelocity);
-    SmartDashboard.putNumber("Shooter RPM", m_shooterEncoder.getVelocity());
-  }
-  public void LowSpeedShooterMode(){
-    m_shooterPID.setReference(Constants.lowShooterSpeed, ControlType.kVelocity);
-    SmartDashboard.putNumber("ShooterRPM", m_shooterEncoder.getVelocity());
-  }
-
-  public void ShooterStop(){ //Stops motors
-  m_shooterMotor.set(0);  
-  }
+  // public void HighSpeedShooterMode(){ //Very basic (a manual mode in case the Limelight/Automatic Shooter is faulty)
+  //   m_shooterPID.setReference(Constants.highShooterSpeed, ControlType.kVelocity);
+  //   SmartDashboard.putNumber("Shooter RPM", m_shooterEncoder.getVelocity());
+  // }
   public void zeroEncoders() //Resets Encoders
   {
     m_shooterEncoder.setPosition(0);
   }
-  public void OpenGate(){
-    if (m_shooterEncoder.getVelocity() >= Constants.highShooterSpeed){
+
+  public void LowSpeedShooter()
+  {
+    m_shooterPID.setReference(Constants.lowShooterSpeed, ControlType.kVelocity);
+    SmartDashboard.putNumber("ShooterRPM", m_shooterEncoder.getVelocity());
+  }
+
+  public void ShooterStop() //Stops motors
+  { 
+    m_shooterMotor.set(0);  
+  }
+
+  public void OpenGateLow()
+  {
+    if (m_shooterEncoder.getVelocity() >= Constants.lowShooterSpeed)
+    {
       new WaitCommand(7);
       m_shooterServo.setRaw(1000);
     }
   }
-  public void OpenGateLow(){
-    if (m_shooterEncoder.getVelocity() >= Constants.lowShooterSpeed){
-      new WaitCommand(7);
-      m_shooterServo.setRaw(1000);
-    }
-  }
-  public void CloseGate(){
+
+  public void CloseGate()
+  {
     m_shooterServo.setRaw(1300);
   }
+
+
+
+  public void HighSpeedShooterMode(){ //Function created to run the motor-- referenced later in ShooterRun.java
+    if (tv == 1){
+      if (roundedDistance == 17) //This if statement checks for the distance (see find distance) and picks RPM based on this
+      {
+        //This line sets the PID controller to listed RPM (first number), add control type so controller knows which value is being impacted
+        m_shooterPID.setReference(Constants.shooterRPM17, ControlType.kVelocity);
+        RPMCheck = Constants.shooterRPM17;
+      }
+      else if (roundedDistance == 16)
+      {
+        m_shooterPID.setReference(Constants.shooterRPM16, ControlType.kVelocity);
+        RPMCheck = Constants.shooterRPM16;
+      }
+      else if (roundedDistance == 15)
+      {
+        m_shooterPID.setReference(Constants.shooterRPM15, ControlType.kVelocity);
+        RPMCheck = Constants.shooterRPM15;
+      }
+      else if (roundedDistance == 14)
+      {
+        m_shooterPID.setReference(Constants.shooterRPM14, ControlType.kVelocity);
+        RPMCheck = Constants.shooterRPM14;
+      }
+      else if (roundedDistance == 13)
+      {
+        m_shooterPID.setReference(Constants.shooterRPM13, ControlType.kVelocity);
+        RPMCheck = Constants.shooterRPM13;
+      }
+      else if (roundedDistance == 12)
+      {
+        m_shooterPID.setReference(Constants.shooterRPM12, ControlType.kVelocity);
+        RPMCheck = Constants.shooterRPM12;
+      }
+      else if (roundedDistance == 11)
+      {
+        m_shooterPID.setReference(Constants.shooterRPM11, ControlType.kVelocity);
+        RPMCheck = Constants.shooterRPM11;
+      }
+      else if (roundedDistance == 10)
+      {
+        m_shooterPID.setReference(Constants.shooterRPM10, ControlType.kVelocity);
+        RPMCheck = Constants.shooterRPM10;
+      }
+    }
+      else 
+      {
+        m_shooterPID.setReference(Constants.lowShooterSpeed, ControlType.kVelocity); 
+        RPMCheck = Constants.lowShooterSpeed;
+      }
+    SmartDashboard.putNumber("RPM", m_shooterEncoder.getVelocity());
+    }
+
+
+
+  public void OpenGate(){
+    if (m_shooterEncoder.getVelocity() >= RPMCheck){
+      new WaitCommand(7);
+      m_shooterServo.setRaw(1000);
+      //FOR AUTO Shooter: Create a variable and have it set based on distance. Then allow this to seek based on that variable in question. I want to make a separate vision class...
+    }
+  }
+
   public void findDistance(){
     hTotal = 104 - 25.75; //Measures in meters. Change these to the official field values later-- This is for testing INPUT IN INCHES *****
     aTotal = 0.628 + ty; //MEASURES IN RADIANS NOT DEGREES. DO NOT MAKE THE SAME MISTAKES (PUT THE VALUES IN AS RADIANS)

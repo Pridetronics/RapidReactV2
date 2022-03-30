@@ -26,7 +26,7 @@ public class lowGoalShooterRun extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooter.LowSpeedShooterMode();
+    m_shooter.LowSpeedShooter();
   }
 
   // Called once the command ends or is interrupted.

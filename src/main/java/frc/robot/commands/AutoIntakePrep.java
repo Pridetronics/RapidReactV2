@@ -17,7 +17,7 @@ public class AutoIntakePrep extends CommandBase {
 
     addRequirements(m_drive);
 
-    intakeTarget = 1;
+    intakeTarget = 0.3;
   }
 
   // Called when the command is initially scheduled.
