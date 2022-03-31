@@ -5,22 +5,17 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 
 public class Intake extends SubsystemBase {
-  private Compressor m_intakeCompressor;
-  private DoubleSolenoid m_intakePiston;
   private VictorSP m_intakeMotor;
+  private DoubleSolenoid m_intakePiston;
 
   public Intake() {
-    m_intakeCompressor = RobotContainer.intakeCompressor;
-    m_intakePiston = RobotContainer.intakePiston;
     m_intakeMotor = RobotContainer.intakeMotor;
+    m_intakePiston = RobotContainer.intakePiston;
   }
 
   @Override
