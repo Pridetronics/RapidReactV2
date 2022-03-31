@@ -12,21 +12,16 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.Shooter;
 
 public class HoningCommand extends CommandBase {
   private Climb m_climb;
-  private Shooter m_shooter;
   Command sequentialHoneCommand;
   private RelativeEncoder m_climbEncoder;
 
   /** Creates a new HoningCommand. */
-  public HoningCommand(Climb climb, Shooter shooter) {
+  public HoningCommand(Climb climb) {
     m_climb = climb;
     addRequirements(m_climb);
-
-    m_shooter = shooter;
-    addRequirements(m_shooter);
 
     m_climbEncoder = RobotContainer.climbEncoder;
 
@@ -42,7 +37,6 @@ public class HoningCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooter.lightsOut();
     m_climb.ClimbUpSlowly();
     m_climb.ClimbDownSlowly();
   }

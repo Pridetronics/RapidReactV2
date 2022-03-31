@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoIntakePrep;
-import frc.robot.commands.AutoMoveBackwards;
+import frc.robot.commands.AutoMoveForwards;
 import frc.robot.commands.AutoShootPrep;
 import frc.robot.commands.ExtendIntake;
 import frc.robot.commands.IntakeRun;
@@ -66,14 +66,14 @@ public class Robot extends TimedRobot {
       new ParallelCommandGroup(
         new lowGoalShooterRun(RobotContainer.m_shooter),
         new OpenGateLow(RobotContainer.m_shooter)).withTimeout(2),
-      new AutoMoveBackwards(RobotContainer.m_drive)));
+      new AutoMoveForwards(RobotContainer.m_drive)));
     
     chooser.addOption("Drive and Shoot", new SequentialCommandGroup(new ParallelCommandGroup(
       new lowGoalShooterRun(RobotContainer.m_shooter),
       new OpenGateLow(RobotContainer.m_shooter)).withTimeout(4), 
-      new AutoMoveBackwards(RobotContainer.m_drive)));
+      new AutoMoveForwards(RobotContainer.m_drive)));
       
-    chooser.addOption("Drive Forward", new AutoMoveBackwards(RobotContainer.m_drive));
+    chooser.addOption("Drive Forward", new AutoMoveForwards(RobotContainer.m_drive));
 
     SmartDashboard.putData("Auto Choices", chooser);
   }

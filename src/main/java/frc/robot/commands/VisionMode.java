@@ -6,16 +6,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 
 public class VisionMode extends CommandBase {
 
-  private Shooter m_shooter;
+  private Vision m_vision;
 
-  public VisionMode(Shooter shooter) {
-    m_shooter = shooter;
+  public VisionMode(Vision vision) {
+    m_vision = vision;
 
-    addRequirements(m_shooter);
+    addRequirements(m_vision);
   }
 
   // Called when the command is initially scheduled.
@@ -25,15 +25,15 @@ public class VisionMode extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooter.cameraMode();
+    m_vision.cameraMode();
     SmartDashboard.putString("Vision Mode", "Camera");
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.processingMode();
-    m_shooter.findDistance(); //Makes sense to put this here, because if I put it in processing mode, I assume that I will be prepping to shoot
+    m_vision.processingMode();
+    m_vision.findDistance(); //Makes sense to put this here, because if I put it in processing mode, I assume that I will be prepping to shoot
     SmartDashboard.putString("Vision Mode", "Processing");
   }
 

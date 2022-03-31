@@ -5,21 +5,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Shooter;
-import frc.robot.commands.ShooterMode;
 
-public class ShooterRun extends CommandBase {
+public class HighGoalShooterRun extends CommandBase {
 
   private Shooter m_shooter;
-  private Drive m_drive;
 
-  public ShooterRun(Shooter Shooter, Drive Drive) {
+  public HighGoalShooterRun(Shooter Shooter) {
     m_shooter = Shooter;
-    m_drive = Drive;
 
     addRequirements(m_shooter);
-    addRequirements(m_drive);
   }
 
   // Called when the command is initially scheduled.
@@ -29,7 +24,7 @@ public class ShooterRun extends CommandBase {
 
   @Override
   public void execute() {
-    m_shooter.HighSpeedShooterMode();
+    m_shooter.HighSpeedShooter();
     // m_drive.shooterAdjust();
     // if (ShooterMode.autoShooter == true) //Checks the variable, hopefully to help select a shooter mode
     // {

@@ -17,6 +17,7 @@ public class IncreaseStage extends CommandBase {
   public IncreaseStage(Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_climb = climb;
+    
     addRequirements(m_climb);
   }
 

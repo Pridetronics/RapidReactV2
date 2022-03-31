@@ -108,7 +108,7 @@ public class Drive extends SubsystemBase {
   }
 
   //Autonomous--
-  public void autoDriveBack() {
+  public void autoDriveOut() {
     m_frontLeftMotor.set(-0.6);
     m_rearLeftMotor.set(-0.6);
     m_frontRightMotor.set(-0.6);

@@ -31,7 +31,8 @@ public class AutoShootPrep extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Drive.m_frontLeftEncoder.getPosition() < shooterTarget){
+    if (Drive.m_frontLeftEncoder.getPosition() < shooterTarget)
+    {
       m_drive.autoDriveShooterPrep();
     }
   }

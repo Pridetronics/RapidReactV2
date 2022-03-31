@@ -20,6 +20,7 @@ public class PivotArmDistanceThree extends CommandBase {
   public PivotArmDistanceThree(Climb climb, double inches) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_climb = climb;
+    
     addRequirements(m_climb);
     inch_goal = inches;
   }

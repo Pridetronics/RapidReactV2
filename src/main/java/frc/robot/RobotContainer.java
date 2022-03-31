@@ -38,10 +38,9 @@ import frc.robot.commands.CancellationButtonsClimb;
 import frc.robot.commands.CancelStage;
 
 //Shooter Command Imports--
-import frc.robot.commands.OpenGate;
+import frc.robot.commands.OpenGateHigh;
 import frc.robot.commands.OpenGateLow;
-import frc.robot.commands.SimpleShooterRun;
-import frc.robot.commands.ShooterRun;
+import frc.robot.commands.HighGoalShooterRun;
 import frc.robot.commands.lowGoalShooterRun;
 import frc.robot.commands.ShootTrigger;
 import frc.robot.commands.ShooterMode;
@@ -52,9 +51,8 @@ import frc.robot.commands.IntakeRun;
 
 //Vision Command Imports--
 import frc.robot.commands.VisionMode;
-import frc.robot.commands.LimelightDistanceFinder;
-import frc.robot.commands.FindTarget;
-import frc.robot.commands.ShooterAdjust;
+import frc.robot.commands.FindDistanceLimelight;
+import frc.robot.commands.AlignTarget;
 
 //Subsytem Imports--
 import frc.robot.subsystems.Drive;
@@ -125,10 +123,11 @@ public class RobotContainer {
   public static DigitalInput lowerClimbLimitSwitch;
   
   // Subsystems--
-  public static Intake m_intake;
-  public static Shooter m_shooter; // Creates the subsytem for shooter
-  public static Climb m_climb;
   public static Drive m_drive;
+  public static Climb m_climb;
+  public static Shooter m_shooter; // Creates the subsytem for shooter
+  public static Intake m_intake;
+  public static Vision m_vision;
   
   //Commands--
   public static Command ClimbButtonSequence;
@@ -244,6 +243,7 @@ public class RobotContainer {
     m_climb = new Climb(); // Defines the subsystem
     m_shooter = new Shooter(); // Defines the subsystem
     m_intake = new Intake();
+    m_vision = new Vision();
 
     // SmartDashboard Relevant-- Remove these during competition time
     // SmartDashboard.putData("Shooter Run", new ShooterRun(m_shooter, m_drive)); //
@@ -338,8 +338,8 @@ public class RobotContainer {
     //Shooter Commands--
     highSpeedShooterButton = new JoystickButton(joystickShooter, Constants.highSpeedShooterButtonNumber);
     highSpeedShooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate commands
-        new SimpleShooterRun(m_shooter),
-        new OpenGate(m_shooter))); // References the command and inside the needed subsytem
+        new HighGoalShooterRun(m_shooter),
+        new OpenGateHigh(m_shooter))); // References the command and inside the needed subsytem
     lowSpeedShooterButton = new JoystickButton(joystickShooter, Constants.lowSpeedShooterButtonNumber);
     lowSpeedShooterButton.whileHeld(new ParallelCommandGroup(
       new lowGoalShooterRun(m_shooter),
@@ -356,9 +356,10 @@ public class RobotContainer {
 
     //Vision Commands--
     visionModeButton = new JoystickButton(joystickDriver, Constants.visionModeButtonNumber);
-    visionModeButton.toggleWhenPressed(new VisionMode(m_shooter)); // Switches between modes. See Shooter subsytem for function.
+    visionModeButton.toggleWhenPressed(new VisionMode(m_vision)); // Switches between modes. See Shooter subsytem for function.
+
     findTargetButton = new JoystickButton(joystickShooter, Constants.findTargetButtonNumber); // Change this to left trigger
-    findTargetButton.whenPressed(new FindTarget(m_drive));
+    findTargetButton.whenPressed(new AlignTarget(m_vision));
   }
   // public Command getAutonomousCommand() {
   // return (Command) m_chooser.getSelected();

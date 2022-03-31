@@ -7,50 +7,58 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 
-public class AutoIntakePrep extends CommandBase {
+public class AutoMoveForwards extends CommandBase {
   private Drive m_drive;
-  static final int ticks = 42;
-  private double intakeTarget;
+  static final int ticks = 42; // Buddy Bot has 1120
+  private double circumference;
+  private double rotationsneeded;
+  private double targetDistance;
 
-  public AutoIntakePrep(Drive drive) {
+  public AutoMoveForwards(Drive drive) {
     m_drive = drive;
 
     addRequirements(m_drive);
 
-    intakeTarget = 0.3;
+    // encoder = Drive.m_frontLeftEncoder.getPosition();
+    circumference = 3.14 * 6;
+    // rotationsneeded = 6/circumference;
+    targetDistance = .75;
   }
-
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void initialize() 
+  {
     m_drive.zeroEncoders();
-    System.out.println("AutoIntakePrep Started");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) < intakeTarget)
+  public void execute() 
+  {
+    // int drivetarget = doubledtar/4;
+    // long target = drivetarget;
+    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) < targetDistance)
     {
-      m_drive.autoDriveIntakePrep();
+      m_drive.autoDriveOut();
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted) 
+  {
     m_drive.driveStop();
-    System.out.println("AutoIntakePrep Finished");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) > intakeTarget)
+    // return false;
+    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) > targetDistance) 
     {
       return true;
-    }
-    else
+    } 
+    else 
     {
       return false;
     }

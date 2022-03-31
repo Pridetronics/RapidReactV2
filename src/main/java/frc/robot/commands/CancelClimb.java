@@ -10,18 +10,18 @@ import frc.robot.subsystems.Climb;
 
 public class CancelClimb extends CommandBase {
   /** Creates a new CancellationClimb. */
-  Climb m_climb;
+  private Climb m_climb;
 
   public CancelClimb(Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_climb = climb;
+
     addRequirements(m_climb);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

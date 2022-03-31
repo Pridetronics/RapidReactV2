@@ -9,30 +9,31 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climb;
 
 public class CancelStage extends CommandBase {
-  Climb m_climb;
-
+  private Climb m_climb;
   /** Creates a new CancelStage. */
   public CancelStage(Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_climb = climb;
+
     addRequirements(m_climb);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void initialize() 
+  {
     m_climb.decreaseStage();
     m_climb.cancelStage();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted) 
+  {
     SmartDashboard.putNumber("Stage Level", Climb.climbValue);
   }
 
