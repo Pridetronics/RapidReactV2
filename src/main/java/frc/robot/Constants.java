@@ -20,44 +20,29 @@ public final class Constants
     public static final int kJoystickDriverID = 0; // For Joystick 0
     public static final int kJoystickShooterID = 1; // For Joystick 1
 
+    public static final int intakeButtonNumber = 1;
+    public static final int climbHoningButtonNumber = 11;
+    public static final int visionModeButtonNumber = 7;
+
     public static final int sequence1ButtonNumber = 2; // For climb's sequence 1 button on the Gamepad
     public static final int sequence2ButtonNumber = 1; // For climb's sequence 2 button on the Gamepad
     public static final int sequence3ButtonNumber = 3; // For climb's sequence 3 button on the Gamepad
-    public static final int cancellationButton1 = 5; // For climb's cancellation button on the Gamepad
-    public static final int cancellationButton2 = 6; // For climb's cancellation button on the Gamepad
-    public static final int climbHoningButtonNumber = 11;
     public static final int highSpeedShooterButtonNumber = 6; 
     public static final int lowSpeedShooterButtonNumber = 5;
-    public static final int intakeButtonNumber = 1;
-    public static final int visionModeButtonNumber = 7;
-    public static final int shooterModeButtonNumber = 7;
+    public static final int shooterModeButtonNumber = 8;
     public static final int findTargetButtonNumber = 9;
 
     // Drive--
-    public static final int kFrontLeftCANID = 2; // For all of the drive motors
-    public static final int kRearLeftCANID = 4;
-    public static final int kFrontRightCANID = 1;
-    public static final int kRearRightCANID = 3;
-    public static final double DRIVE_kP = 0.0001; //taken from shooter
-
-    // Not used yet
-    // public static final double gearRatio = 0;// drive gear ratio
-    // public static final double circumference = 0;
-    // public static final double kDriveWHeelDiameter = 0;
-    // public static final double kEncoderPositionConversionFactorDrive =
-    // kDriveWHeelDiameter * Math.PI;
-    // public static final double inchesPerRevolution = circumference / gearRatio;
-    // public static final double kDriveDistance = 24; // In Inches - wont go exactly due to mecanum wheel loss (why is this here?)
+    public static final int kFrontLeftMotorCANID = 2; // For all of the drive motors
+    public static final int kRearLeftMotorCANID = 4;
+    public static final int kFrontRightMotorCANID = 1;
+    public static final int kRearRightMotorCANID = 3;
 
     // Climb--
     public static final int kClimbCANID = 6; // For Climb Motor
-    public static final int upperClimbLimitSwitchChannel = 1; // Upper Limit Switch Channel
     public static final int lowerClimbLimitSwitchChannel = 0; // Lower Limit Switch Channel
     public static final int kPistonClimbChannel = 0; // For piston
     public static final int kPistonReverseClimbChannel = 1; // For piston
-
-    public static final double ClimbMotorSpeed = 1.0; // Sets speed for climb motor
-    public static final double InverseClimbMotorSpeed = -1.0; // Sets speed for climb motor
 
     public static final double CLIMB_kP = 0.0002;
     public static final double CLIMB_kI = 0.000001;

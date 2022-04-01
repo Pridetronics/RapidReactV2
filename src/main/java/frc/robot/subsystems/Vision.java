@@ -52,16 +52,16 @@ public class Vision extends SubsystemBase {
   private double adjustableShooterRPM;
 
   public Vision() {
-    m_frontLeftMotor = RobotContainer.frontLeft;
+    m_frontLeftMotor = RobotContainer.frontLeftMotor;
     m_frontLeftPIDController = m_frontLeftMotor.getPIDController();
 
-    m_frontRightMotor = RobotContainer.frontRight;
+    m_frontRightMotor = RobotContainer.frontRightMotor;
     m_frontRightPIDController = m_frontRightMotor.getPIDController();
 
-    m_rearLeftMotor = RobotContainer.rearLeft;
+    m_rearLeftMotor = RobotContainer.rearLeftMotor;
     m_rearLeftPIDController = m_rearLeftMotor.getPIDController();
 
-    m_rearRightMotor = RobotContainer.rearRight;
+    m_rearRightMotor = RobotContainer.rearRightMotor;
     m_rearRightPIDController = m_rearRightMotor.getPIDController();
 
     m_shooterMotor = RobotContainer.shooterMotor;

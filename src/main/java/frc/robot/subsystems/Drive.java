@@ -37,22 +37,22 @@ public class Drive extends SubsystemBase {
 
   public Drive(Joystick m_joystickDriver) {
 
-    m_frontLeftMotor = RobotContainer.frontLeft;
+    m_frontLeftMotor = RobotContainer.frontLeftMotor;
     m_frontLeftEncoder = m_frontLeftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     m_frontLeftEncoder.setPositionConversionFactor(0.0378);
     m_frontLeftPIDController = m_frontLeftMotor.getPIDController();
 
-    m_frontRightMotor = RobotContainer.frontRight;
+    m_frontRightMotor = RobotContainer.frontRightMotor;
     m_frontRightEncoder = m_frontRightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     m_frontRightEncoder.setPositionConversionFactor(0.0378);
     m_frontRightPIDController = m_frontRightMotor.getPIDController();
 
-    m_rearLeftMotor = RobotContainer.rearLeft;
+    m_rearLeftMotor = RobotContainer.rearLeftMotor;
     m_rearLeftEncoder = m_rearLeftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     m_rearLeftEncoder.setPositionConversionFactor(0.0378);
     m_rearLeftPIDController = m_rearLeftMotor.getPIDController();
 
-    m_rearRightMotor = RobotContainer.rearRight;
+    m_rearRightMotor = RobotContainer.rearRightMotor;
     m_rearRightEncoder = m_rearRightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     m_rearRightEncoder.setPositionConversionFactor(0.0378);
     m_rearRightPIDController = m_rearRightMotor.getPIDController();
@@ -68,10 +68,7 @@ public class Drive extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Right Encoder", m_frontRightEncoder.getPosition());
     SmartDashboard.putNumber("Left Encoder", m_frontLeftEncoder.getPosition());
-    SmartDashboard.putNumber("Average Encoder FRONT", getAverageEncoderDistanceFront());
-    SmartDashboard.putNumber("Average Encoder BACK", getAverageEncoderDistanceFront());
     SmartDashboard.putNumber("Ticks Per Revolution", m_frontLeftEncoder.getCountsPerRevolution());
     m_frontLeftEncoder.getPosition();
     m_frontRightEncoder.getPosition();

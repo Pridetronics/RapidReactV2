@@ -19,8 +19,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.DriveJoystick;
 
 //Climb Command Imports--
-import frc.robot.commands.IncreaseStage;
-import frc.robot.commands.ClimbButtonSequence;
 import frc.robot.commands.ClimbInitializationDown;
 import frc.robot.commands.ClimbInitializationUp;
 import frc.robot.commands.EncoderPivotArmDescend;
@@ -32,10 +30,6 @@ import frc.robot.commands.PivotArmDescendDistance;
 import frc.robot.commands.PivotArmDistanceOne;
 import frc.robot.commands.PivotArmDistanceTwo;
 import frc.robot.commands.PivotArmDistanceThree;
-
-import frc.robot.commands.CancelClimb;
-import frc.robot.commands.CancellationButtonsClimb;
-import frc.robot.commands.CancelStage;
 
 //Shooter Command Imports--
 import frc.robot.commands.OpenGateHigh;
@@ -72,7 +66,6 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Compressor;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
@@ -94,14 +87,13 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   // Camera--
-  // public UsbCamera cam_0;
-  // public CameraServer server1;
+  public CameraServer server1;
 
   // Drive--
-  public static CANSparkMax frontLeft; // Creates all four drive motors
-  public static CANSparkMax rearLeft;
-  public static CANSparkMax frontRight;
-  public static CANSparkMax rearRight;
+  public static CANSparkMax frontLeftMotor; // Creates all four drive motors
+  public static CANSparkMax rearLeftMotor;
+  public static CANSparkMax frontRightMotor;
+  public static CANSparkMax rearRightMotor;
 
   // Shooter--
   public static CANSparkMax shooterMotor; // Creates Motor for the shooter
@@ -111,7 +103,6 @@ public class RobotContainer {
 
   // Intake--
   public static VictorSP intakeMotor;
-  public static Compressor intakeCompressor;
   public static DoubleSolenoid intakePiston;
 
   //Climb--
@@ -119,7 +110,6 @@ public class RobotContainer {
   public static DoubleSolenoid climbPiston; // Climb Piston
   public static SparkMaxPIDController climbPID;
   public static RelativeEncoder climbEncoder;
-  public static DigitalInput upperClimbLimitSwitch;
   public static DigitalInput lowerClimbLimitSwitch;
   
   // Subsystems--
@@ -128,19 +118,8 @@ public class RobotContainer {
   public static Shooter m_shooter; // Creates the subsytem for shooter
   public static Intake m_intake;
   public static Vision m_vision;
-  
-  //Commands--
-  public static Command ClimbButtonSequence;
-  public static Command CancelClimb;
-  public static Command AddOne;
-  public static Command HoneClimb;
 
   //Climb Buttons--
-  public JoystickButton addButton;
-  public JoystickButton cancellationButton1;
-  public JoystickButton cancellationButton2;
-  public JoystickButton cancelStageButton;
-  public static JoystickButton climbButton;
   public JoystickButton honeButton;
 
   public JoystickButton sequence1Button;
@@ -173,47 +152,30 @@ public class RobotContainer {
   public RobotContainer() {
     // Assign values for the motors, and for the joysticks. Do not do button
     // bindings, this is below.
-    // Camera Relevant
-    // Creates UsbCamera and MjpegServer [1] and connects them
-    // CameraServer.startAutomaticCapture();
-    // Creates the CvSink and connects it to the UsbCamera
-    // CvSink cvSink = CameraServer.getVideo();
-    // Creates the CvSource and MjpegServer [2] and connects them
-    // CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
-    // Creates the UsbCamera and MjpegServer [1] and connects them
-    // UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
-    // MjpegServer mjpegServer1 = new MjpegServer("USB Camera 0", 1181);
-    // mjpegServer1.setSource(usbCamera);
-    // Creates the CvSink and connects it to the UsbCamera
-    // cvSink = new CvSink("opencv_USB Camera 0");
-    // cvSink.setSource(usbCamera);
-    // Creates the CvSource and MjpegServer[2] and connects them
-    // outputStream = new CvSource("Blur", PixelFormat.kMJPEG, 1280, 720, 30);
-    // MjpegServer mjpegServer2 = new MjpegServer("Serve_BLur", 1182);
-    // mjpegServer2.setSource(outputStream);
+    // Camera Relevant--
+    CameraServer.startAutomaticCapture(); //ADD A WARNING NOTE
     
     joystickDriver = new Joystick(Constants.kJoystickDriverID);
     joystickShooter = new Joystick(Constants.kJoystickShooterID); 
 
     // Drive Relevant---
-    frontLeft = new CANSparkMax(Constants.kFrontLeftCANID, MotorType.kBrushless);
-    frontLeft.setInverted(false);
+    frontLeftMotor = new CANSparkMax(Constants.kFrontLeftMotorCANID, MotorType.kBrushless);
+    frontLeftMotor.setInverted(false);
 
-    rearLeft = new CANSparkMax(Constants.kRearLeftCANID, MotorType.kBrushless);
-    rearLeft.setInverted(false);
+    rearLeftMotor = new CANSparkMax(Constants.kRearLeftMotorCANID, MotorType.kBrushless);
+    rearLeftMotor.setInverted(false);
 
-    frontRight = new CANSparkMax(Constants.kFrontRightCANID, MotorType.kBrushless);
-    frontRight.setInverted(true);
+    frontRightMotor = new CANSparkMax(Constants.kFrontRightMotorCANID, MotorType.kBrushless);
+    frontRightMotor.setInverted(true);
 
-    rearRight = new CANSparkMax(Constants.kRearRightCANID, MotorType.kBrushless);
-    rearRight.setInverted(true);
+    rearRightMotor = new CANSparkMax(Constants.kRearRightMotorCANID, MotorType.kBrushless);
+    rearRightMotor.setInverted(true);
 
     // Climb Relevant--
     climbMotor = new CANSparkMax(Constants.kClimbCANID, MotorType.kBrushless);
     climbMotor.setInverted(true);
     climbEncoder = climbMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.kEncoderCountsPerRev);
     climbPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kPistonClimbChannel, Constants.kPistonReverseClimbChannel);
-    upperClimbLimitSwitch = new DigitalInput(Constants.upperClimbLimitSwitchChannel);
     lowerClimbLimitSwitch = new DigitalInput(Constants.lowerClimbLimitSwitchChannel);
     climbPID = climbMotor.getPIDController();
     climbPID.setP(Constants.CLIMB_kP);
@@ -235,7 +197,6 @@ public class RobotContainer {
   
     //Intake Relevant--
     intakeMotor = new VictorSP(Constants.kIntakePWMID);
-    intakeCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
     intakePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kIntakePistonForwardChannel, Constants.kIntakePistonReverseChannel);
     
     //Subsytems--
@@ -246,28 +207,9 @@ public class RobotContainer {
     m_vision = new Vision();
 
     // SmartDashboard Relevant-- Remove these during competition time
-    // SmartDashboard.putData("Shooter Run", new ShooterRun(m_shooter, m_drive)); //
-    // Puts data on Shuffleboard to use the
-    // // command.
-    // SmartDashboard.putData("Shooter Adjust", new ShooterAdjust(m_drive));
-    // SmartDashboard.putData("Open Gate", new OpenGate(m_shooter)); // Displays on the screen and can be run by pushing the square. Pretty neat
-    // SmartDashboard.putData("Intake Run", new IntakeRun(m_intake));
-    // SmartDashboard.putData("Extend/Retract Intake", new ExtendIntake(m_intake));
-    // SmartDashboard.putData("Find Distance", new
-    // LimelightDistanceFinder(m_shooter));
-    // SmartDashboard.putData("Change Vision Modes", new VisionMode(m_shooter));
-    // SmartDashboard.putData("Find Target", new FindTarget(m_drive));
-    // SmartDashboard.putData("Shooter Mode", new ShooterMode(m_shooter));
-
-    SmartDashboard.putData("Sequence 1", new SequentialCommandGroup(
-        new PivotArmDistanceOne(m_climb, Constants.climbDistance1),
-        new InstantCommand(m_climb::pistonRelease, m_climb)));
-    SmartDashboard.putData("Sequence 2", new PivotArmDescendDistance(m_climb, Constants.climbDescendDistance));
-    SmartDashboard.putData("Sequence 3", new SequentialCommandGroup(
-        new PivotArmDistanceTwo(m_climb, Constants.climbDistance2),
-        new InstantCommand(m_climb::pistonRetract, m_climb),
-        new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
-        new InstantCommand(m_climb::pistonRelease, m_climb)));
+    // Puts data on Shuffleboard to use the command.
+    SmartDashboard.putData("Extend/Retract Intake", new ExtendIntake(m_intake));
+    SmartDashboard.putData("Change Vision Modes", new VisionMode(m_vision));
 
     SmartDashboard.putData("Arm Distance One", new PivotArmDistanceOne(m_climb, Constants.climbDistance1));
     SmartDashboard.putData("Piston Extend", new InstantCommand(m_climb::pistonRelease, m_climb));
@@ -323,17 +265,6 @@ public class RobotContainer {
       new InstantCommand(m_climb::pistonRetract, m_climb),
       new EncoderPivotArmDistanceThree(m_climb),
       new InstantCommand(m_climb::pistonRelease, m_climb)));
-
-      cancellationButton1 = new JoystickButton(joystickShooter, Constants.cancellationButton1);
-      cancellationButton2 = new JoystickButton(joystickShooter, Constants.cancellationButton2);
-      CancellationButtonsClimb cancellationButtons = new CancellationButtonsClimb(cancellationButton1, cancellationButton2);
-      cancellationButtons.whenPressed(new CancelClimb(m_climb));
-
-    // addButton = new JoystickButton(joystickShooter, Constants.addButtonNumber);
-    // addButton.whileActiveOnce(new IncreaseStage(m_climb));
-    // cancelStageButton = new JoystickButton(joystickShooter,
-    // Constants.cancelStageButtonNumber);
-    // cancelStageButton.whileActiveOnce(new CancelStage(m_climb));
 
     //Shooter Commands--
     highSpeedShooterButton = new JoystickButton(joystickShooter, Constants.highSpeedShooterButtonNumber);
