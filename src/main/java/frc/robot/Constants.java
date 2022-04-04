@@ -29,6 +29,8 @@ public final class Constants
     public static final int sequence3ButtonNumber = 3; // For climb's sequence 3 button on the Gamepad
     public static final int highSpeedShooterButtonNumber = 6; 
     public static final int lowSpeedShooterButtonNumber = 5;
+    public static final int automaticShooterButtonNumber = 7;
+    public static final int runShooterButtonNumber = 10;
     public static final int shooterModeButtonNumber = 8;
     public static final int findTargetButtonNumber = 9;
 
@@ -79,14 +81,9 @@ public final class Constants
     public static final double SHOOTER_MAX_OUTPUT = 6000.0;
     public static final double SHOOTER_MIN_OUTPUT = -6000.0;
     
-    public static final int shooterRPM17 = 5000;
-    public static final int shooterRPM16 = 4750;
-    public static final int shooterRPM15 = 4500;
-    public static final int shooterRPM14 = 4250;
-    public static final int shooterRPM13 = 4000;
-    public static final int shooterRPM12 = 3750;
-    public static final int shooterRPM11 = 3500;
-    public static final int shooterRPM10 = 3250;
+    public static final int shooterRPMHigh = 5000;
+    public static final int shooterRPMMedium = 4500;
+    public static final int shooterRPMLow = 4000;
 
     // Intake--
     public static final int kIntakePWMID = 1;

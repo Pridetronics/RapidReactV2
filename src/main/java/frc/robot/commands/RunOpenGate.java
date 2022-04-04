@@ -4,21 +4,21 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
+import frc.robot.commands.ShooterMode;
 
-public class ShooterMode extends CommandBase {
-  /** Creates a new ShooterMode. */
+public class RunOpenGate extends CommandBase {
   private Shooter m_shooter;
-  public static int modeNumber;
+  private Vision m_vision;
 
-  public ShooterMode(Shooter shooter) {
+  public RunOpenGate(Shooter shooter, Vision vision) {
     m_shooter = shooter;
+    m_vision = vision;
 
     addRequirements(m_shooter);
-    modeNumber = 0;
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_vision);
   }
 
   // Called when the command is initially scheduled.
@@ -27,29 +27,24 @@ public class ShooterMode extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() 
-  {
-    modeNumber++;
-    if (modeNumber == 1)
+  public void execute() {
+    if (ShooterMode.modeNumber == 0)
     {
-      SmartDashboard.putString("Mode", "lowSpeedShooter");
-    } 
-    else if (modeNumber == 2)
-    {
-      SmartDashboard.putString("Mode", "highSpeedShooter");
+      m_vision.AutomaticOpenGate();
     }
-    else if (modeNumber == 3)
+    else if (ShooterMode.modeNumber == 1)
     {
-      modeNumber = 0;
-      SmartDashboard.putString("Mode", "automaticShooter");
+      m_shooter.OpenGateLow();
     }
-
+    else if (ShooterMode.modeNumber == 2)
+    {
+      m_shooter.OpenGateHigh();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

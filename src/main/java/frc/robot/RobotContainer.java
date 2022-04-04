@@ -29,6 +29,8 @@ import frc.robot.commands.EncoderPivotArmDistanceThree;
 import frc.robot.commands.PivotArmDescendDistance;
 import frc.robot.commands.PivotArmDistanceOne;
 import frc.robot.commands.PivotArmDistanceTwo;
+import frc.robot.commands.RunOpenGate;
+import frc.robot.commands.RunShooter;
 import frc.robot.commands.PivotArmDistanceThree;
 
 //Shooter Command Imports--
@@ -38,6 +40,8 @@ import frc.robot.commands.HighGoalShooterRun;
 import frc.robot.commands.lowGoalShooterRun;
 import frc.robot.commands.ShootTrigger;
 import frc.robot.commands.ShooterMode;
+import frc.robot.commands.RunShooter;
+import frc.robot.commands.RunOpenGate;
 
 //Intake Command Imports--
 import frc.robot.commands.ExtendIntake;
@@ -47,6 +51,8 @@ import frc.robot.commands.IntakeRun;
 import frc.robot.commands.VisionMode;
 import frc.robot.commands.FindDistanceLimelight;
 import frc.robot.commands.AlignTarget;
+import frc.robot.commands.AutomaticShooterRun;
+import frc.robot.commands.AutomaticOpenGate;
 
 //Subsytem Imports--
 import frc.robot.subsystems.Drive;
@@ -133,7 +139,9 @@ public class RobotContainer {
   //Shooter Buttons--
   public JoystickButton highSpeedShooterButton; // Button for the shooter
   public JoystickButton lowSpeedShooterButton;
+  public JoystickButton automaticShooterButton;
   public JoystickButton shooterModeButton;
+  public JoystickButton runShooterButton;
 
   //Intake Buttons--
   public JoystickButton intakeButton;
@@ -275,6 +283,14 @@ public class RobotContainer {
     lowSpeedShooterButton.whileHeld(new ParallelCommandGroup(
       new lowGoalShooterRun(m_shooter),
       new OpenGateLow(m_shooter)));
+    automaticShooterButton = new JoystickButton(joystickShooter, Constants.automaticShooterButtonNumber);
+    automaticShooterButton.whileHeld(new ParallelCommandGroup(
+      new AutomaticShooterRun(m_vision),
+      new AutomaticOpenGate(m_vision)));
+    runShooterButton = new JoystickButton(joystickShooter, Constants.runShooterButtonNumber);
+    runShooterButton.whileHeld(new ParallelCommandGroup(
+      new RunShooter(m_shooter, m_vision),
+      new RunOpenGate(m_shooter, m_vision)));
     // shooterModeButton = new JoystickButton(joystickShooter, Constants.shooterModeButtonNumber);
     // shooterModeButton.toggleWhenPressed(new ShooterMode(m_shooter));
 

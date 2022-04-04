@@ -172,49 +172,29 @@ public class Vision extends SubsystemBase {
 
   public void AutomaticShooter()
   { 
-    if (roundedDistance == 17) //This if statement checks for the distance (see find distance) and picks RPM based on this
+    if (roundedDistance >= 15) //This if statement checks for the distance (see find distance) and picks RPM based on this
     {
       //This line sets the PID controller to listed RPM (first number), add control type so controller knows which value is being impacted
-      m_shooterPIDController.setReference(Constants.shooterRPM17, ControlType.kVelocity);
-      adjustableShooterRPM = Constants.shooterRPM17;
+      m_shooterPIDController.setReference(Constants.shooterRPMHigh, ControlType.kVelocity);
+      adjustableShooterRPM = Constants.shooterRPMHigh;
     }
-    else if (roundedDistance == 16)
+    else if (roundedDistance >= 13 && roundedDistance <= 11)
     {
-      m_shooterPIDController.setReference(Constants.shooterRPM16, ControlType.kVelocity);
-      adjustableShooterRPM = Constants.shooterRPM16;
-    }
-    else if (roundedDistance == 15)
-    {
-      m_shooterPIDController.setReference(Constants.shooterRPM15, ControlType.kVelocity);
-      adjustableShooterRPM = Constants.shooterRPM15;
-    }
-    else if (roundedDistance == 14)
-    {
-      m_shooterPIDController.setReference(Constants.shooterRPM14, ControlType.kVelocity);
-      adjustableShooterRPM = Constants.shooterRPM14;
-    }
-    else if (roundedDistance == 13)
-    {
-      m_shooterPIDController.setReference(Constants.shooterRPM13, ControlType.kVelocity);
-      adjustableShooterRPM = Constants.shooterRPM13;
-    }
-    else if (roundedDistance == 12)
-    {
-      m_shooterPIDController.setReference(Constants.shooterRPM12, ControlType.kVelocity);
-      adjustableShooterRPM = Constants.shooterRPM12;
-    }
-    else if (roundedDistance == 11)
-    {
-      m_shooterPIDController.setReference(Constants.shooterRPM11, ControlType.kVelocity);
-      adjustableShooterRPM = Constants.shooterRPM11;
+      m_shooterPIDController.setReference(Constants.shooterRPMMedium, ControlType.kVelocity);
+      adjustableShooterRPM = Constants.shooterRPMMedium;
     }
     else if (roundedDistance == 10 && roundedDistance < 10)
     {
-      m_shooterPIDController.setReference(Constants.shooterRPM10, ControlType.kVelocity);
-      adjustableShooterRPM = Constants.shooterRPM10;
+      m_shooterPIDController.setReference(Constants.shooterRPMLow, ControlType.kVelocity);
+      adjustableShooterRPM = Constants.shooterRPMLow;
     }
   }
 
+  public void ShooterMotorStop()
+  {
+    m_shooterMotor.set(0);
+  }
+  
   public void AutomaticOpenGate()
   {
     if (m_shooterEncoder.getVelocity() >= adjustableShooterRPM)
@@ -222,6 +202,10 @@ public class Vision extends SubsystemBase {
       new WaitCommand(7);
       m_shooterServo.setRaw(1000);
     }
+  }
+  public void AutomaticCloseGate()
+  {
+    m_shooterServo.setRaw(1300);
   }
 
 }
