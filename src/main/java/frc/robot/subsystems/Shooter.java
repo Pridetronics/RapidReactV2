@@ -2,111 +2,94 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/*
+* This is the shooter subsytem. Here are the functions for controlling
+* the shooter on the 2022 robot. This includes one motor (plus its built in
+* encoder and PID Controller) as well as a Servo. Other functions involving
+* complex shooter use can be found in Vision(AUTOSHOOTER)
+*/
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
+//Imported relevant hardware to reference when creating functions. 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
-// import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-
 public class Shooter extends SubsystemBase {
+  //Hardware is created so it can be used within this subsytem. 
   private CANSparkMax m_shooterMotor;
   private RelativeEncoder m_shooterEncoder;
   private SparkMaxPIDController m_shooterPID;
   private Servo m_shooterServo;
-  //Math values for use in Limelight
-  private double aTotal; 
-  private double hTotal; 
-  private double aTan;
-  private double initialDistance;
-  private double distance;
-  private double distanceInFeet;
-  private double roundedDistance;
-  private double ty;
-  public static double tx;
-  static double tv;
-  private double ta;
-  private double RPMCheck;
-
+ 
   public Shooter() {
-    //PID and solenoid information referenced from RobotContainer
+    //Motor, Encoder, PID, and Servo referenced from RobotContainer for use in subsytem.
     m_shooterMotor = RobotContainer.shooterMotor;
     m_shooterEncoder = RobotContainer.shooterEncoder;
     m_shooterPID = RobotContainer.shooterMotorPID;
-    // m_shooterBallRelease = RobotContainer.shooterBallRelease;
     m_shooterServo = RobotContainer.shooterServo;
-    //m_shooterServo.setBounds(1300, 1150, 1150, 1150, 1000);
-    zeroEncoders();
+    zeroEncoders(); //Resets the encoders (for accuracy-- better explained in Climb)
   }
 
   @Override
   public void periodic() 
-  {
-    NetworkTableInstance inst = NetworkTableInstance.getDefault(); //get a reference to the subtable called "datatable"
-    NetworkTable table = inst.getTable("limelight");
-    inst.startClientTeam(3853); // Make sure you set this to your team number
-    inst.startDSClient(); // recommended if running on DS computer; this gets the robot IP from the DS
-    NetworkTableEntry yEntry = table.getEntry("ty"); 
-    NetworkTableEntry xEntry = table.getEntry("tx");
-    NetworkTableEntry aEntry = table.getEntry("ta");
-    NetworkTableEntry vEntry = table.getEntry("tv");
+  {}
 
-    ty = yEntry.getDouble(0.0); // Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees)
-    ta = aEntry.getDouble(0.0); // Target Area (0% of image to 100% of image)
-    tx = xEntry.getDouble(0.0); //Horizontal Offset From Crosshair to Target (-27.5 degrees to 27.5 degrees)
-    tv = vEntry.getDouble(0.0); // Whether the limelight has any valid targets (0 or 1)
-
-    SmartDashboard.putNumber("Limelight Area", ta); //Displays base limelight values to Shuffleboard
-    SmartDashboard.putNumber("Limelight X", tx);
-    SmartDashboard.putNumber("Limelight Y", ty);
-    SmartDashboard.putNumber("Limelight V", tv);
-    // This method will be called once per scheduler run
-  }
-
-  public void zeroEncoders() //Resets Encoders
+  //Resets Encoders-- Calls when subsytem is created. 
+  public void zeroEncoders() 
   {
     m_shooterEncoder.setPosition(0);
   }
 
-  public void LowSpeedShooter()
+  //Sets shooter motor to 2500 RPM. Also displays this on SmartDashboard
+  public void LowSpeedShooter() 
   {
+    /* The line below sets the speeed for the motor using a PID loop. The first value is the RPM desired (human input),
+    *  and the second number is the ControlType (in this case velocity), which tells the encoder (Position is the other 
+    *  type-- see climb)
+    */
     m_shooterPID.setReference(Constants.lowShooterSpeed, ControlType.kVelocity);
     SmartDashboard.putNumber("ShooterRPM", m_shooterEncoder.getVelocity());
   }
-  public void HighSpeedShooter()
+
+  //Sets shooter motor to 5000 RPM and displays on SmartDashboard
+  public void HighSpeedShooter() 
   { 
     m_shooterPID.setReference(Constants.highShooterSpeed, ControlType.kVelocity);
     SmartDashboard.putNumber("Shooter RPM", m_shooterEncoder.getVelocity());
   }
 
-  public void ShooterStop() //Stops motors
+  //Stops Shooter Motor
+  public void ShooterStop() 
   { 
-    m_shooterMotor.set(0);  
+    m_shooterMotor.set(0); 
+    //Set measures in voltage-- power outputted to the motor. In this case, 0. (Range = -1 to 1) 
   }
 
-  public void OpenGateLow()
+  /* OpenGateLow checks for a certain velocity (2500 in this case) and if the conditions are met, 
+  *  moves the servo gate to a position in which the ball can move through. Both open gate commands
+  *  ensure the motor is able to reach the proper speed so the ball is launched properly.
+  */
+  public void OpenGateLow() 
   {
     if (m_shooterEncoder.getVelocity() >= Constants.lowShooterSpeed)
     {
       new WaitCommand(7);
-      m_shooterServo.setRaw(1000);
+      m_shooterServo.setRaw(1000); //This is measured in ms-- see Pridetronics documentation for more information
     }
   }
 
+  /* OpenGateHigh checks for a certain velocity (5000 in this case) and if the conditions are met, 
+  *  moves the servo gate to a position in which the ball can move through.
+  */
   public void OpenGateHigh()
   {
     if (m_shooterEncoder.getVelocity() >= Constants.highShooterSpeed)
@@ -116,6 +99,7 @@ public class Shooter extends SubsystemBase {
     }
   }
 
+  //Moves servo to a position in which the ball is unable to be released.
   public void CloseGate()
   {
     m_shooterServo.setRaw(1300);
