@@ -43,16 +43,17 @@ public class Shooter extends SubsystemBase {
   public void periodic() 
   {}
 
-  //Resets Encoders-- Calls when subsytem is created. 
+  //zeroEncoders: Resets Encoders-- Calls when subsytem is created. 
   public void zeroEncoders() 
   {
     m_shooterEncoder.setPosition(0);
   }
 
-  //Sets shooter motor to 2500 RPM. Also displays this on SmartDashboard
+  //LowSpeedShooter: Sets shooter motor to 2500 RPM. Also displays this on SmartDashboard
   public void LowSpeedShooter() 
   {
-    /* The line below sets the speeed for the motor using a PID loop. The first value is the RPM desired (human input),
+    /* 
+    *  The line below sets the speeed for the motor using a PID loop. The first value is the RPM desired (human input),
     *  and the second number is the ControlType (in this case velocity), which tells the encoder (Position is the other 
     *  type-- see climb)
     */
@@ -60,21 +61,22 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("ShooterRPM", m_shooterEncoder.getVelocity());
   }
 
-  //Sets shooter motor to 5000 RPM and displays on SmartDashboard
+  //HightSpeedShooter: Sets shooter motor to 5000 RPM and displays on SmartDashboard
   public void HighSpeedShooter() 
   { 
     m_shooterPID.setReference(Constants.highShooterSpeed, ControlType.kVelocity);
     SmartDashboard.putNumber("Shooter RPM", m_shooterEncoder.getVelocity());
   }
 
-  //Stops Shooter Motor
+  //ShooterStop: Stops Shooter Motor
   public void ShooterStop() 
   { 
     m_shooterMotor.set(0); 
     //Set measures in voltage-- power outputted to the motor. In this case, 0. (Range = -1 to 1) 
   }
 
-  /* OpenGateLow checks for a certain velocity (2500 in this case) and if the conditions are met, 
+  /* 
+  *  OpenGateLow checks for a certain velocity (2500 in this case) and if the conditions are met, 
   *  moves the servo gate to a position in which the ball can move through. Both open gate commands
   *  ensure the motor is able to reach the proper speed so the ball is launched properly.
   */
@@ -87,7 +89,8 @@ public class Shooter extends SubsystemBase {
     }
   }
 
-  /* OpenGateHigh checks for a certain velocity (5000 in this case) and if the conditions are met, 
+  /* 
+  *  OpenGateHigh checks for a certain velocity (5000 in this case) and if the conditions are met, 
   *  moves the servo gate to a position in which the ball can move through.
   */
   public void OpenGateHigh()
@@ -99,7 +102,7 @@ public class Shooter extends SubsystemBase {
     }
   }
 
-  //Moves servo to a position in which the ball is unable to be released.
+  //CloseGate: Moves servo to a position in which the ball is unable to be released.
   public void CloseGate()
   {
     m_shooterServo.setRaw(1300);

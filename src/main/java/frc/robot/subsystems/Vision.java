@@ -102,7 +102,7 @@ public class Vision extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  //Turns out LEDs, was created to be called in Robot Init (so the light wouldn't be on until needed)
+  //lightsOut: Turns out LEDs, was created to be called in Robot Init (so the light wouldn't be on until needed)
   public void lightsOut()
   {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
@@ -124,7 +124,8 @@ public class Vision extends SubsystemBase {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1); //Forces LEDs off. 
   }
 
-  /* Seek Target: Checks if the Limelight has a target, if it does not, it will utilize PID control to
+  /* 
+  *  Seek Target: Checks if the Limelight has a target, if it does not, it will utilize PID control to
   *  adjust until it finds a target. PID control is for movement speed. This is meant to keep it from
   *  moving too fast (keeping it at 100 RPM). Then sets to 0 once target is found. 
   */
@@ -146,7 +147,8 @@ public class Vision extends SubsystemBase {
     }
   }
 
-  /* TargetAdjust: Meant to center the robot on the horizontal axis, uses the drive train to turn slightly
+  /* 
+  *  TargetAdjust: Meant to center the robot on the horizontal axis, uses the drive train to turn slightly
   *  based on where it falls within the angles of vision. If the target is too far right, it will turn left.
   *  Too far left, it will turn right. If it is centered, do nothing. 
   */
@@ -193,9 +195,10 @@ public class Vision extends SubsystemBase {
     SmartDashboard.putNumber("Rounded Distance", roundedDistance);
   }
 
-  /* Based on distance, program will set the shooter motor to a certain speed. 
-  *  Also sets a variable to the same RPM the shooter motor will travel for use
-  *  in the AutomaticOpenGate
+  /* 
+  *  AutomaticShooter: Based on distance, program will set the shooter motor to a 
+  *  certain speed.  Also sets a variable to the same RPM the shooter motor will 
+  *  travel for use in the AutomaticOpenGate
   */
   public void AutomaticShooter()
   { 
@@ -217,13 +220,13 @@ public class Vision extends SubsystemBase {
     }
   }
 
+  //ShooterMotorStop: Stops shooter motor
   public void ShooterMotorStop()
   {
     m_shooterMotor.set(0);
   }
   
-  //Checks for a velocity provided by automaticshooter to check if gate can be opened
-  // (AND OPENS GATE)
+  //AutomaticOpenGate: Checks for a velocity provided by automaticshooter to check if open gate conditions are met (then opens gate)
   public void AutomaticOpenGate()
   {
     if (m_shooterEncoder.getVelocity() >= adjustableShooterRPM)
@@ -233,6 +236,7 @@ public class Vision extends SubsystemBase {
     }
   }
 
+  //AutomaticCloseGate: Puts servo in position where balls cannot get through
   public void AutomaticCloseGate()
   {
     m_shooterServo.setRaw(1300);
