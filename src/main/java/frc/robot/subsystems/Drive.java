@@ -1,17 +1,24 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
+
+/*
+*  This is the drive subsytem. Works with the four drive motors, and includes
+*  functions relating to manual and autonomous drive. 
+*/
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+//Hardware
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 public class Drive extends SubsystemBase {
@@ -39,7 +46,7 @@ public class Drive extends SubsystemBase {
 
     m_frontLeftMotor = RobotContainer.frontLeftMotor;
     m_frontLeftEncoder = m_frontLeftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
-    m_frontLeftEncoder.setPositionConversionFactor(0.0378);
+    m_frontLeftEncoder.setPositionConversionFactor(0.0378); //FIGURE THIS OUT
     m_frontLeftPIDController = m_frontLeftMotor.getPIDController();
 
     m_frontRightMotor = RobotContainer.frontRightMotor;
@@ -75,13 +82,20 @@ public class Drive extends SubsystemBase {
     m_frontLeftEncoder.getCountsPerRevolution();
   }
 
+  /*
+  *  cartesianDrive: Drive method for mecanum. Relatively self-explanatory. It creates most of it for you
+  *  all that needs to be inputed are the joystick values. It takes the josytick values and applies them to 
+  *  the motors referenced in mecanumDrive. 
+  */
   public void cartesianDrive(Joystick m_joystickDriver, double yValue, double xValue, double zValue) {
     yValue = m_joystickDriver.getY();
     xValue = m_joystickDriver.getX();
     zValue = m_joystickDriver.getZ();
-    mecanumDrive.driveCartesian(yValue, -xValue, -((zValue * Math.abs(zValue)) * 0.8));
+    mecanumDrive.driveCartesian(yValue, -xValue, -((zValue * Math.abs(zValue)) * 0.8)); //Joystick values adjusted 
+    // x value needed to be inverted, and z is adjusted to be less extreme (less sensitive)
   }
 
+  //zeroEncoders: Sets drive motor encoders to 0, calls at subsystem init. 
   public void zeroEncoders() {
     m_frontLeftEncoder.setPosition(0);
     m_frontRightEncoder.setPosition(0);
@@ -89,14 +103,17 @@ public class Drive extends SubsystemBase {
     m_rearRightEncoder.setPosition(0);
   }
 
+  //getAverageEncoderDistanceFront: Finds the average distance of the front left and right encoders
   public double getAverageEncoderDistanceFront() {
     return (m_frontLeftEncoder.getPosition() + m_frontRightEncoder.getPosition()) / 2;
   }
 
+  //getAverageEncoderDistanceRear: Finds the average distance of the rear left and right encoders
   public double getAverageEncoderDistanceRear() {
     return (m_rearLeftEncoder.getPosition() + m_rearRightEncoder.getPosition()) / 2;
   }
 
+  //driveStop: Sets all four drive motors to 0% (stops motors)
   public void driveStop() {
     m_frontLeftMotor.set(0);
     m_rearLeftMotor.set(0);
@@ -105,6 +122,10 @@ public class Drive extends SubsystemBase {
   }
 
   //Autonomous--
+  /*
+  * autoDriveOut: Sets the motors to -60% voltage. Moves in the reverse direction when called. 
+  * Meant to allow it to speedily leave the tarmac. 
+  */
   public void autoDriveOut() {
     m_frontLeftMotor.set(-0.6);
     m_rearLeftMotor.set(-0.6);
@@ -112,6 +133,10 @@ public class Drive extends SubsystemBase {
     m_rearRightMotor.set(-0.6);
   }
 
+  /*
+  * autoDriveIntakePrep: Sets the motors to -40% voltage. Moves in the reverse direction when called
+  * Meant to drive the motor to the first ball, allowing it to intake later. 
+  */
   public void autoDriveIntakePrep() {
     m_frontLeftMotor.set(-0.4);
     m_rearLeftMotor.set(-0.4);
@@ -119,6 +144,11 @@ public class Drive extends SubsystemBase {
     m_rearRightMotor.set(-0.4);
   }
 
+  /*
+  * autoDriveShooterPrep: Sets the motors to 40% voltage. Moves forward when called.
+  * Meant to drive the motor back from where it picked up the second ball. Allows it
+  * to shoot the next ball. 
+  */
   public void autoDriveShooterPrep() {
     m_frontLeftMotor.set(0.4);
     m_rearLeftMotor.set(0.4);
