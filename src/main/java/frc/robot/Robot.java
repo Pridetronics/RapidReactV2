@@ -2,16 +2,22 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/*
+ * This is key for understanding the structure of the robot. Not much is added
+ * to this class (typically only working with robotInit and autonomous stuff here)
+ * For information on how the program runs, see our documentation. 
+ */
 package frc.robot;
-//import frc.robot.Constants;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 import frc.robot.commands.AutoIntakePrep;
 import frc.robot.commands.AutoMoveForwards;
 import frc.robot.commands.AutoShootPrep;
@@ -19,6 +25,7 @@ import frc.robot.commands.ExtendIntake;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.OpenGateLow;
 import frc.robot.commands.lowGoalShooterRun;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -35,7 +42,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
   // private SendableChooser chooser;
-  SendableChooser<Command> chooser = new SendableChooser<Command>();
+  SendableChooser<Command> chooser = new SendableChooser<Command>(); //Creates sendable chooser (allows us to choose autonomous programs)
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -44,8 +51,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer. This will perform all our button bindings,
-    // and put our autonomous chooser on the dashboard.
+    /* 
+    * Instantiate RobotContainer. This will allow access to hardware and subsystems. BUT the only commands that can be run
+    * are those called in autonomous
+    */
     m_robotContainer = new RobotContainer();
     SmartDashboard.putString("Program:", "Reorgnized Code"); //This is meant to help identify the code, be sure to change the string
     //The next three lines set the default state for both pistons and the servo. Called upon initialization (when robot is enabled)
@@ -53,6 +62,12 @@ public class Robot extends TimedRobot {
     RobotContainer.climbPiston.set(DoubleSolenoid.Value.kForward);
     RobotContainer.shooterServo.setRaw(1300);
 
+    /*
+    * Fully complex autonomous. This shoots the preloaded ball (shooter runs for 2 seconds), 
+    * leaves the tarmac runs the intake for four seconds (grabbing the ball). Then reenters
+    * the tarmac, waits one second, and then shoots the ball within two seconds. Then quickly
+    * leaves the tarmac for the autonomous points (leaving tarmac + balls being shot)
+    */
     chooser.setDefaultOption("Two Ball Auto", new SequentialCommandGroup(
       new ParallelCommandGroup(
         new lowGoalShooterRun(RobotContainer.m_shooter),
@@ -68,11 +83,16 @@ public class Robot extends TimedRobot {
         new OpenGateLow(RobotContainer.m_shooter)).withTimeout(2),
       new AutoMoveForwards(RobotContainer.m_drive)));
     
+    /*
+    * Simple auto. Used when we're in a less favorable position. Shoots the preload
+    * and then leaves the tarmac. 
+    */
     chooser.addOption("Drive and Shoot", new SequentialCommandGroup(new ParallelCommandGroup(
       new lowGoalShooterRun(RobotContainer.m_shooter),
       new OpenGateLow(RobotContainer.m_shooter)).withTimeout(4), 
       new AutoMoveForwards(RobotContainer.m_drive)));
-      
+    
+    //Incredibly basic. Leaves the tarmac. 
     chooser.addOption("Drive Forward", new AutoMoveForwards(RobotContainer.m_drive));
 
     SmartDashboard.putData("Auto Choices", chooser);
@@ -112,7 +132,8 @@ public class Robot extends TimedRobot {
 
   /**
    * This autonomous runs the autonomous command selected by your
-   * {@link RobotContainer} class.
+   * sendable chooser. Because of these lines it can run the selected
+   * commands or groups of commands. 
    */
   @Override
   public void autonomousInit() {

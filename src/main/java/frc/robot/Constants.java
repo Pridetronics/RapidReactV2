@@ -2,31 +2,35 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
-
-/**
+/*
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean constants. This class should not be used for any other
- * purpose. All constants
+ * purpose. 
+ * 
+ * Essentially this holds all the static values for certain systems (button numbers.
+ * motor controller IDs, etc). If it's an unchanging number, throw it here. Many of these numbers
+ * will be based on the Wiring Contract (VERY IMPORTANT)
+ * 
  * should be declared globally (i.e. public static). Do not put anything
  * functional in this class.
- *
- * It is advised to statically import this class (or one of its inner classes)
- * wherever the constants are needed, to reduce verbosity.
  */
+
+package frc.robot;
 public final class Constants 
 {
     // Joysticks and Button Numbers--
-    public static final int kJoystickDriverID = 0; // For Joystick 0
-    public static final int kJoystickShooterID = 1; // For Joystick 1
+    public static final int kJoystickDriverID = 0; // For Driver
+    public static final int kJoystickShooterID = 1; // For Co-Driver (handles shooting)
 
-    public static final int intakeButtonNumber = 1;
+    //Button Numbers for 0--
+    public static final int intakeButtonNumber = 1; 
     public static final int climbHoningButtonNumber = 11;
     public static final int visionModeButtonNumber = 7;
 
-    public static final int sequence1ButtonNumber = 2; // For climb's sequence 1 button on the Gamepad
-    public static final int sequence2ButtonNumber = 1; // For climb's sequence 2 button on the Gamepad
-    public static final int sequence3ButtonNumber = 3; // For climb's sequence 3 button on the Gamepad
+    //Button Numbers for 1--
+    public static final int sequence1ButtonNumber = 2; 
+    public static final int sequence2ButtonNumber = 1; 
+    public static final int sequence3ButtonNumber = 3; 
     public static final int highSpeedShooterButtonNumber = 6; 
     public static final int lowSpeedShooterButtonNumber = 5;
     public static final int automaticShooterButtonNumber = 7;
@@ -42,16 +46,18 @@ public final class Constants
 
     // Climb--
     public static final int kClimbCANID = 6; // For Climb Motor
-    public static final int lowerClimbLimitSwitchChannel = 0; // Lower Limit Switch Channel
-    public static final int kPistonClimbChannel = 0; // For piston
+    public static final int lowerClimbLimitSwitchChannel = 0; 
+    public static final int kPistonForwardClimbChannel = 0; // For piston-- double solenoid, it has two channels. This is forward
     public static final int kPistonReverseClimbChannel = 1; // For piston
 
+    // Climb PID--
     public static final double CLIMB_kP = 0.0002;
     public static final double CLIMB_kI = 0.000001;
     public static final double CLIMB_kD = 0.0004;
     public static final double CLIMB_MIN_OUTPUT = -6000.0;
     public static final double CLIMB_MAX_OUTPUT = 6000.0;
 
+    //Climb distances-- meant for each stage (1,2,3 respectively) (there are two climbs)
     public static final double climbDistance1 = 145; // Distance for fully extended (climb's pivot arms)
     public static final double climbDistance2 = 40; // Distance 2 for climb's pivot arms
     public static final double climbDistance3 = 140; // Distance 3 for climb's pivot arms
@@ -74,6 +80,7 @@ public final class Constants
     public static final int highShooterSpeed = 5000; 
     public static final int lowShooterSpeed = 2500;
 
+    //Shooter PID--
     public static final double SHOOTER_kP = 0.0001;
     public static final double SHOOTER_kI = 0.000001;
     public static final double SHOOTER_kD = 0.0004;
@@ -81,6 +88,7 @@ public final class Constants
     public static final double SHOOTER_MAX_OUTPUT = 6000.0;
     public static final double SHOOTER_MIN_OUTPUT = -6000.0;
     
+    //Shooter RPMs (for automatic shooter-- see vision)
     public static final int shooterRPMHigh = 5000;
     public static final int shooterRPMMedium = 4500;
     public static final int shooterRPMLow = 4000;
