@@ -233,6 +233,8 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     //Climb Commands--
+    //THE COMMENTED OUT CHUNK WAS THE OLD CLIMB SEQUENCE THAT UTILIZED PID CONTROL.
+    
     // Climb Button Configured
     // climbButton = new JoystickButton(joystickShooter,
     // Constants.climbButtonNumber);
@@ -256,43 +258,48 @@ public class RobotContainer {
     //     new InstantCommand(m_climb::pistonRetract, m_climb),
     //     new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
     //     new InstantCommand(m_climb::pistonRelease, m_climb)));
+
+    //Allows drivers to zero encoders before starting the climb sequence
+    //Command format == Create button, then when something is done have commands (Below is a good example)
     honeButton = new JoystickButton(joystickDriver, 11);
     honeButton.whenPressed(new SequentialCommandGroup(
         new ClimbInitializationUp(m_climb),
         new ClimbInitializationDown(m_climb)));
 
+    //Climb sequence using encoders. This is a bit lengthy, but covers all three sequences. 
     encoderSequence1Button = new JoystickButton(joystickShooter, Constants.sequence1ButtonNumber);
-    encoderSequence1Button.whenPressed(new SequentialCommandGroup(    //Removed a random sequential command- might fixif broken??? - isaiah 
-      new EncoderPivotArmDistanceOne(m_climb),
-      new InstantCommand(m_climb::pistonRelease, m_climb)));
+    encoderSequence1Button.whenPressed(new SequentialCommandGroup(    
+      new EncoderPivotArmDistanceOne(m_climb), //raises arms x distance
+      new InstantCommand(m_climb::pistonRelease, m_climb))); //releases piston
     encoderSequence2Button = new JoystickButton(joystickShooter, Constants.sequence2ButtonNumber);
-    encoderSequence2Button.whenPressed(new EncoderPivotArmDescend(m_climb));
+    encoderSequence2Button.whenPressed(new EncoderPivotArmDescend(m_climb)); //lowers arms
     encoderSequence3Button = new JoystickButton(joystickShooter, Constants.sequence3ButtonNumber);
     encoderSequence3Button.whenPressed(new SequentialCommandGroup(
-      new EncoderPivotArmDistanceTwo(m_climb),
-      new InstantCommand(m_climb::pistonRetract, m_climb),
-      new EncoderPivotArmDistanceThree(m_climb),
-      new InstantCommand(m_climb::pistonRelease, m_climb)));
+      new EncoderPivotArmDistanceTwo(m_climb), //raises arms y distance
+      new InstantCommand(m_climb::pistonRetract, m_climb), //retracts piston
+      new EncoderPivotArmDistanceThree(m_climb), //raises arms z distance
+      new InstantCommand(m_climb::pistonRelease, m_climb))); //retracts piston
+      //WE SHOULD MAKE A NOTE ON HOW THE SEQUENCE RUNS (1,2,3,2,3 or whatever)
 
     //Shooter Commands--
     highSpeedShooterButton = new JoystickButton(joystickShooter, Constants.highSpeedShooterButtonNumber);
     highSpeedShooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate commands
-        new HighGoalShooterRun(m_shooter),
+        new HighGoalShooterRun(m_shooter), //shooter at 5000 RPM
         new OpenGateHigh(m_shooter))); // References the command and inside the needed subsytem
     lowSpeedShooterButton = new JoystickButton(joystickShooter, Constants.lowSpeedShooterButtonNumber);
     lowSpeedShooterButton.whileHeld(new ParallelCommandGroup(
-      new lowGoalShooterRun(m_shooter),
+      new lowGoalShooterRun(m_shooter), //shooter at 2500 RPM
       new OpenGateLow(m_shooter)));
     automaticShooterButton = new JoystickButton(joystickShooter, Constants.automaticShooterButtonNumber);
     automaticShooterButton.whileHeld(new ParallelCommandGroup(
-      new AutomaticShooterRun(m_vision),
+      new AutomaticShooterRun(m_vision), //Motor at calculated distance
       new AutomaticOpenGate(m_vision)));
     runShooterButton = new JoystickButton(joystickShooter, Constants.runShooterButtonNumber);
     runShooterButton.whileHeld(new ParallelCommandGroup(
-      new RunShooter(m_shooter, m_vision),
+      new RunShooter(m_shooter, m_vision), //Relies on shooter mode (may be any of the three above)
       new RunOpenGate(m_shooter, m_vision)));
     // shooterModeButton = new JoystickButton(joystickShooter, Constants.shooterModeButtonNumber);
-    // shooterModeButton.toggleWhenPressed(new ShooterMode(m_shooter));
+    // shooterModeButton.toggleWhenPressed(new ShooterMode(m_shooter)); //Commented out for my safety
 
     //Intake Commands--
     intakeButton = new JoystickButton(joystickDriver, Constants.intakeButtonNumber);
@@ -305,10 +312,7 @@ public class RobotContainer {
     visionModeButton = new JoystickButton(joystickDriver, Constants.visionModeButtonNumber);
     visionModeButton.toggleWhenPressed(new VisionMode(m_vision)); // Switches between modes. See Shooter subsytem for function.
 
-    findTargetButton = new JoystickButton(joystickShooter, Constants.findTargetButtonNumber); // Change this to left trigger
-    findTargetButton.whenPressed(new AlignTarget(m_vision));
+    findTargetButton = new JoystickButton(joystickShooter, Constants.findTargetButtonNumber); 
+    findTargetButton.whenPressed(new AlignTarget(m_vision)); //Seeks and aligns
   }
-  // public Command getAutonomousCommand() {
-  // return (Command) m_chooser.getSelected();
-  // }
 }
