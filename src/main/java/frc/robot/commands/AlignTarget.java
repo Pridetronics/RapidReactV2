@@ -39,8 +39,7 @@ public class AlignTarget extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; // I'd like to add a command that checks when shooter run is finished or when
-                  // it's toggled off.
+    return false; // I'd like to add a command that checks when shooter run is finished or it's toggled off.
     // That implies that some end command needs to exist. This one might be messy.
   }
 }

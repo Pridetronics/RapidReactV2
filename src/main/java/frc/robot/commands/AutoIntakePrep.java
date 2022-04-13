@@ -4,12 +4,6 @@
 /**
  * Executed first in autonomous period. 
  * 
- * 
- * 
- * 
- * 
- * 
- * 
  */
 package frc.robot.commands;
 
