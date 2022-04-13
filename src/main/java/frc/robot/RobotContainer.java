@@ -183,7 +183,7 @@ public class RobotContainer {
     climbMotor = new CANSparkMax(Constants.kClimbCANID, MotorType.kBrushless);
     climbMotor.setInverted(true);
     climbEncoder = climbMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.kEncoderCountsPerRev);
-    climbPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kPistonClimbChannel, Constants.kPistonReverseClimbChannel);
+    climbPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kPistonForwardClimbChannel, Constants.kPistonReverseClimbChannel);
     lowerClimbLimitSwitch = new DigitalInput(Constants.lowerClimbLimitSwitchChannel);
     climbPID = climbMotor.getPIDController();
     climbPID.setP(Constants.CLIMB_kP);
