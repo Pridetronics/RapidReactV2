@@ -2,6 +2,12 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/**
+ * When the button for highSpeedShooter is pressed, the function for
+ * HighSpeedShooter to run. Allowing the ball to (attempt) to make the
+ * high goal. Runs at 5000 RPM. When finished, it turns off the shooter
+ * motor and closes the gate. 
+ */
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -25,14 +31,6 @@ public class HighGoalShooterRun extends CommandBase {
   @Override
   public void execute() {
     m_shooter.HighSpeedShooter();
-    // m_drive.shooterAdjust();
-    // if (ShooterMode.autoShooter == true) //Checks the variable, hopefully to help select a shooter mode
-    // {
-    //   m_shooter.AutoShooterMode(); //Complex, if Limelight is present
-    // }
-    // else{
-    //   m_shooter.SimpleShooterMode(); //Manual-- one distance
-    // }
   }
 
   @Override

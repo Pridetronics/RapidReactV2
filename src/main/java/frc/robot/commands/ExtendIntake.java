@@ -2,6 +2,10 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/** 
+* While run if keeps the intake lowered. This way the balls are able to be collected
+* by the wheels controlled within intakeRun. 
+*/
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;

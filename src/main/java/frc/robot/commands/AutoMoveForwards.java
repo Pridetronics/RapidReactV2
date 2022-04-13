@@ -2,6 +2,11 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/**
+ * Executed last in autonomous period. This is the part of the sequence
+ * run after the second ball is shot. The objective here is to get the 
+ * robot off the tarmac as fast as possible. 
+ */
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -18,11 +23,11 @@ public class AutoMoveForwards extends CommandBase {
     m_drive = drive;
 
     addRequirements(m_drive);
-
+    //*** We still have math from when we were trying to figure it out. Please help us. 
     // encoder = Drive.m_frontLeftEncoder.getPosition();
     circumference = 3.14 * 6;
     // rotationsneeded = 6/circumference;
-    targetDistance = .75;
+    targetDistance = .75; //Measures in DAU
   }
   // Called when the command is initially scheduled.
   @Override
@@ -37,6 +42,7 @@ public class AutoMoveForwards extends CommandBase {
   {
     // int drivetarget = doubledtar/4;
     // long target = drivetarget;
+    //Checks if robot has reached "target", and continues driving if not. 
     if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) < targetDistance)
     {
       m_drive.autoDriveOut();
@@ -53,7 +59,7 @@ public class AutoMoveForwards extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // return false;
+    // Ends command when robot has passed the target. Our motors are in coast, so they will just move.
     if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) > targetDistance) 
     {
       return true;

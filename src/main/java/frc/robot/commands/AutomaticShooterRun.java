@@ -2,6 +2,12 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/**
+ * This command is meant to run the shooter automatically while the button is held
+ * When held, the Limelight will calculate the distance from the high goal, and based
+ * on what it finds, will adjust the RPM. Both run consistently while this command runs.
+ * Processing mode must be engaged for findDistance to run. 
+ */
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;

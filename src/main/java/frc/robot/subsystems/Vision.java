@@ -57,7 +57,7 @@ public class Vision extends SubsystemBase {
   private double distanceInFeet;
   private double roundedDistance;
 
-  private double adjustableShooterRPM;
+  public static double adjustableShooterRPM;
 
   public Vision() {
     m_frontLeftMotor = RobotContainer.frontLeftMotor;

@@ -1,7 +1,14 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+/**
+ * When run, this will prepare the climb arms to complete a climb sequence
+ * First it makes sure it is not below the limit switch (adjusting if needed),
+ * then ensures it is not above the limit switch. After this process finishes,
+ * the encoders will be zeroed and the arms resting on the limit switch. Without this
+ * the climb sequence would be off and could potentially run the winch the opposite
+ * direction.
+ */
 package frc.robot.commands;
 
 import com.revrobotics.RelativeEncoder;
@@ -16,15 +23,12 @@ import frc.robot.subsystems.Climb;
 public class HoningCommand extends CommandBase {
   private Climb m_climb;
   Command sequentialHoneCommand;
-  private RelativeEncoder m_climbEncoder;
 
   /** Creates a new HoningCommand. */
   public HoningCommand(Climb climb) {
     m_climb = climb;
+
     addRequirements(m_climb);
-
-    m_climbEncoder = RobotContainer.climbEncoder;
-
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

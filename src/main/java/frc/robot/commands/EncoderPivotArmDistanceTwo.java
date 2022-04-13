@@ -2,6 +2,14 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/**
+ * These were created as a faster alternative to the initial
+ * PID controller climb sequence. This relies on the encoder values
+ * and while they return a position that is under the set amount,
+ * the motor will run at a specified speed. In this case, the arm runs upwards
+ * until it reaches the proper encoder distance. Much like one and three.
+ * The only thing that changes in all of these is the distance it seeks. 
+ */
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
