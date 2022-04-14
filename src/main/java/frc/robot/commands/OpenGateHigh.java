@@ -2,6 +2,12 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/**
+ * This checks for a speed requirement, and if the conditions are met
+ * will run the OpenGateHigh function, allowing the gate to open and 
+ * let the ball through. If 5000 RPM is not met, the gate will not open.
+ */
+
 package frc.robot.commands;
 
 import com.revrobotics.RelativeEncoder;

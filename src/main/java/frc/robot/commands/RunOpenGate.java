@@ -2,6 +2,14 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/**
+ * This command is meant to run with the openGate command based on
+ * which shooterMode (see command) is engaged. If shooterMode == zero, that
+ * is automatic and the gate will open based on the distance found (matching
+ * the RPM). If shooterMode == one, low is activated and will open at 2500 RPM.
+ * If shooterMode == two, high is activated and will open at 5000 RPM. Regardless
+ * of which runs, it will close when finished. 
+ */
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -30,6 +38,7 @@ public class RunOpenGate extends CommandBase {
   public void execute() {
     if (ShooterMode.modeNumber == 0)
     {
+      //ADD IF STATEMENTS TO CHECK?
       m_vision.AutomaticOpenGate();
     }
     else if (ShooterMode.modeNumber == 1)
@@ -44,7 +53,9 @@ public class RunOpenGate extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_shooter.CloseGate();
+  }
 
   // Returns true when the command should end.
   @Override
