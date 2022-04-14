@@ -47,12 +47,9 @@ public class ClimbInitializationDown extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // This checks when the pivot arms hit the limit switches at the bottom of the
-    // climb.
-    // If the limit switches are hit, then it will return true. Thus, it would cause
-    // the command to finish.
-    // If the limit switches are not hit, then it will return false and keep running
-    // the command until it gets true.
+    // This checks when the pivot arms hit the limit switches at the bottom of the climb.
+    // If the limit switches are hit, then it will return true. Thus, it would cause the command to finish.
+    // If the limit switches are not hit, then it will return false and keep running the command until it gets true.
     if (m_climb.isClimbAtBottom() == true) {
       return true;
     } else {

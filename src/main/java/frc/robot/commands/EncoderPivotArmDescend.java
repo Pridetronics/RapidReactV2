@@ -34,8 +34,7 @@ public class EncoderPivotArmDescend extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // References the method "stop()" from the climb subsystem. This will stop the
-    // motors once the command ends.
+    // References the method "stop()" from the climb subsystem. This will stop the motors once the command ends.
     m_climb.stop();
   }
 
