@@ -2,6 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/**
+ * Meant to switch between camera modes. This is a toggle, so the execute acts as one
+ * setting (the cameraMode, as it already defaults to processing), where the end acts as the 
+ * other. So once the command is called (by user pushing a button), it will switch and remain 
+ * as one camera mode until the button is pressed again. 
+ */
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

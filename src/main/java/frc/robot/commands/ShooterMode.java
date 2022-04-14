@@ -2,6 +2,16 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/**
+ * This command creates a variable for shooterMode, and when user input is received
+ * changes the variable to the next number up. In this case, this is meant to symbolise
+ * the type of shooter that will be run. When the number is at two, and the user sends
+ * an input, the cycle will reset, ensuring that there are only three modes present.
+ * shooterMode == 0 --> Automatic Shooter
+ * shooterMode == 1 --> LowSpeedShooter
+ * shooterMode == 2 --> HighSpeedShooter
+ */
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,7 +39,7 @@ public class ShooterMode extends CommandBase {
   @Override
   public void execute() 
   {
-    modeNumber++;
+    modeNumber++; //when called the command is scheduled, the variable is increased and then value is checked. 
     if (modeNumber == 1)
     {
       SmartDashboard.putString("Mode", "lowSpeedShooter");

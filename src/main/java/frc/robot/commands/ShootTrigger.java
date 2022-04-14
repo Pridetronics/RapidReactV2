@@ -2,6 +2,15 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/**
+ * I have no clue if this one works, but it is meant to allow the shooter to run 
+ * off of a trigger. As of this being written (04/12/22), this has not been tested
+ * and may or may not work. Depending on your ambitions-- I would love to see a 
+ * world in which this works. 
+ * 
+ * Currently it is commented out (as to ensure competition safety), but it is supposed 
+ * to get the axis from the trigger and register is as an input to run the command. 
+ */
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
