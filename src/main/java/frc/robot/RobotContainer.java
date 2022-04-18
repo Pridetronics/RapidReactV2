@@ -290,14 +290,14 @@ public class RobotContainer {
     lowSpeedShooterButton.whileHeld(new ParallelCommandGroup(
       new lowGoalShooterRun(m_shooter), //shooter at 2500 RPM
       new OpenGateLow(m_shooter)));
-    automaticShooterButton = new JoystickButton(joystickShooter, Constants.automaticShooterButtonNumber);
-    automaticShooterButton.whileHeld(new ParallelCommandGroup(
-      new AutomaticShooterRun(m_vision), //Motor at calculated distance
-      new AutomaticOpenGate(m_vision)));
-    runShooterButton = new JoystickButton(joystickShooter, Constants.runShooterButtonNumber);
-    runShooterButton.whileHeld(new ParallelCommandGroup(
-      new RunShooter(m_shooter, m_vision), //Relies on shooter mode (may be any of the three above)
-      new RunOpenGate(m_shooter, m_vision)));
+    // automaticShooterButton = new JoystickButton(joystickShooter, Constants.automaticShooterButtonNumber);
+    // automaticShooterButton.whileHeld(new ParallelCommandGroup(
+    //   new AutomaticShooterRun(m_vision), //Motor at calculated distance
+    //   new AutomaticOpenGate(m_vision)));
+    // runShooterButton = new JoystickButton(joystickShooter, Constants.runShooterButtonNumber);
+    // runShooterButton.whileHeld(new ParallelCommandGroup(
+    //   new RunShooter(m_shooter, m_vision), //Relies on shooter mode (may be any of the three above)
+    //   new RunOpenGate(m_shooter, m_vision)));
     // shooterModeButton = new JoystickButton(joystickShooter, Constants.shooterModeButtonNumber);
     // shooterModeButton.toggleWhenPressed(new ShooterMode(m_shooter)); //Commented out for my safety
 

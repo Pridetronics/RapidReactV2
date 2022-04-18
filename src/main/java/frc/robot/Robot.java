@@ -41,7 +41,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
-  // private SendableChooser chooser;
   SendableChooser<Command> chooser = new SendableChooser<Command>(); //Creates sendable chooser (allows us to choose autonomous programs)
 
   /**
@@ -63,39 +62,53 @@ public class Robot extends TimedRobot {
     RobotContainer.shooterServo.setRaw(1300);
 
     /*
-    * Fully complex autonomous. This shoots the preloaded ball (shooter runs for 2 seconds), 
-    * leaves the tarmac runs the intake for four seconds (grabbing the ball). Then reenters
-    * the tarmac, waits one second, and then shoots the ball within two seconds. Then quickly
-    * leaves the tarmac for the autonomous points (leaving tarmac + balls being shot)
+    * Fully complex autonomous. This shoots the preloaded ball (shooter runs for 2 seconds) [stage 1], 
+    * leaves the tarmac [stage 2] runs the intake for four seconds (grabbing the ball) [stage 3]. Then reenters
+    * the tarmac, waits one second [stage 4], and then shoots the ball within two seconds [stage 5]. Then quickly
+    * leaves the tarmac for the autonomous points (leaving tarmac + balls being shot) [stage 6 and fin]
     */
     chooser.setDefaultOption("Two Ball Auto", new SequentialCommandGroup(
-      new ParallelCommandGroup(
-        new lowGoalShooterRun(RobotContainer.m_shooter),
-        new OpenGateLow(RobotContainer.m_shooter)).withTimeout(2),
+      //This first group runs the shooter system (Stage 1)
+      new ParallelCommandGroup( 
+        new lowGoalShooterRun(RobotContainer.m_shooter), //Runs shooter motor at 2500 RPM
+        new OpenGateLow(RobotContainer.m_shooter) //Opens shooter gate
+      ).withTimeout(2), //Runs this entire parallel group for 2 seconds
+      //Drives out to 0.3 (dau) (Stage 2)
       new AutoIntakePrep(RobotContainer.m_drive),
-      new ParallelCommandGroup(
-        new ExtendIntake(RobotContainer.m_intake),
-        new IntakeRun(RobotContainer.m_intake)).withTimeout(4),
-      new AutoShootPrep(RobotContainer.m_drive),
-      new WaitCommand(1),
-      new ParallelCommandGroup(
+      //This group runs the intake (Stage 3)
+      new ParallelCommandGroup( 
+        new ExtendIntake(RobotContainer.m_intake), //Puts intake down
+        new IntakeRun(RobotContainer.m_intake) //Runs intake motor (the wheels)
+      ).withTimeout(4), //Runs this entire process for 4 seconds
+      //Drives back in 0.2 (dau) (Stage 4)
+      new AutoShootPrep(RobotContainer.m_drive), 
+      //Waits one second--allows coast and prevents premature shooting (Stage 4)
+      new WaitCommand(1), 
+      //Identical to first group-- runs shooter system (Stage 5)
+      new ParallelCommandGroup( 
         new lowGoalShooterRun(RobotContainer.m_shooter),
-        new OpenGateLow(RobotContainer.m_shooter)).withTimeout(2),
+        new OpenGateLow(RobotContainer.m_shooter)
+      ).withTimeout(2),
+      //Leaves tarmac-- drives out 0.75 (Stage 6)
       new AutoMoveForwards(RobotContainer.m_drive)));
     
     /*
     * Simple auto. Used when we're in a less favorable position. Shoots the preload
     * and then leaves the tarmac. 
     */
-    chooser.addOption("Drive and Shoot", new SequentialCommandGroup(new ParallelCommandGroup(
-      new lowGoalShooterRun(RobotContainer.m_shooter),
-      new OpenGateLow(RobotContainer.m_shooter)).withTimeout(4), 
-      new AutoMoveForwards(RobotContainer.m_drive)));
+    chooser.addOption("Drive and Shoot", new SequentialCommandGroup(
+      //Runs shooter 
+      new ParallelCommandGroup(
+        new lowGoalShooterRun(RobotContainer.m_shooter), //Runs motor at 2500 RPM
+        new OpenGateLow(RobotContainer.m_shooter) //Opens gate
+        ).withTimeout(4), //Runs this command for 4 seconds before ending it
+      //Leaves tarmac-- drives out 0.75
+      new AutoMoveForwards(RobotContainer.m_drive))); 
     
     //Incredibly basic. Leaves the tarmac. 
-    chooser.addOption("Drive Forward", new AutoMoveForwards(RobotContainer.m_drive));
+    chooser.addOption("Drive Forward", new AutoMoveForwards(RobotContainer.m_drive)); //Drives out 0.75
 
-    SmartDashboard.putData("Auto Choices", chooser);
+    SmartDashboard.putData("Auto Choices", chooser); //Puts sendable chooser option on SmartDashboard/Shuffleboard
   }
 
   /**
@@ -137,6 +150,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    //When running autonomous command, it gets the command that is selected by the user. 
     m_autonomousCommand = chooser.getSelected();
 
     // schedule the autonomous command (example)
