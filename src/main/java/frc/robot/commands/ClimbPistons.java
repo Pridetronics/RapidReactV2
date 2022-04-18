@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climb;
+
 public class ClimbPistons extends CommandBase {
   /** Creates a new ClimbPistons. */
   Climb m_climb;
@@ -19,17 +20,23 @@ public class ClimbPistons extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // References the method "pistonRetract()" from the climb subsystem, executing
+    // it.
+    // When the command starts, pistons extends.
     m_climb.pistonRetract();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    // References the method "pistonRelease()" from the climb subsystem.
+    // When the command ends, pistons retracts.
     m_climb.pistonRelease();
   }
 
