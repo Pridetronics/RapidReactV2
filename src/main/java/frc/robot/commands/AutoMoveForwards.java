@@ -25,7 +25,7 @@ public class AutoMoveForwards extends CommandBase {
     addRequirements(m_drive);
     //*** We still have math from when we were trying to figure it out. Please help us. 
     // encoder = Drive.m_frontLeftEncoder.getPosition();
-    circumference = 3.14 * 6;
+    // circumference = Math.PI * 6;
     // rotationsneeded = 6/circumference;
     targetDistance = .75; //Measures in DAU
   }

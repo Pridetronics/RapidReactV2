@@ -184,8 +184,8 @@ public class Vision extends SubsystemBase {
     angleTotal = 0.628 + ty; //Input radians
     angleTan = Math.tan(angleTotal);
 
-    initialDistance = heightTotal/angleTan; //Returns negative, so there's a negative on the next line
-    distanceInInches =- initialDistance * 13.6; //Converts distance into inches. 
+    initialDistance = Math.abs(heightTotal/angleTan); //Returns negative, so there's a negative on the next line
+    distanceInInches = initialDistance * 13.6; //Converts distance into inches. 
     distanceInFeet = distanceInInches/12; //Converts distance in inches to feet
     roundedDistance = Math.round(distanceInFeet); //Rounds distance in feet
     
@@ -202,18 +202,18 @@ public class Vision extends SubsystemBase {
   */
   public void AutomaticShooter()
   { 
-    if (roundedDistance >= 15) //This if statement checks for the distance (see find distance) and picks RPM based on this
+    if (roundedDistance > 13) //This if statement checks for the distance (see find distance) and picks RPM based on this
     {
       //This line sets the PID controller to listed RPM (first number), add control type so controller knows which value is being impacted
       m_shooterPIDController.setReference(Constants.shooterRPMHigh, ControlType.kVelocity);
       adjustableShooterRPM = Constants.shooterRPMHigh;
     }
-    else if (roundedDistance >= 13 && roundedDistance <= 11)
+    else if (roundedDistance <= 13 && roundedDistance >= 11)
     {
       m_shooterPIDController.setReference(Constants.shooterRPMMedium, ControlType.kVelocity);
       adjustableShooterRPM = Constants.shooterRPMMedium;
     }
-    else if (roundedDistance == 10 && roundedDistance < 10)
+    else if (roundedDistance <= 10)
     {
       m_shooterPIDController.setReference(Constants.shooterRPMLow, ControlType.kVelocity);
       adjustableShooterRPM = Constants.shooterRPMLow;
@@ -225,21 +225,47 @@ public class Vision extends SubsystemBase {
   {
     m_shooterMotor.set(0);
   }
+
+  public void DriveMotorsStop()
+  {
+    m_frontLeftMotor.set(0);
+    m_frontRightMotor.set(0);
+    m_rearLeftMotor.set(0);
+    m_rearRightMotor.set(0);
+  }
   
   //AutomaticOpenGate: Checks for a velocity provided by automaticshooter to check if open gate conditions are met (then opens gate)
   public void AutomaticOpenGate()
   {
     if (m_shooterEncoder.getVelocity() >= adjustableShooterRPM)
     {
-      new WaitCommand(7);
-      m_shooterServo.setRaw(1000);
+      new WaitCommand(7); //Fuck with it
+      m_shooterServo.setRaw(Constants.shooterServoOpenPosition);
     }
   }
 
   //AutomaticCloseGate: Puts servo in position where balls cannot get through
   public void AutomaticCloseGate()
   {
-    m_shooterServo.setRaw(1300);
+    m_shooterServo.setRaw(Constants.shooterServoClosedPosition);
   }
 
 }
+
+/*
+———————————No Limelight?———————————
+⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝
+⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇
+⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀
+⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀
+⠀⠀⠀⠈⠊⠆⡃⠕⢕⢇⢇⢇⢇⢇⢏⢎⢎⢆⢄⠀⢑⣽⣿⢝⠲⠉⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡿⠂⠠⠀⡇⢇⠕⢈⣀⠀⠁⠡⠣⡣⡫⣂⣿⠯⢪⠰⠂⠀⠀⠀⠀
+⠀⠀⠀⠀⡦⡙⡂⢀⢤⢣⠣⡈⣾⡃⠠⠄⠀⡄⢱⣌⣶⢏⢊⠂⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢝⡲⣜⡮⡏⢎⢌⢂⠙⠢⠐⢀⢘⢵⣽⣿⡿⠁⠁⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠨⣺⡺⡕⡕⡱⡑⡆⡕⡅⡕⡜⡼⢽⡻⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣼⣳⣫⣾⣵⣗⡵⡱⡡⢣⢑⢕⢜⢕⡝⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⣴⣿⣾⣿⣿⣿⡿⡽⡑⢌⠪⡢⡣⣣⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⡟⡾⣿⢿⢿⢵⣽⣾⣼⣘⢸⢸⣞⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠁⠇⠡⠩⡫⢿⣝⡻⡮⣒⢽⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+—————————————————————————————
+*/

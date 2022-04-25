@@ -29,7 +29,7 @@ public class ClimbPistons extends CommandBase {
     // References the method "pistonRetract()" from the climb subsystem, executing
     // it.
     // When the command starts, pistons extends.
-    m_climb.pistonRetract();
+    m_climb.pistonRelease();
   }
 
   // Called once the command ends or is interrupted.
@@ -37,7 +37,7 @@ public class ClimbPistons extends CommandBase {
   public void end(boolean interrupted) {
     // References the method "pistonRelease()" from the climb subsystem.
     // When the command ends, pistons retracts.
-    m_climb.pistonRelease();
+    m_climb.pistonRetract();
   }
 
   // Returns true when the command should end.

@@ -10,6 +10,7 @@
 */
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
@@ -58,7 +59,7 @@ public class Shooter extends SubsystemBase {
     *  type-- see climb)
     */
     m_shooterPID.setReference(Constants.lowShooterSpeed, ControlType.kVelocity);
-    SmartDashboard.putNumber("ShooterRPM", m_shooterEncoder.getVelocity());
+    SmartDashboard.putNumber("Shooter RPM", m_shooterEncoder.getVelocity());
   }
 
   //HightSpeedShooter: Sets shooter motor to 5000 RPM and displays on SmartDashboard
@@ -84,8 +85,9 @@ public class Shooter extends SubsystemBase {
   {
     if (m_shooterEncoder.getVelocity() >= Constants.lowShooterSpeed)
     {
-      new WaitCommand(7);
-      m_shooterServo.setRaw(1000); //This is measured in ms-- see Pridetronics documentation for more information
+      new WaitCommand(7); //Measures in seconds Test (take this out and see what happens)
+      m_shooterServo.setRaw(Constants.shooterServoOpenPosition); //This is measured in ms-- see Pridetronics documentation for more information
+      //This is really getting excessive
     }
   }
 
@@ -97,14 +99,14 @@ public class Shooter extends SubsystemBase {
   {
     if (m_shooterEncoder.getVelocity() >= Constants.highShooterSpeed)
     {
-      new WaitCommand(7);
-      m_shooterServo.setRaw(1000);
+      new WaitCommand(7); //Test Code. Remove this in certain places
+      m_shooterServo.setRaw(Constants.shooterServoOpenPosition);
     }
   }
 
   //CloseGate: Moves servo to a position in which the ball is unable to be released.
   public void CloseGate()
   {
-    m_shooterServo.setRaw(1300);
+    m_shooterServo.setRaw(Constants.shooterServoClosedPosition);
   }
 }

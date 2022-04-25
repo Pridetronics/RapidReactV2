@@ -9,6 +9,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -51,7 +52,7 @@ public class Drive extends SubsystemBase {
 
     m_frontRightMotor = RobotContainer.frontRightMotor;
     m_frontRightEncoder = m_frontRightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
-    m_frontRightEncoder.setPositionConversionFactor(0.0378);
+    m_frontRightEncoder.setPositionConversionFactor(0.0378); //Make this Constant to get mentors to go away
     m_frontRightPIDController = m_frontRightMotor.getPIDController();
 
     m_rearLeftMotor = RobotContainer.rearLeftMotor;
@@ -67,7 +68,8 @@ public class Drive extends SubsystemBase {
     zeroEncoders();
 
     mecanumDrive = new MecanumDrive(m_frontLeftMotor, m_rearLeftMotor, m_frontRightMotor, m_rearRightMotor);
-    mecanumDrive.setSafetyEnabled(true); // Safety settings-- Boring
+
+    mecanumDrive.setSafetyEnabled(true); //If input is not received, motor will shut down. 
     mecanumDrive.setExpiration(0.1);
     mecanumDrive.setMaxOutput(1.0);
   }
@@ -77,9 +79,6 @@ public class Drive extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Left Encoder", m_frontLeftEncoder.getPosition());
     SmartDashboard.putNumber("Ticks Per Revolution", m_frontLeftEncoder.getCountsPerRevolution());
-    m_frontLeftEncoder.getPosition();
-    m_frontRightEncoder.getPosition();
-    m_frontLeftEncoder.getCountsPerRevolution();
   }
 
   /*
@@ -127,10 +126,10 @@ public class Drive extends SubsystemBase {
   * Meant to allow it to speedily leave the tarmac. 
   */
   public void autoDriveOut() {
-    m_frontLeftMotor.set(-0.6);
-    m_rearLeftMotor.set(-0.6);
-    m_frontRightMotor.set(-0.6);
-    m_rearRightMotor.set(-0.6);
+    m_frontLeftMotor.set(Constants.autonomousDriveVoltage); 
+    m_rearLeftMotor.set(Constants.autonomousDriveVoltage);
+    m_frontRightMotor.set(Constants.autonomousDriveVoltage);
+    m_rearRightMotor.set(Constants.autonomousDriveVoltage);
   }
 
   /*
@@ -138,10 +137,10 @@ public class Drive extends SubsystemBase {
   * Meant to drive the motor to the first ball, allowing it to intake later. 
   */
   public void autoDriveIntakePrep() {
-    m_frontLeftMotor.set(-0.4);
-    m_rearLeftMotor.set(-0.4);
-    m_frontRightMotor.set(-0.4);
-    m_rearRightMotor.set(-0.4);
+    m_frontLeftMotor.set(Constants.autonomousIntakePrepVoltage);
+    m_rearLeftMotor.set(Constants.autonomousIntakePrepVoltage);
+    m_frontRightMotor.set(Constants.autonomousIntakePrepVoltage);
+    m_rearRightMotor.set(Constants.autonomousIntakePrepVoltage);
   }
 
   /*
@@ -150,9 +149,30 @@ public class Drive extends SubsystemBase {
   * to shoot the next ball. 
   */
   public void autoDriveShooterPrep() {
-    m_frontLeftMotor.set(0.4);
-    m_rearLeftMotor.set(0.4);
-    m_frontRightMotor.set(0.4);
-    m_rearRightMotor.set(0.4);
+    m_frontLeftMotor.set(Constants.autonomousShooterPrepVoltage);
+    m_rearLeftMotor.set(Constants.autonomousShooterPrepVoltage);
+    m_frontRightMotor.set(Constants.autonomousShooterPrepVoltage);
+    m_rearRightMotor.set(Constants.autonomousShooterPrepVoltage);
+  }
+
+  public void spinRobotRight() 
+  {
+    m_frontLeftMotor.set(.3);
+    m_rearRightMotor.set(.3);
+    m_frontRightMotor.set(-.3);
+    m_rearLeftMotor.set(-.3);
+    // m_frontLeftPIDController.setReference(50, ControlType.kVelocity);
+    // m_rearRightPIDController.setReference(50, ControlType.kVelocity);
+    // m_frontRightPIDController.setReference(-50, ControlType.kVelocity);
+    // m_rearLeftPIDController.setReference(-50, ControlType.kVelocity);
+  }
+
+  public void spinRobotLeft()
+  {
+    m_frontRightMotor.set(.3);
+    m_rearLeftMotor.set(.3);
+    m_frontLeftMotor.set(-.3);
+    m_rearRightMotor.set(-.3);
   }
 }
+

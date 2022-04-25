@@ -9,6 +9,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 //Hardware
@@ -31,12 +32,12 @@ public class Intake extends SubsystemBase {
 
   //runIntakeMotor: This sets the intake motor to run at 70% voltage. This causes the wheels to spin and intake balls
   public void runIntakeMotor() {
-    m_intakeMotor.set(.7);
+    m_intakeMotor.set(Constants.intakeRunningVoltage); 
   }
 
-  //stopIntakeMotor: Sets the intale motor to run at 0%.
+  //stopIntakeMotor: Sets the intake motor to run at 0%.
   public void stopIntakeMotor() {
-    m_intakeMotor.set(0);
+    m_intakeMotor.set(Constants.intakeOffVoltage);
   }
 
   //extendIntake: Puts the intake down to be able to pull in balls (On)

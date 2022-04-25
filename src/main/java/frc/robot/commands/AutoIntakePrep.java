@@ -22,7 +22,7 @@ public class AutoIntakePrep extends CommandBase {
 
     addRequirements(m_drive);
 
-    intakeTarget = 0.3;
+    intakeTarget = 0.3; //dau --It's a unit that's for sure. Change this to change distance
   }
 
   // Called when the command is initially scheduled.
@@ -53,10 +53,15 @@ public class AutoIntakePrep extends CommandBase {
   @Override
   public boolean isFinished() {
     //Checks the position of the encoders, if at the proper position, the command should end
-    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) > intakeTarget) {
-      return true;
-    } else {
-      return false;
-    }
+    return Math.abs(Drive.m_frontLeftEncoder.getPosition()) > intakeTarget;
+    //It returns a true or false...
+
+    // if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) > intakeTarget) {
+    //   return true;
+    // } 
+    // else {
+    //   return false;
+    // }
+
   }
 }

@@ -23,7 +23,11 @@ import frc.robot.commands.AutoMoveForwards;
 import frc.robot.commands.AutoShootPrep;
 import frc.robot.commands.ExtendIntake;
 import frc.robot.commands.IntakeRun;
+import frc.robot.commands.LowerArmsDP;
 import frc.robot.commands.OpenGateLow;
+import frc.robot.commands.RaiseArmsDP;
+import frc.robot.commands.SpinLeft;
+import frc.robot.commands.SpinRight;
 import frc.robot.commands.lowGoalShooterRun;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -45,8 +49,7 @@ public class Robot extends TimedRobot {
 
   /**
    * This function is run when the robot is first started up and should be used
-   * for any
-   * initialization code.
+   * for any initialization code.
    */
   @Override
   public void robotInit() {
@@ -73,25 +76,32 @@ public class Robot extends TimedRobot {
         new lowGoalShooterRun(RobotContainer.m_shooter), //Runs shooter motor at 2500 RPM
         new OpenGateLow(RobotContainer.m_shooter) //Opens shooter gate
       ).withTimeout(2), //Runs this entire parallel group for 2 seconds
+
       //Drives out to 0.3 (dau) (Stage 2)
       new AutoIntakePrep(RobotContainer.m_drive),
+
       //This group runs the intake (Stage 3)
       new ParallelCommandGroup( 
         new ExtendIntake(RobotContainer.m_intake), //Puts intake down
         new IntakeRun(RobotContainer.m_intake) //Runs intake motor (the wheels)
       ).withTimeout(4), //Runs this entire process for 4 seconds
+
       //Drives back in 0.2 (dau) (Stage 4)
       new AutoShootPrep(RobotContainer.m_drive), 
+
       //Waits one second--allows coast and prevents premature shooting (Stage 4)
       new WaitCommand(1), 
+
       //Identical to first group-- runs shooter system (Stage 5)
       new ParallelCommandGroup( 
         new lowGoalShooterRun(RobotContainer.m_shooter),
         new OpenGateLow(RobotContainer.m_shooter)
       ).withTimeout(2),
+
       //Leaves tarmac-- drives out 0.75 (Stage 6)
       new AutoMoveForwards(RobotContainer.m_drive)));
     
+
     /*
     * Simple auto. Used when we're in a less favorable position. Shoots the preload
     * and then leaves the tarmac. 
@@ -102,11 +112,30 @@ public class Robot extends TimedRobot {
         new lowGoalShooterRun(RobotContainer.m_shooter), //Runs motor at 2500 RPM
         new OpenGateLow(RobotContainer.m_shooter) //Opens gate
         ).withTimeout(4), //Runs this command for 4 seconds before ending it
+
       //Leaves tarmac-- drives out 0.75
       new AutoMoveForwards(RobotContainer.m_drive))); 
     
     //Incredibly basic. Leaves the tarmac. 
     chooser.addOption("Drive Forward", new AutoMoveForwards(RobotContainer.m_drive)); //Drives out 0.75
+
+    chooser.addOption("Dancy Pants Robot", new SequentialCommandGroup(
+      new ParallelCommandGroup(
+        new SpinLeft(RobotContainer.m_drive),
+        new RaiseArmsDP(RobotContainer.m_climb)
+      ),
+      new ParallelCommandGroup(
+        new SpinRight(RobotContainer.m_drive),
+        new LowerArmsDP(RobotContainer.m_climb)
+      ),
+      new ParallelCommandGroup(
+        new SpinLeft(RobotContainer.m_drive),
+        new RaiseArmsDP(RobotContainer.m_climb)
+      ),
+      new ParallelCommandGroup(
+        new SpinRight(RobotContainer.m_drive),
+        new LowerArmsDP(RobotContainer.m_climb)
+      )));
 
     SmartDashboard.putData("Auto Choices", chooser); //Puts sendable chooser option on SmartDashboard/Shuffleboard
   }
