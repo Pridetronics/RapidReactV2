@@ -11,6 +11,7 @@
       "/LiveWindow/Ungrouped/MecanumDrive[1]": "MecanumDrive",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Ungrouped/VictorSP[1]": "Motor Controller",
+      "/LiveWindow/Vision": "Subsystem",
       "/SmartDashboard/Arm Descend": "Command",
       "/SmartDashboard/Arm Distance One": "Command",
       "/SmartDashboard/Arm Distance Three": "Command",

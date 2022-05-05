@@ -33,13 +33,14 @@ public class ShooterMode extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    modeNumber++; //when called the command is scheduled, the variable is increased and then value is checked. 
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
-    modeNumber++; //when called the command is scheduled, the variable is increased and then value is checked. 
     if (modeNumber == 1)
     {
       SmartDashboard.putString("Mode", "lowSpeedShooter");
@@ -58,8 +59,7 @@ public class ShooterMode extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

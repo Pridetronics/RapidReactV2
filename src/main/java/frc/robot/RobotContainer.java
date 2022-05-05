@@ -323,29 +323,24 @@ public class RobotContainer {
       new lowGoalShooterRun(m_shooter), //shooter at 2500 RPM
       new OpenGateLow(m_shooter)));
     //MAke notes on when pressed, when released (in documentation talk about the semantics of button pressing)
-    
-    //Test Code: Write in whenPressed-- Maybe need to alter this command for the whenReleased. 
-    highSpeedShooterButton.whenPressed(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate commands
-    new HighGoalShooterRun(m_shooter), //shooter at 5000 RPM
-    new OpenGateHigh(m_shooter)));
 
-    //WHY IS BROKEN??
+    // //WHY IS BROKEN??
     // automaticShooterButton = new JoystickButton(joystickShooter, Constants.automaticShooterButtonNumber);
     // automaticShooterButton.whileHeld(new ParallelCommandGroup(
+    //   new InstantCommand(m_vision :: findDistance, m_vision),
     //   new AutomaticShooterRun(m_vision), //Motor at calculated distance
     //   new AutomaticOpenGate(m_vision)));
     // runShooterButton = new JoystickButton(joystickShooter, Constants.runShooterButtonNumber);
     // runShooterButton.whileHeld(new ParallelCommandGroup(
     //   new RunShooter(m_shooter, m_vision), //Relies on shooter mode (may be any of the three above)
     //   new RunOpenGate(m_shooter, m_vision)));
-    // shooterModeButton = new JoystickButton(joystickShooter, Constants.shooterModeButtonNumber);
-    // shooterModeButton.toggleWhenPressed(new ShooterMode(m_shooter)); //Commented out for my safety
+    shooterModeButton = new JoystickButton(joystickShooter, Constants.shooterModeButtonNumber);
+    shooterModeButton.whileHeld(new ShooterMode(m_shooter)); //Commented out for my safety
 
     //Intake Commands--
     intakeButton = new JoystickButton(joystickDriver, Constants.intakeButtonNumber);
     intakeButton.whileHeld(new ParallelCommandGroup(
         new ExtendIntake(m_intake),
-        //new WaitCommand(.4), //Test Code: I want to test this without this here... 
         new IntakeRun(m_intake)));
 
     //Vision Commands--

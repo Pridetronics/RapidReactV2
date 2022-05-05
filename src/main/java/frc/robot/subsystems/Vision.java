@@ -237,11 +237,7 @@ public class Vision extends SubsystemBase {
   //AutomaticOpenGate: Checks for a velocity provided by automaticshooter to check if open gate conditions are met (then opens gate)
   public void AutomaticOpenGate()
   {
-    if (m_shooterEncoder.getVelocity() >= adjustableShooterRPM)
-    {
-      new WaitCommand(7); //Fuck with it
       m_shooterServo.setRaw(Constants.shooterServoOpenPosition);
-    }
   }
 
   //AutomaticCloseGate: Puts servo in position where balls cannot get through

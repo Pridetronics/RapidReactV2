@@ -83,12 +83,8 @@ public class Shooter extends SubsystemBase {
   */
   public void OpenGateLow() 
   {
-    if (m_shooterEncoder.getVelocity() >= Constants.lowShooterSpeed)
-    {
-      new WaitCommand(7); //Measures in seconds Test (take this out and see what happens)
-      m_shooterServo.setRaw(Constants.shooterServoOpenPosition); //This is measured in ms-- see Pridetronics documentation for more information
-      //This is really getting excessive
-    }
+    m_shooterServo.setRaw(Constants.shooterServoOpenPosition); //This is measured in ms-- see Pridetronics documentation for more information
+    
   }
 
   /* 
@@ -97,11 +93,8 @@ public class Shooter extends SubsystemBase {
   */
   public void OpenGateHigh()
   {
-    if (m_shooterEncoder.getVelocity() >= Constants.highShooterSpeed)
-    {
-      new WaitCommand(7); //Test Code. Remove this in certain places
-      m_shooterServo.setRaw(Constants.shooterServoOpenPosition);
-    }
+    new WaitCommand(7); //Test Code. Remove this in certain places
+    m_shooterServo.setRaw(Constants.shooterServoOpenPosition);
   }
 
   //CloseGate: Moves servo to a position in which the ball is unable to be released.

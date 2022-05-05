@@ -158,9 +158,9 @@ public class Drive extends SubsystemBase {
   public void spinRobotRight() 
   {
     m_frontLeftMotor.set(.3);
-    m_rearRightMotor.set(.3);
+    m_rearLeftMotor.set(.3);
     m_frontRightMotor.set(-.3);
-    m_rearLeftMotor.set(-.3);
+    m_rearRightMotor.set(-.3);
     // m_frontLeftPIDController.setReference(50, ControlType.kVelocity);
     // m_rearRightPIDController.setReference(50, ControlType.kVelocity);
     // m_frontRightPIDController.setReference(-50, ControlType.kVelocity);
@@ -170,9 +170,9 @@ public class Drive extends SubsystemBase {
   public void spinRobotLeft()
   {
     m_frontRightMotor.set(.3);
-    m_rearLeftMotor.set(.3);
+    m_rearRightMotor.set(.3);
     m_frontLeftMotor.set(-.3);
-    m_rearRightMotor.set(-.3);
+    m_rearLeftMotor.set(-.3);
   }
 }
 

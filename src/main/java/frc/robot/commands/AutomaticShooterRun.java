@@ -28,7 +28,7 @@ public class AutomaticShooterRun extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_vision.findDistance();
+    // m_vision.findDistance();
     m_vision.AutomaticShooter();
   }
 
