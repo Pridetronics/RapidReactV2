@@ -72,7 +72,7 @@ public class Vision extends SubsystemBase {
     m_rearRightMotor = RobotContainer.rearRightMotor;
     m_rearRightPIDController = m_rearRightMotor.getPIDController();
 
-    m_shooterMotor = RobotContainer.shooterMotor;
+    m_shooterMotor = RobotContainer.shooterMotorLeft;
     m_shooterEncoder = RobotContainer.shooterEncoder;
     m_shooterPIDController = m_shooterMotor.getPIDController();
     m_shooterServo = RobotContainer.shooterServo;

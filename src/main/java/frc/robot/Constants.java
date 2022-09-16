@@ -87,10 +87,10 @@ public final class Constants
     public static final int kShooterRightCANID = 7; //For Shooter Motor 2
     public static final int kShooterServoPWMID = 0;
     public static final int highShooterSpeed = 2500; 
-    public static final int lowShooterSpeed = 1250;
+    public static final int lowShooterSpeed = 1600;
 
     //Shooter PID--
-    public static final double SHOOTER_kP = 0.0001;
+    public static final double SHOOTER_kP = 0.00008;
     public static final double SHOOTER_kI = 0.000001;
     public static final double SHOOTER_kD = 0.0004;
     public static final double SHOOTER_MAX_OUTPUT = 6000.0;
