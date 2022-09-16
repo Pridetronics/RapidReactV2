@@ -83,10 +83,11 @@ public final class Constants
     public static final double kEncoderPositionConversionFactor = kCircumference / kGearBox; // Sets encoder to read position in inches
 
     // Shooter--
-    public static final int kShooterCANID = 5; // For the Shooter Motor
+    public static final int kShooterLeftCANID = 5; // For the Shooter Motor 1 (Original Shooter Motor)
+    public static final int kShooterRightCANID = 7; //For Shooter Motor 2
     public static final int kShooterServoPWMID = 0;
-    public static final int highShooterSpeed = 5000; 
-    public static final int lowShooterSpeed = 2500;
+    public static final int highShooterSpeed = 2500; 
+    public static final int lowShooterSpeed = 1250;
 
     //Shooter PID--
     public static final double SHOOTER_kP = 0.0001;
@@ -96,9 +97,9 @@ public final class Constants
     public static final double SHOOTER_MIN_OUTPUT = -6000.0;
     
     //Shooter RPMs (for automatic shooter-- see vision)
-    public static final int shooterRPMHigh = 5000;
-    public static final int shooterRPMMedium = 4500;
-    public static final int shooterRPMLow = 2500;
+    public static final int shooterRPMHigh = 2500;
+    public static final int shooterRPMMedium = 2250;
+    public static final int shooterRPMLow = 1250;
 
     //Shooter Servo--
     public static final int shooterServoOpenPosition = 1000;

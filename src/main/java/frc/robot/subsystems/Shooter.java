@@ -22,7 +22,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import edu.wpi.first.wpilibj.Servo;
-
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Shooter extends SubsystemBase {
   //Hardware is created so it can be used within this subsytem. 
@@ -33,7 +33,7 @@ public class Shooter extends SubsystemBase {
  
   public Shooter() {
     //Motor, Encoder, PID, and Servo referenced from RobotContainer for use in subsytem.
-    m_shooterMotor = RobotContainer.shooterMotor;
+    m_shooterMotor = RobotContainer.shooterMotorLeft;
     m_shooterEncoder = RobotContainer.shooterEncoder;
     m_shooterPID = RobotContainer.shooterMotorPID;
     m_shooterServo = RobotContainer.shooterServo;

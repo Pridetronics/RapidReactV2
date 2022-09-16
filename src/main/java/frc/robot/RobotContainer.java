@@ -94,7 +94,8 @@ public class RobotContainer {
   public static CANSparkMax rearRightMotor;
 
   // Shooter--
-  public static CANSparkMax shooterMotor; // Creates Motor for the shooter
+  public static CANSparkMax shooterMotorLeft; // Creates Motor for the shooter
+  public static CANSparkMax shooterMotorRight; //Looking at the robot from behind to determine the place
   public static RelativeEncoder shooterEncoder; //Creates encoder for the shooter
   public static SparkMaxPIDController shooterMotorPID; //Creates PID for the shooter
   public static Servo shooterServo; //Creates servo for the shooter gate
@@ -197,19 +198,22 @@ public class RobotContainer {
     climbPID.setOutputRange(Constants.CLIMB_MIN_OUTPUT, Constants.CLIMB_MAX_OUTPUT);
 
     //Shooter Relevant--
-    shooterMotor = new CANSparkMax(Constants.kShooterCANID, MotorType.kBrushless);
-    shooterMotor.setInverted(false);
+    shooterMotorLeft = new CANSparkMax(Constants.kShooterLeftCANID, MotorType.kBrushless);
+    shooterMotorLeft.setInverted(true);
 
-    shooterEncoder = shooterMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    shooterMotorRight = new CANSparkMax(Constants.kShooterRightCANID, MotorType.kBrushless);
+    shooterMotorRight.setInverted(false);
+
+    shooterEncoder = shooterMotorLeft.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
     shooterServo = new Servo(Constants.kShooterServoPWMID); //Referred to in "Gate" commands
 
-    shooterMotorPID = shooterMotor.getPIDController();
+    shooterMotorPID = shooterMotorLeft.getPIDController();
     shooterMotorPID.setP(Constants.SHOOTER_kP); //Shooter values from 2020...
     shooterMotorPID.setI(Constants.SHOOTER_kI);
     shooterMotorPID.setD(Constants.SHOOTER_kD);
     shooterMotorPID.setOutputRange(Constants.SHOOTER_MIN_OUTPUT, Constants.SHOOTER_MAX_OUTPUT);
-  
+
     //Intake Relevant--
     intakeMotor = new VictorSP(Constants.kIntakePWMID);
     intakePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kIntakePistonForwardChannel, Constants.kIntakePistonReverseChannel);
