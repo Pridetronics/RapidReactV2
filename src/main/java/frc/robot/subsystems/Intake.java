@@ -2,40 +2,51 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/*
+*  This is the intake subsystem. It outlines the use of the intake piston 
+*  and the intake motor. 
+*/
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.Solenoid;
+
+//Hardware
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 
 public class Intake extends SubsystemBase {
-  private Compressor m_intakeCompressor;
-  private Solenoid m_intakePiston;
   private VictorSP m_intakeMotor;
+  private DoubleSolenoid m_intakePiston;
+
   public Intake() {
-    m_intakeCompressor = RobotContainer.intakeCompressor;
-    m_intakePiston = RobotContainer.intakePiston;
     m_intakeMotor = RobotContainer.intakeMotor;
+    m_intakePiston = RobotContainer.intakePiston;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
-  public void runIntakeMotor()
-  {
-    m_intakeMotor.set(0.6);
+
+  //runIntakeMotor: This sets the intake motor to run at 70% voltage. This causes the wheels to spin and intake balls
+  public void runIntakeMotor() {
+    m_intakeMotor.set(Constants.intakeRunningVoltage); 
   }
-  public void stopIntakeMotor()
-  {
-    m_intakeMotor.set(0);
+
+  //stopIntakeMotor: Sets the intake motor to run at 0%.
+  public void stopIntakeMotor() {
+    m_intakeMotor.set(Constants.intakeOffVoltage);
   }
-  public void extendIntake(){
-    m_intakePiston.set(true);
+
+  //extendIntake: Puts the intake down to be able to pull in balls (On)
+  public void extendIntake() { // Down
+    m_intakePiston.set(DoubleSolenoid.Value.kReverse);
   }
-  public void retractIntake(){
-    m_intakePiston.set(false);
+
+  //retractIntake: Pulls the intake up, into rest and starting position.  (Off)
+  public void retractIntake() { // Up
+    m_intakePiston.set(DoubleSolenoid.Value.kForward);
   }
 }

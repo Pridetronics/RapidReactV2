@@ -2,18 +2,31 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/**
+ * This checks for a speed requirement, and if the conditions are met
+ * will run the OpenGateHigh function, allowing the gate to open and 
+ * let the ball through. If 5000 RPM is not met, the gate will not open.
+ */
+
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import com.revrobotics.RelativeEncoder;
 
-public class ReleaseGate extends CommandBase {
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
+import frc.robot.subsystems.Shooter;
+import frc.robot.RobotContainer;
+
+public class OpenGateHigh extends CommandBase {
 
   private Shooter m_shooter;
+  private RelativeEncoder m_shooterEncoder;
 
-  public ReleaseGate(Shooter shooter) {
+  public OpenGateHigh(Shooter shooter) {
     m_shooter = new Shooter();
     addRequirements(m_shooter);
+    m_shooterEncoder = RobotContainer.shooterEncoder;
   }
 
   // Called when the command is initially scheduled.
@@ -24,13 +37,16 @@ public class ReleaseGate extends CommandBase {
   @Override
   public void execute() 
   {
-    m_shooter.ReleaseGate();
+    if (m_shooterEncoder.getVelocity() >= Constants.highShooterSpeed){
+      new WaitCommand(7);
+      m_shooter.OpenGateHigh();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.RetractGate();
+    m_shooter.CloseGate();
   }
 
   // Returns true when the command should end.

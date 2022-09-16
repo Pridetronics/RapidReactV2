@@ -5,36 +5,40 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.Climb;
 
-public class ExtendRetractIntake extends CommandBase {
-  private Intake m_intake;
+public class LowerArmsDP extends CommandBase {
+  private Climb m_climb;
+  private double climbDistance;
+  /** Creates a new LowerArmsDP. */
+  public LowerArmsDP(Climb climb) {
+    m_climb = climb;
 
-  public ExtendRetractIntake(Intake intake) {
-    m_intake = intake;
-
-    addRequirements(intake);
+    addRequirements(m_climb);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_climb.zeroEncoder();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.extendIntake();
+    m_climb.DancyArmsDown();
   }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.retractIntake();
+    m_climb.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_climb.isClimbAtBottom();
   }
 }

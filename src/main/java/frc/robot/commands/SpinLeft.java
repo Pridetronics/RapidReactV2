@@ -7,34 +7,49 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 
-public class Auto_drive_shoot extends CommandBase {
+public class SpinLeft extends CommandBase {
   private Drive m_drive;
+  private double spinDistance;
+  /** Creates a new SpinLeft. */
+  public SpinLeft(Drive drive) {
+    m_drive = drive;
 
-  /** Creates a new Auto_drive_shoot. */
-  public Auto_drive_shoot(Drive drive) {
+    addRequirements(m_drive);
+    spinDistance = 1; 
     // Use addRequirements() here to declare subsystem dependencies.
-    // addRequirements(m_drive);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    m_drive.zeroEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) < spinDistance)
+    {
+      m_drive.spinRobotLeft();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_drive.driveStop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (Math.abs(Drive.m_frontLeftEncoder.getPosition()) > spinDistance) 
+    {
+      return true;
+    } 
+    else 
+    {
+      return false;
+    }
   }
 }

@@ -4,41 +4,73 @@
 
 package frc.robot;
 
-// import frc.robot.Constants;
-// import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+//General Command Imports--
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.subsystems.*;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.Auto_drive_shoot;
-import frc.robot.commands.Auto_move_backwards;
-import frc.robot.commands.ExampleCommand;
+//Drive Command Imports--
+import frc.robot.commands.DriveJoystick;
 
-import frc.robot.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+//Climb Command Imports--
+import frc.robot.commands.ClimbInitializationDown;
+import frc.robot.commands.ClimbInitializationUp;
+import frc.robot.commands.EncoderPivotArmDescend;
+import frc.robot.commands.EncoderPivotArmDistanceOne;
+import frc.robot.commands.EncoderPivotArmDistanceTwo;
+import frc.robot.commands.EncoderPivotArmDistanceThree;
 
-import frc.robot.commands.Auto_move_backwards;
-import frc.robot.commands.ReleaseGate;
-import frc.robot.commands.ShooterRun;
-import frc.robot.commands.ExtendRetractIntake;
+import frc.robot.commands.PivotArmDescendDistance;
+import frc.robot.commands.PivotArmDistanceOne;
+import frc.robot.commands.PivotArmDistanceTwo;
+import frc.robot.commands.PivotArmDistanceThree;
+
+//Shooter Command Imports--
+import frc.robot.commands.OpenGateHigh;
+import frc.robot.commands.OpenGateLow;
+import frc.robot.commands.HighGoalShooterRun;
+import frc.robot.commands.lowGoalShooterRun;
+import frc.robot.commands.ShootTrigger;
+import frc.robot.commands.ShooterMode;
+import frc.robot.commands.RunShooter;
+import frc.robot.commands.RunOpenGate;
+
+//Intake Command Imports--
+import frc.robot.commands.ExtendIntake;
 import frc.robot.commands.IntakeRun;
+
+//Vision Command Imports--
+import frc.robot.commands.VisionMode;
+import frc.robot.commands.FindDistanceLimelight;
+import frc.robot.commands.AlignTarget;
+import frc.robot.commands.AutomaticShooterRun;
+import frc.robot.commands.AutomaticOpenGate;
+
+//Subsytem Imports--
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Vision;
+
+//Hardware Imports--
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
+import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+
+//import edu.wpi.first.cameraserver.CameraServer;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -50,105 +82,302 @@ import frc.robot.subsystems.Intake;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+    // The robot's subsystems and commands are defined here...
 
-  // The robot's subsystems and commands are defined here... Examples below
-  // private final Subsystem watch = new Camera();
-  // private final Subsystem driver = new Drive();
-  Drive drive = new Drive();
-  public Auto_move_backwards mBackwards;
-  public Auto_drive_shoot mDrive_shoot;
-  public static SendableChooser<Command> m_chooser = new SendableChooser<>();
-  final Auto_drive_shoot m_auto2 = new Auto_drive_shoot(drive);
-  final Auto_move_backwards m_auto1 = new Auto_move_backwards(drive);
-  // private final Command m_autoCommand = new Auto_move_backwards(drive);
+    // Camera--
+    // public static CameraServer server1; //yucky
 
-  public static CANSparkMax frontLeft;
-  public static CANSparkMax rearLeft;
-  public static CANSparkMax frontRight;
-  public static CANSparkMax rearRight;
+    // Drive--
+    public static CANSparkMax frontLeftMotor; // Creates all four drive motors
+    public static CANSparkMax rearLeftMotor;
+    public static CANSparkMax frontRightMotor;
+    public static CANSparkMax rearRightMotor;
 
-  public static CANSparkMax shooterMotor; // Creates Motor for the shooter
-  public static DoubleSolenoid shooterBallRelease; // Creates Double Solenoid for the shooter (relates to pistons)
+    // Shooter--
+    public static CANSparkMax shooterLeftMotor; // Creates Motor for the shooter
+    public static CANSparkMax shooterRightMotor;
+    public static RelativeEncoder shooterEncoder; // Creates encoder for the shooter
+    public static SparkMaxPIDController shooterMotorPID; // Creates PID for the shooter
+    public static Servo shooterServo; // Creates servo for the shooter gate
 
-  public static Compressor intakeCompressor;
-  public static Solenoid intakePiston;
-  public static VictorSP intakeMotor;
+    // Intake--
+    public static VictorSP intakeMotor; // Creates motor for intake
+    public static DoubleSolenoid intakePiston; // Creates motor for piston
 
-  public static Intake intake;
-  public static Shooter shooter; // Creates the subsytem for shooter
-  // public static Drive drive;
+    // Climb--
+    public static CANSparkMax climbMotor; // Climb Motor
+    public static DoubleSolenoid climbPiston; // Climb Piston
+    public static SparkMaxPIDController climbPID; // Climb PID
+    public static RelativeEncoder climbEncoder; // Climb PID
+    public static DigitalInput lowerClimbLimitSwitch; // Climb Limit Switch (physical hardware)
 
-  public JoystickButton shooterButton; // Button for the shooter
-  public JoystickButton intakeButton;
-  public Joystick joystickDriver; // Controller 0
-  public Joystick joystickShooter; // Controller 1
+    // Subsystems-- Created for use in RobotContainer
+    public static Drive m_drive;
+    public static Climb m_climb;
+    public static Shooter m_shooter;
+    public static Intake m_intake;
+    public static Vision m_vision;
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
+    // Climb Buttons--
+    public JoystickButton honeButton;
 
-    // sendable chooser relevant
+    public JoystickButton sequence1Button;
+    public JoystickButton sequence2Button;
+    public JoystickButton sequence3Button;
 
-    // Assign values for the motors, and for the joysticks. Do not do button
-    // bindings, this is below.
-    joystickDriver = new Joystick(Constants.kJoystickDriverChannel);
-    joystickShooter = new Joystick(Constants.kJoystickShooterChannel); // Sets shooter joystick to port 1
+    public JoystickButton encoderSequence1Button;
+    public JoystickButton encoderSequence2Button;
+    public JoystickButton encoderSequence3Button;
 
-    // Drive Relevant---
-    frontLeft = new CANSparkMax(Constants.kFrontLeftChannel, MotorType.kBrushed);
-    rearLeft = new CANSparkMax(Constants.kRearLeftChannel, MotorType.kBrushed);
-    frontRight = new CANSparkMax(Constants.kFrontRightChannel, MotorType.kBrushed);
-    frontRight.setInverted(true);
-    rearRight = new CANSparkMax(Constants.kRearRightChannel, MotorType.kBrushed);
-    rearRight.setInverted(true);
-    // drive = new Drive();
+    // Shooter Buttons--
+    public JoystickButton highSpeedShooterButton; // Button for the shooter
+    public JoystickButton lowSpeedShooterButton;
+    public JoystickButton automaticShooterButton;
+    public JoystickButton shooterModeButton;
+    public JoystickButton runShooterButton;
 
-    // Shooter Relevant---
-    shooterMotor = new CANSparkMax(Constants.kShooterChannel, MotorType.kBrushless);
-    shooterMotor.setInverted(true);
-    shooter = new Shooter(); // Defines the subsystem
-    shooterBallRelease = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kShooterGateForwardChannel,
-        Constants.kShooterGateReleaseChannel);
+    // Intake Buttons--
+    public JoystickButton intakeButton;
 
-    intakeCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-    intakePiston = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0);
-    intakeMotor = new VictorSP(Constants.kIntakeChannel);
-    intake = new Intake();
+    // Vision Buttons--
+    public JoystickButton visionModeButton;
+    public JoystickButton findTargetButton;
 
-    SmartDashboard.putData("Shooter Run", new ShooterRun(shooter)); // Puts data on Shuffleboard to use the command.
-                                                                    // Displays
-    SmartDashboard.putData("Release Gate", new ReleaseGate(shooter)); // on the screen and can be run by pushing the
-                                                                      // square. Pretty neat
-    SmartDashboard.putData("Autonomous", new Auto_move_backwards(drive));
-    SmartDashboard.putData("Intake Run", new IntakeRun(intake));
-    SmartDashboard.putData("Extend/Retract Intake", new ExtendRetractIntake(intake));
+    // Joysticks
+    public Joystick joystickDriver; // Controller 0 --Ensure that all controllers are in proper ports in
+                                    // DriverStation
+    public Joystick joystickShooter; // Controller 1
 
-    configureButtonBindings();
-    m_chooser.setDefaultOption("Auto Move backwards", m_auto1);
-    m_chooser.addOption("Auto Move and Shoot", m_auto2);
-    SmartDashboard.putData("auto chooser", m_chooser);
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
+        // Assign values for the motors, and for the joysticks. Do not do button
+        // bindings, this is below.
+        // Camera Relevant--
+        /**
+         * This will allow the camera data to be displayed on SmartDashboard or
+         * shuffleboard
+         * but this needs to be adjusted because at comp this took up too much bandwith
+         * and
+         * therefore caused drive issues.
+         */
+        // CameraServer.startAutomaticCapture();
 
-  }
+        /**
+         * These two lines of code create the joystick objects that will be used
+         * throughout the life
+         * of blah blah whatever --Damon
+         */
+        joystickDriver = new Joystick(Constants.kJoystickDriverID); // Stick --These can change, but this was used in
+                                                                    // 2022
+        joystickShooter = new Joystick(Constants.kJoystickShooterID); // Gamepad
 
-  private void configureButtonBindings() {
-    // Shooter Button Configured and Command Assigned to Button
-    shooterButton = new JoystickButton(joystickShooter, Constants.shooterButtonNumber);
-    shooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate
-                                                      // commands
-        new ReleaseGate(shooter),
-        new ShooterRun(shooter))); // References the command and inside the needed subsytem
+        // Drive Relevant---
+        frontLeftMotor = new CANSparkMax(Constants.kFrontLeftMotorCANID, MotorType.kBrushless);
+        frontLeftMotor.setInverted(false);
 
-    intakeButton = new JoystickButton(joystickShooter, Constants.intakeButtonNumber);
-    intakeButton.whileHeld(new SequentialCommandGroup(
-        new ExtendRetractIntake(intake),
-        new WaitCommand(3),
-        new IntakeRun(intake)));
+        rearLeftMotor = new CANSparkMax(Constants.kRearLeftMotorCANID, MotorType.kBrushless);
+        rearLeftMotor.setInverted(false);
 
-  }
+        frontRightMotor = new CANSparkMax(Constants.kFrontRightMotorCANID, MotorType.kBrushless);
+        frontRightMotor.setInverted(true); // With Mecanum drive right motors are inverted
 
-  public Command getAutonomousCommand() {
-    // return (Command) m_chooser.getSelected();
-    return (Command) m_chooser.getSelected();
-  }
+        rearRightMotor = new CANSparkMax(Constants.kRearRightMotorCANID, MotorType.kBrushless);
+        rearRightMotor.setInverted(true);
+
+        // Climb Relevant--
+        climbMotor = new CANSparkMax(Constants.kClimbCANID, MotorType.kBrushless);
+        climbMotor.setInverted(true);
+
+        climbEncoder = climbMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.kEncoderCountsPerRev);
+
+        climbPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kPistonForwardClimbChannel,
+                Constants.kPistonReverseClimbChannel);
+
+        lowerClimbLimitSwitch = new DigitalInput(Constants.lowerClimbLimitSwitchChannel);
+
+        climbPID = climbMotor.getPIDController();
+        climbPID.setP(Constants.CLIMB_kP); // these numbers are finnicky but they worked
+        climbPID.setI(Constants.CLIMB_kI); // TUNE BETTER
+        climbPID.setD(Constants.CLIMB_kD); // I am sad
+        climbPID.setOutputRange(Constants.CLIMB_MIN_OUTPUT, Constants.CLIMB_MAX_OUTPUT);
+
+        // Shooter Relevant--
+        shooterLeftMotor = new CANSparkMax(Constants.kShooterLeftCANID, MotorType.kBrushless);
+        shooterLeftMotor.setInverted(true);
+        shooterRightMotor = new CANSparkMax(Constants.kShooterRightCANID, MotorType.kBrushless);
+        shooterRightMotor.setInverted(false);
+        shooterEncoder = shooterLeftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+
+        shooterServo = new Servo(Constants.kShooterServoPWMID); // Referred to in "Gate" commands
+
+        shooterMotorPID = shooterLeftMotor.getPIDController();
+        shooterMotorPID.setP(Constants.SHOOTER_kP); // Shooter values from 2020...
+        shooterMotorPID.setI(Constants.SHOOTER_kI);
+        shooterMotorPID.setD(Constants.SHOOTER_kD);
+        shooterMotorPID.setOutputRange(Constants.SHOOTER_MIN_OUTPUT, Constants.SHOOTER_MAX_OUTPUT);
+
+        // Intake Relevant--
+        intakeMotor = new VictorSP(Constants.kIntakePWMID);
+        intakePiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.kIntakePistonForwardChannel,
+                Constants.kIntakePistonReverseChannel);
+
+        // Subsytems--
+        m_drive = new Drive(joystickDriver); // Defines the Subsystem-- allows them to be used and referenced as objects
+                                             // within commands
+        m_climb = new Climb();
+        m_shooter = new Shooter();
+        m_intake = new Intake();
+        m_vision = new Vision();
+
+        // SmartDashboard Relevant-- Encouraged to be commented out during competition
+        // time
+        // Puts data on Shuffleboard to use the command.
+
+        /**
+         * The commands that are displayed on SmartDashboard are meant to be useful in a
+         * testing scenario. These are most convenient for
+         * us. Toggling vision (so the Limelight doesn't blind you when you need to test
+         * other systems), Extending Intake (for running climb),
+         * and the PID version of climb are all helpful to have when testing. We usually
+         * like to run climb to ensure it's efficiency. It could
+         * easily be switched out for the encoder version and at some point it may be
+         * helpful to have present. But because of the testing nature,
+         * commenting them out during competition is more helpful as to avoid clutter
+         * this creates.
+         * Tim suggests learning how to actually use testing mode, but this works pretty
+         * well in a pinch.
+         */
+        SmartDashboard.putData("Extend/Retract Intake", new ExtendIntake(m_intake));
+        SmartDashboard.putData("Change Vision Modes", new VisionMode(m_vision));
+
+        SmartDashboard.putData("Arm Distance One", new PivotArmDistanceOne(m_climb, Constants.climbDistance1));
+        SmartDashboard.putData("Piston Extend", new InstantCommand(m_climb::pistonRetract, m_climb));
+        SmartDashboard.putData("Arm Descend", new PivotArmDescendDistance(m_climb, Constants.climbDescendDistance));
+        SmartDashboard.putData("Arm Distance Two", new PivotArmDistanceTwo(m_climb, Constants.climbDistance2));
+        SmartDashboard.putData("Piston Retract", new InstantCommand(m_climb::pistonRetract, m_climb));
+        SmartDashboard.putData("Arm Distance Three", new PivotArmDistanceThree(m_climb, Constants.climbDistance3));
+
+        configureButtonBindings();
+        m_drive.setDefaultCommand(new DriveJoystick(joystickDriver, m_drive));
+        /**
+         * Shooter trigger is a little tricky and something we created without knowing
+         * if it would work (Test Code), because
+         * the gamepad triggers are seen as axes, and working with them is a bit more
+         * complex then with a normal button. I'd
+         * encourage anyone to try figuring this out.
+         */
+        m_shooter.setDefaultCommand(new ShootTrigger(joystickShooter, m_shooter));
+    }
+
+    private void configureButtonBindings() {
+        // Climb Commands--
+        // THE COMMENTED OUT CHUNK WAS THE OLD CLIMB SEQUENCE THAT UTILIZED PID CONTROL.
+
+        // Climb Button Configured
+        // climbButton = new JoystickButton(joystickShooter,
+        // Constants.climbButtonNumber);
+        // climbButton.whileActiveOnce(new ClimbButtonSequence(m_climb));
+        // climbButton.whenPressed(new InstantCommand(m_climb::pistonRelease, m_climb));
+        // climbButton.whenPressed(new PivotArmDescendDistance(m_climb,
+        // Constants.climbDescendDistance));
+        // sequence1Button = new JoystickButton(joystickShooter,
+        // Constants.sequence1ButtonNumber);
+        // sequence1Button.whenPressed(new SequentialCommandGroup(new
+        // SequentialCommandGroup(
+        // new PivotArmDistanceOne(m_climb, Constants.climbDistance1),
+        // new InstantCommand(m_climb::pistonRelease, m_climb))));
+        // sequence2Button = new JoystickButton(joystickShooter,
+        // Constants.sequence2ButtonNumber);
+        // sequence2Button.whenPressed(new PivotArmDescendDistance(m_climb,
+        // Constants.climbDescendDistance));
+        // sequence3Button = new JoystickButton(joystickShooter,
+        // Constants.sequence3ButtonNumber);
+        // sequence3Button.whenPressed(new SequentialCommandGroup(
+        // new PivotArmDistanceTwo(m_climb, Constants.climbDistance2),
+        // new InstantCommand(m_climb::pistonRetract, m_climb),
+        // new PivotArmDistanceThree(m_climb, Constants.climbDistance3),
+        // new InstantCommand(m_climb::pistonRelease, m_climb)));
+
+        // Allows drivers to zero encoders before starting the climb sequence
+        // Command format == Create button, then when something is done have commands
+        // (Below is a good example)
+        honeButton = new JoystickButton(joystickDriver, 11);
+        honeButton.whenPressed(new SequentialCommandGroup(
+                new ClimbInitializationUp(m_climb),
+                new ClimbInitializationDown(m_climb)));
+
+        // Climb sequence using encoders. This is a bit lengthy, but covers all three
+        // sequences.
+        encoderSequence1Button = new JoystickButton(joystickShooter, Constants.sequence1ButtonNumber);
+        encoderSequence1Button.whenPressed(new SequentialCommandGroup(
+                new EncoderPivotArmDistanceOne(m_climb), // raises arms x distance
+                new InstantCommand(m_climb::pistonRetract, m_climb))); // releases piston
+        encoderSequence2Button = new JoystickButton(joystickShooter, Constants.sequence2ButtonNumber);
+        encoderSequence2Button.whenPressed(new EncoderPivotArmDescend(m_climb)); // lowers arms
+        encoderSequence3Button = new JoystickButton(joystickShooter, Constants.sequence3ButtonNumber);
+        encoderSequence3Button.whenPressed(new SequentialCommandGroup(
+                new EncoderPivotArmDistanceTwo(m_climb), // raises arms y distance
+                new InstantCommand(m_climb::pistonRelease, m_climb), // retracts piston
+                new EncoderPivotArmDistanceThree(m_climb), // raises arms z distance
+                new InstantCommand(m_climb::pistonRetract, m_climb))); // retracts piston
+        /**
+         * This code runs in the following order and allows us to transverse
+         * - Stage One (Button B): Climb arms raise 154 (in encoder-- see note in
+         * Constants) and piston is
+         * retracted (which is the default position-- so it may not move)
+         * - Stage Two (Button A): Arms are lowered, pulling the robot onto the rungs
+         * - Stage Three (Button X): Arms are raised 40, the piston released, Arms are
+         * raised to 140, and the piston is retracted.
+         * - Stage Two (Button A): Repeats
+         * - Stage Three (Button X): Repeats
+         * - Stage Two (Button A): Repeats
+         */
+
+        // Shooter Commands--
+        highSpeedShooterButton = new JoystickButton(joystickShooter, Constants.highSpeedShooterButtonNumber);
+        highSpeedShooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the
+                                                                   // release
+                                                                   // gate commands
+                new HighGoalShooterRun(m_shooter), // shooter at 5000 RPM
+                new OpenGateHigh(m_shooter))); // References the command and inside the needed subsytem
+        lowSpeedShooterButton = new JoystickButton(joystickShooter, Constants.lowSpeedShooterButtonNumber);
+        lowSpeedShooterButton.whileHeld(new ParallelCommandGroup( // Talk about this because Tim said so 25 ms
+                // Test Code: If it ain't broke don't fix it (TRy with whenPRessed)
+                new lowGoalShooterRun(m_shooter), // shooter at 2500 RPM
+                new OpenGateLow(m_shooter)));
+        // MAke notes on when pressed, when released (in documentation talk about the
+        // semantics of button pressing)
+
+        // //WHY IS BROKEN??
+        // automaticShooterButton = new JoystickButton(joystickShooter,
+        // Constants.automaticShooterButtonNumber);
+        // automaticShooterButton.whileHeld(new ParallelCommandGroup(
+        // new InstantCommand(m_vision :: findDistance, m_vision),
+        // new AutomaticShooterRun(m_vision), //Motor at calculated distance
+        // new AutomaticOpenGate(m_vision)));
+        // runShooterButton = new JoystickButton(joystickShooter,
+        // Constants.runShooterButtonNumber);
+        // runShooterButton.whileHeld(new ParallelCommandGroup(
+        // new RunShooter(m_shooter, m_vision), //Relies on shooter mode (may be any of
+        // the three above)
+        // new RunOpenGate(m_shooter, m_vision)));
+        shooterModeButton = new JoystickButton(joystickShooter, Constants.shooterModeButtonNumber);
+        shooterModeButton.whileHeld(new ShooterMode(m_shooter)); // Commented out for my safety
+
+        // Intake Commands--
+        intakeButton = new JoystickButton(joystickDriver, Constants.intakeButtonNumber);
+        intakeButton.whileHeld(new ParallelCommandGroup(
+                new ExtendIntake(m_intake),
+                new IntakeRun(m_intake)));
+
+        // Vision Commands--
+        visionModeButton = new JoystickButton(joystickDriver, Constants.visionModeButtonNumber);
+        visionModeButton.toggleWhenPressed(new VisionMode(m_vision)); // Switches between modes. See Vision subsytem for
+                                                                      // function.
+
+        findTargetButton = new JoystickButton(joystickShooter, Constants.findTargetButtonNumber);
+        findTargetButton.toggleWhenPressed(new AlignTarget(m_vision)); // Seeks and aligns //Test Code: TEST THIS
+    }
 }
