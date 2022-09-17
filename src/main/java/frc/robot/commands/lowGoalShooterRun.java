@@ -14,9 +14,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
-
 public class lowGoalShooterRun extends CommandBase {
   private Shooter m_shooter;
+
   public lowGoalShooterRun(Shooter shooter) {
     m_shooter = shooter;
 

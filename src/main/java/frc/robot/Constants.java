@@ -63,7 +63,7 @@ public final class Constants {
     public static final int kPistonReverseClimbChannel = 1; // For piston
 
     // Climb PID--
-    public static final double CLIMB_kP = 0.0002;
+    public static final double CLIMB_kP = 0.00008;
     public static final double CLIMB_kI = 0.000001;
     public static final double CLIMB_kD = 0.0004;
     public static final double CLIMB_MIN_OUTPUT = -6000.0; // These are the maximum and minimum RPMs that the PID can
@@ -84,6 +84,7 @@ public final class Constants {
     public static final double encoderClimbDescendDistance = -4;
 
     // This is broke-- please fix it (times it by five to get an okay number)
+
     public static final int kEncoderCountsPerRev = 42; // Ask about the encoder
     private static final double kArmDiameter = 0.75; // Arms' diameter in inches
     private static final double kGearBox = 0.0625; // Gear Box ratio
@@ -96,10 +97,10 @@ public final class Constants {
     public static final int kShooterRightCANID = 7;
     public static final int kShooterServoPWMID = 0;
     public static final int highShooterSpeed = 2500;
-    public static final int lowShooterSpeed = 1250;
+    public static final int lowShooterSpeed = 1350;
 
     // Shooter PID--
-    public static final double SHOOTER_kP = 0.0001;
+    public static final double SHOOTER_kP = 0.0004;
     public static final double SHOOTER_kI = 0.000001;
     public static final double SHOOTER_kD = 0.0004;
     public static final double SHOOTER_MAX_OUTPUT = 6000.0;
@@ -108,7 +109,7 @@ public final class Constants {
     // Shooter RPMs (for automatic shooter-- see vision)
     public static final int shooterRPMHigh = 2500;
     public static final int shooterRPMMedium = 2250;
-    public static final int shooterRPMLow = 1250;
+    public static final int shooterRPMLow = 1350;
 
     // Shooter Servo--
     public static final int shooterServoOpenPosition = 1000;
