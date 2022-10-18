@@ -40,6 +40,7 @@ public final class Constants
     public static final int runShooterButtonNumber = 10; //Right Joystick Press: Runs shooter based on which mood is set
     public static final int shooterModeButtonNumber = 8; //"Start" Button: Changes shooter mode
     public static final int findTargetButtonNumber = 9; //Bottom Left Joystick Press: Spins to find target
+    public static final int intakeToggleButtonNumber = 4; //Y: Toggles intake
 
     // Drive--
     public static final int kFrontLeftMotorCANID = 2; // For all of the drive motors

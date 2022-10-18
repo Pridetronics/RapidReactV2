@@ -138,6 +138,7 @@ public class RobotContainer {
 
   //Intake Buttons--
   public JoystickButton intakeButton;
+  public JoystickButton intakeToggleButton;
 
   //Vision Buttons--
   public JoystickButton visionModeButton;
@@ -346,6 +347,10 @@ public class RobotContainer {
     intakeButton.whileHeld(new ParallelCommandGroup(
         new ExtendIntake(m_intake),
         new IntakeRun(m_intake)));
+
+    intakeToggleButton = new JoystickButton(joystickShooter, Constants.intakeToggleButtonNumber);
+    intakeToggleButton.toggleWhenPressed(
+      new ExtendIntake(m_intake));
 
     //Vision Commands--
     visionModeButton = new JoystickButton(joystickDriver, Constants.visionModeButtonNumber);
