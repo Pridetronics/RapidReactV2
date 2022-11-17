@@ -68,8 +68,12 @@ public class Shooter extends SubsystemBase {
     m_shooterPID.setReference(Constants.highShooterSpeed, ControlType.kVelocity);
     SmartDashboard.putNumber("Shooter RPM", m_shooterEncoder.getVelocity());
   }
-
-  //ShooterStop: Stops Shooter Motor
+  //autonomous rpm
+  public void AutoHighShooter(){
+    m_shooterPID.setReference(Constants.shooterRPMHigh, ControlType.kVelocity);
+    SmartDashboard.putNumber("Shooter RPM", m_shooterEncoder.getVelocity());
+  }
+    //ShooterStop: Stops Shooter Motor
   public void ShooterStop() 
   { 
     m_shooterMotor.set(0); 
@@ -91,9 +95,14 @@ public class Shooter extends SubsystemBase {
   *  OpenGateHigh checks for a certain velocity (5000 in this case) and if the conditions are met, 
   *  moves the servo gate to a position in which the ball can move through.
   */
+  public void OpenAutoGateHigh()
+  {
+   // new WaitCommand(7); //Test Code. Remove this in certain places
+    m_shooterServo.setRaw(Constants.shooterServoOpenPosition);
+  }
   public void OpenGateHigh()
   {
-    new WaitCommand(7); //Test Code. Remove this in certain places
+   // new WaitCommand(7); //Test Code. Remove this in certain places
     m_shooterServo.setRaw(Constants.shooterServoOpenPosition);
   }
 

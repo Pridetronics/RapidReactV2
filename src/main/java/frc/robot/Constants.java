@@ -87,7 +87,7 @@ public final class Constants
     public static final int kShooterLeftCANID = 5; // For the Shooter Motor 1 (Original Shooter Motor)
     public static final int kShooterRightCANID = 7; //For Shooter Motor 2
     public static final int kShooterServoPWMID = 0;
-    public static final int highShooterSpeed = 2500; 
+    public static final int highShooterSpeed = 3000; //2500 ori, 2925 barely works
     public static final int lowShooterSpeed = 1600;
 
     //Shooter PID--
@@ -98,8 +98,8 @@ public final class Constants
     public static final double SHOOTER_MIN_OUTPUT = -6000.0;
     
     //Shooter RPMs (for automatic shooter-- see vision)
-    public static final int shooterRPMHigh = 2500;
-    public static final int shooterRPMMedium = 2250;
+    public static final int shooterRPMHigh = 2575;//2500  ori
+    public static final int shooterRPMMedium = 2000;
     public static final int shooterRPMLow = 1250;
 
     //Shooter Servo--

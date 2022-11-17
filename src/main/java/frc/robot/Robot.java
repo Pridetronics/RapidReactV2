@@ -29,10 +29,11 @@ import frc.robot.commands.RaiseArmsDP;
 import frc.robot.commands.SpinLeft;
 import frc.robot.commands.SpinRight;
 import frc.robot.commands.lowGoalShooterRun;
-
+import frc.robot.commands.HighGoalShooterRun;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import frc.robot.commands.HighAutoGoalShooter;
+import frc.robot.commands.OpenGateAutoPeriod; 
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to
@@ -70,7 +71,7 @@ public class Robot extends TimedRobot {
     * the tarmac, waits one second [stage 4], and then shoots the ball within two seconds [stage 5]. Then quickly
     * leaves the tarmac for the autonomous points (leaving tarmac + balls being shot) [stage 6 and fin]
     */
-    chooser.setDefaultOption("Two Ball Auto", new SequentialCommandGroup(
+    chooser.addOption("Two Ball Auto", new SequentialCommandGroup(
       //This first group runs the shooter system (Stage 1)
       new ParallelCommandGroup( 
         new lowGoalShooterRun(RobotContainer.m_shooter), //Runs shooter motor at 2500 RPM
@@ -100,8 +101,37 @@ public class Robot extends TimedRobot {
 
       //Leaves tarmac-- drives out 0.75 (Stage 6)
       new AutoMoveForwards(RobotContainer.m_drive)));
-    
-
+    ///////high auto
+      chooser.setDefaultOption("High Two Ball Auto", new SequentialCommandGroup(
+        //This first group runs the shooter system (Stage 1)
+        new AutoIntakePrep(RobotContainer.m_drive),
+       
+        new ParallelCommandGroup( 
+          new ExtendIntake(RobotContainer.m_intake), //Puts intake down
+          new IntakeRun(RobotContainer.m_intake) //Runs intake motor (the wheels)
+        ).withTimeout(4),
+        
+        new WaitCommand(1),
+       
+        new ParallelCommandGroup( 
+         // move back .3 dau
+          new HighAutoGoalShooter(RobotContainer.m_shooter), //Runs shooter motor at 2750 RPM
+          new OpenGateAutoPeriod(RobotContainer.m_shooter) //Opens shooter gate
+        ).withTimeout(4), //Runs this entire parallel group for 4 seconds
+  
+        //Drives out to 0.3 (dau) (Stage 2)
+        //new AutoIntakePrep(RobotContainer.m_drive),
+  
+        //This group runs the intake (Stage 3)
+       
+        //Drives back in 0.2 (dau) (Stage 4)
+        //new AutoShootPrep(RobotContainer.m_drive), 
+  
+        //Waits one second--allows coast and prevents premature shooting (Stage 4)
+        new WaitCommand(1) 
+  
+       
+        ));
     /*
     * Simple auto. Used when we're in a less favorable position. Shoots the preload
     * and then leaves the tarmac. 

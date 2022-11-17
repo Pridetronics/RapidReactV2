@@ -47,7 +47,9 @@ import frc.robot.commands.IntakeRun;
 //Vision Command Imports--
 import frc.robot.commands.VisionMode;
 import frc.robot.commands.FindDistanceLimelight;
+import frc.robot.commands.FindOneDistanceLimelight;
 import frc.robot.commands.AlignTarget;
+import frc.robot.commands.AutoVisionShootStop;
 import frc.robot.commands.AutomaticShooterRun;
 import frc.robot.commands.AutomaticOpenGate;
 
@@ -96,10 +98,11 @@ public class RobotContainer {
   // Shooter--
   public static CANSparkMax shooterMotorLeft; // Creates Motor for the shooter
   public static CANSparkMax shooterMotorRight; //Looking at the robot from behind to determine the place
-  public static RelativeEncoder shooterEncoder; //Creates encoder for the shooter
+  public static RelativeEncoder 
+  shooterEncoder; //Creates encoder for the shooter
   public static SparkMaxPIDController shooterMotorPID; //Creates PID for the shooter
   public static Servo shooterServo; //Creates servo for the shooter gate
-
+   
   // Intake--
   public static VictorSP intakeMotor; //Creates motor for intake
   public static DoubleSolenoid intakePiston; //Creates motor for piston
@@ -320,7 +323,9 @@ public class RobotContainer {
     //Shooter Commands--
     highSpeedShooterButton = new JoystickButton(joystickShooter, Constants.highSpeedShooterButtonNumber);
     highSpeedShooterButton.whileHeld(new ParallelCommandGroup( // This is meant to run both the shooter and the release gate commands
-        new HighGoalShooterRun(m_shooter), //shooter at 5000 RPM
+        
+    new HighGoalShooterRun(m_shooter), //shooter at 5000 RPM
+
         new OpenGateHigh(m_shooter))); // References the command and inside the needed subsytem
     lowSpeedShooterButton = new JoystickButton(joystickShooter, Constants.lowSpeedShooterButtonNumber);
     lowSpeedShooterButton.whileHeld(new ParallelCommandGroup( //Talk about this because Tim said so 25 ms
@@ -328,8 +333,16 @@ public class RobotContainer {
       new lowGoalShooterRun(m_shooter), //shooter at 2500 RPM
       new OpenGateLow(m_shooter)));
     //MAke notes on when pressed, when released (in documentation talk about the semantics of button pressing)
-
-    // //WHY IS BROKEN??
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // //WHY It BROKEN?? disables normal shooter when auto shooter is run, need fix (11/12/22 fixed)
+    automaticShooterButton = new JoystickButton(joystickShooter, 
+                Constants.automaticShooterButtonNumber);
+                automaticShooterButton.whileHeld(new  SequentialCommandGroup(
+                  new InstantCommand(m_vision :: findDistance, m_vision),
+                new AutomaticShooterRun(m_vision)));
+   //             automaticShooterButton.whenReleased(new AutoVisionShootStop(m_vision));
+    
+    
     // automaticShooterButton = new JoystickButton(joystickShooter, Constants.automaticShooterButtonNumber);
     // automaticShooterButton.whileHeld(new ParallelCommandGroup(
     //   new InstantCommand(m_vision :: findDistance, m_vision),

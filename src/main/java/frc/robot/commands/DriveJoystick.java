@@ -38,11 +38,11 @@ public class DriveJoystick extends CommandBase {
     double zValue = m_joystickDriver.getZ(); //Gets the Z value from the joystick
     m_drive.cartesianDrive(m_joystickDriver, yValue, xValue, zValue); //Uses the inputs above to implement into "cartesianDrive" method.
 
-    if (false) { //If (true), this block will display the X,Y,Z, values to SmartDashboard
-      SmartDashboard.putNumber("joyStickY", yValue);
-      SmartDashboard.putNumber("joyStickX", xValue);
-      SmartDashboard.putNumber("joyStickZ", zValue);
-    }
+    // if (false) { //If (true), this block will display the X,Y,Z, values to SmartDashboard
+    //   SmartDashboard.putNumber("joyStickY", yValue);
+    //   SmartDashboard.putNumber("joyStickX", xValue);
+    //   SmartDashboard.putNumber("joyStickZ", zValue);
+    // }
   }
   // Called once the command ends or is interrupted.
   @Override
